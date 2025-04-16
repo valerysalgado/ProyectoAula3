@@ -26,6 +26,14 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(this);
         this.ventana = ventana;
+        txtDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            char c = evt.getKeyChar();
+            if (!Character.isDigit(c)) {
+                evt.consume(); // ignora la tecla si no es un número
+            }
+        }
+    });
         
     }
 
