@@ -1,0 +1,76 @@
+@startuml
+class Vuelo{
+-int idVuelos;
+-String origen;
+-String destino;
+-String fSalida;
+-String fVuelta;
+-int asientosDisponibles;
+-String hSalida;
+-String hLlegada;
+-List<Asiento> asientos
+}
+
+class Pasajero {
+-int idUsuario;
+-String nombre;
+-String correo;
+-String telefono;
+-String identificacion;
+-String rol;
+-List<Reserva> reservas
+}
+
+class Administrador {
+-int idAdministrador
+-String nombre;
+-String telefono;
+-String rol;
+}
+
+
+class Reserva {
+-int idReserva;
+-String estado;
+-String pasajero;
+-String vuelo;
+-LocalDateTime fechaReserva;
+-Vuelo vuelo
+-Pasajero pasajero
+-List<Asiento> asientosAsignados
+-Pago pago
+}
+
+class Pago {
+-String idPago;
+-String monto;
+-String metodoPago;
+-String fechaPago;
+}
+
+class Destino {
+-String nombre;
+-String descripcion;
+-String ciudad;
+}
+
+class Asiento {
+- String numeroAsiento;
+- String clase;
+- boolean disponible;
+}
+
+Pasajero "1" --> "*" Reserva : realiza
+Reserva "1" --> "1" Vuelos : corresponde a
+Reserva "1" --> "1" Pasajero : pertenece a
+Reserva "1" --> "0..1" Pago : tiene
+
+Pago "1" --> "1" Reserva : paga
+
+Vuelo "1" --> "1" Destino : tiene
+
+Administrador "1" --> "*" Vuelo : gestiona
+
+Vuelo "1" --> "*" Asiento : contiene
+Reserva "1" --> "1..*" Asiento : asigna
+@enduml
