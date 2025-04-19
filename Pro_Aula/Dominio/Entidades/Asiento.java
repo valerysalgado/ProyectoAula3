@@ -12,4 +12,7 @@ class Asiento {
     private String numeroAsiento;
     private String clase;
     private boolean disponible;
+
+    
 }
+
