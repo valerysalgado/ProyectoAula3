@@ -9,5 +9,7 @@ package Dominio.Entidades;
  * @author valer
  */
 class Asiento {
-    
+    private String numeroAsiento;
+    private String clase;
+    private boolean disponible;
 }
