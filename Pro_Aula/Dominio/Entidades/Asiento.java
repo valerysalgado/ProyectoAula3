@@ -13,7 +13,7 @@ class Asiento {
     private String clase;
     private boolean disponible;
 
-<<<<<<< HEAD
+
     public Asiento(String numeroAsiento, String clase, boolean disponible) {
         this.numeroAsiento = numeroAsiento;
         this.clase = clase;
@@ -45,8 +45,6 @@ class Asiento {
     }
     
     
-=======
->>>>>>> a885886fe2f24a749983b39eee4aec7097ea1a42
-    
+
 }
 
