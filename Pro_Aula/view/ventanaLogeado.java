@@ -171,7 +171,7 @@ public class ventanaLogeado extends javax.swing.JFrame {
 
     private void VerVuelosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerVuelosActionPerformed
         // TODO add your handling code here:
-         VentanaVuelosDisponibles ventanaVuelos = new VentanaVuelosDisponibles();
+         VentanaVuelosDisponibles ventanaVuelos = new VentanaVuelosDisponibles(this);
         ventanaVuelos.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_VerVuelosActionPerformed

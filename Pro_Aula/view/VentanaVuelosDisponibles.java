@@ -7,10 +7,16 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class VentanaVuelosDisponibles extends javax.swing.JFrame {
-
-    public VentanaVuelosDisponibles() {
+    
+private ventanaLogeado ventanaAnterior;
+public VentanaVuelosDisponibles() {
+    initComponents();
+    setLocationRelativeTo(null);
+}
+    public VentanaVuelosDisponibles(ventanaLogeado ventanaAnterior) {
         initComponents();
         setLocationRelativeTo(null);
+        this.ventanaAnterior = ventanaAnterior;
         
         
        jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -96,6 +102,11 @@ for (Vuelos vuelo : vuelos) {
 
         jButton2.setText("Volver");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -120,6 +131,12 @@ for (Vuelos vuelo : vuelos) {
         ventana.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        ventanaAnterior.setVisible(true); // Mostrar la ventana anterior
+          this.dispose(); // Cerrar esta ventana
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
