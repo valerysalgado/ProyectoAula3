@@ -3,8 +3,11 @@
 package view;
 
 import Model.Persona;
+import Model.Vuelos;
 import view.ventanaLogin1;
-
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import java.util.ArrayList;
 
 public class ventanaLogeado extends javax.swing.JFrame {
 
@@ -13,7 +16,7 @@ public class ventanaLogeado extends javax.swing.JFrame {
     
     public ventanaLogeado(ventanaLogin1 ventana , Persona persona) {
         initComponents();
-        setLocationRelativeTo(this);
+        setLocationRelativeTo(null);
         this.ventana = ventana ;
         this.persona = persona ;
         
@@ -37,6 +40,11 @@ public class ventanaLogeado extends javax.swing.JFrame {
     txtDocumento.setEditable(false);
     txtNombre.setEditable(false);
     txtFecha.setEditable(false);
+    
+
+
+
+
     }
 
   
@@ -54,24 +62,25 @@ public class ventanaLogeado extends javax.swing.JFrame {
         txtEmail = new javax.swing.JTextField();
         txtContraseña = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         txtNombre = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        VerVuelos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Nombre  de usuario:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 130, 20));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 130, 20));
 
         txtnombreUser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(txtnombreUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, 150, -1));
+        jPanel1.add(txtnombreUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 150, -1));
 
         jVolver.setText("Volver");
         jVolver.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -83,16 +92,16 @@ public class ventanaLogeado extends javax.swing.JFrame {
         jPanel1.add(jVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 30));
 
         txtDocumento.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(txtDocumento, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 50, 150, -1));
+        jPanel1.add(txtDocumento, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 250, 150, -1));
 
         jLabel2.setText("Telefono :");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, 60, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 60, -1));
 
         jLabel3.setText("Email :");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 50, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 50, -1));
 
         txtEmail.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 150, -1));
+        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, 150, -1));
 
         txtContraseña.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         txtContraseña.addActionListener(new java.awt.event.ActionListener() {
@@ -100,41 +109,49 @@ public class ventanaLogeado extends javax.swing.JFrame {
                 txtContraseñaActionPerformed(evt);
             }
         });
-        jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, 150, -1));
+        jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 210, 150, -1));
 
         jLabel4.setText("Contraseña :");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 90, 80, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, 80, -1));
 
-        jButton1.setText("Enter");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 213, 80, 30));
-
-        jLabel5.setText("Desea registrar un vuelo?");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, 150, -1));
-
-        jLabel6.setText("Ver vuelos registrados");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 220, 140, 20));
-
-        jButton2.setText("Enter");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 210, 80, 30));
+        jLabel6.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        jLabel6.setText("Ver Vuelos Disponbles");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 140, 20));
 
         txtNombre.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 150, -1));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 170, 150, -1));
 
         jLabel7.setText("Nombre :");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 70, -1));
-        jPanel1.add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 0, 130, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, 70, -1));
+        jPanel1.add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 150, 30));
+
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 580, -1));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
+        jLabel8.setText("Datos de su Registro");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 210, 30));
+
+        VerVuelos.setText("Enter");
+        VerVuelos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        VerVuelos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VerVuelosActionPerformed(evt);
+            }
+        });
+        jPanel1.add(VerVuelos, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 320, 80, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
         );
 
         pack();
@@ -151,6 +168,13 @@ public class ventanaLogeado extends javax.swing.JFrame {
     private void txtContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraseñaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtContraseñaActionPerformed
+
+    private void VerVuelosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerVuelosActionPerformed
+        // TODO add your handling code here:
+         VentanaVuelosDisponibles ventanaVuelos = new VentanaVuelosDisponibles();
+        ventanaVuelos.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_VerVuelosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,25 +204,27 @@ public class ventanaLogeado extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               
+              Persona persona = new Persona("usuario123", "1234", "correo@ejemplo.com", "123456789", "Juan Pérez");
+            ventanaLogin1 login = new ventanaLogin1(); 
+            new ventanaLogeado(login, persona).setVisible(true);
+
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton VerVuelos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton jVolver;
     private javax.swing.JTextField txtContraseña;
     private javax.swing.JTextField txtDocumento;
