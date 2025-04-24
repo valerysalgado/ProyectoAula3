@@ -53,14 +53,7 @@ public class Administrador {
     public String getRol() {
         return rol;
     }
-   // public List <Usuario> getUsuarios(){
-   // return usuarios;
-    // }
-    
-    // public void setUsuarios(List<Usuario> usuarios) {
-    // this.usuarios = usuarios; // }
-    
-    
+
     @Override 
     public String toString() {
         return "Rol\n" + "-------------------------\n" + 
