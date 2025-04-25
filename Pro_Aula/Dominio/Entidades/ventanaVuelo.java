@@ -167,6 +167,8 @@ if (capnumerodevuelo.getText().isEmpty() || caporigen.getText().isEmpty() || cap
         btneliminar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         capnumerodevuelo = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
 
         jFormattedTextField1.setText("jFormattedTextField1");
 
@@ -244,6 +246,22 @@ if (capnumerodevuelo.getText().isEmpty() || caporigen.getText().isEmpty() || cap
         jLabel2.setText("Numero de vuelo");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
         jPanel1.add(capnumerodevuelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 120, -1));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\vecteezy_aeroplane-airplane-icon-on-transparent-background_21286390 (2).png")); // NOI18N
+        jLabel3.setText("jLabel3");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 320, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 60, 320, 280));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -343,7 +361,9 @@ private void limpiarCampos() {
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel txdestino;
     private javax.swing.JLabel txfechasalida;
     private javax.swing.JLabel txfechavuelta;

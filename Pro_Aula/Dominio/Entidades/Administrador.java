@@ -1,29 +1,42 @@
 package Dominio.Entidades;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
 
 /**
  *
  * @author valer
  */
-public class Administrador {
-     private int idAdministrador;
+@Entity
+//@Table(name = "Administradores")
+public class Administrador implements Serializable{
+    @Id
+     private int id;
+    @Column(length = 150, nullable = false)
      private String nombre;
+    @Column(length = 15)
      private String telefono;
      private String rol;
      //private List<usurio> usuarios;
+
+    public Administrador() {
+    }
+     
      
      public Administrador(String nombre){
-         this.idAdministrador = idAdministrador;
+         this.id = id;
          this.nombre = nombre;
          this.rol = "Administrador";
      }
 
     public void setIdAdministrador(int idAdministrador) {
-        this.idAdministrador = idAdministrador;
+        this.id = idAdministrador;
     }
 
     public void setNombre(String nombre) {
@@ -39,7 +52,7 @@ public class Administrador {
     }
 
     public int getIdAdministrador() {
-        return idAdministrador;
+        return id;
     }
 
     public String getNombre() {
@@ -57,10 +70,18 @@ public class Administrador {
     @Override 
     public String toString() {
         return "Rol\n" + "-------------------------\n" + 
-            "ID: " + idAdministrador + "\n" + 
+            "ID: " + id + "\n" + 
             "Nombre: " + nombre + "\n" + 
             "Telefono: " + telefono + "\n" + 
             "Rol: " + rol + "\n";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
 
