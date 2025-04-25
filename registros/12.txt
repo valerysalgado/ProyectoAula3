@@ -1,0 +1,9 @@
+Vuelo1
+N°12
+ID: 1
+Origen: bog
+Destino: cart
+Fecha Ida: 15
+Fecha Vuelta: 12
+
+Hora: 1

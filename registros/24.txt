@@ -1,0 +1,9 @@
+Vuelo2
+N°24
+ID: 2
+Origen: cart
+Destino: bog
+Fecha Ida: 12
+Fecha Vuelta: 12
+
+Hora: 12
