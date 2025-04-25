@@ -15,6 +15,7 @@ ControladorLogin controlador ;
         initComponents();
         setLocationRelativeTo(this);
          this.controlador = new ControladorLogin();
+          getRootPane().setDefaultButton(jButton1);
     }
 
     public ControladorLogin getControlador() {
@@ -31,7 +32,7 @@ ControladorLogin controlador ;
     }
 
     if (contra.length() < 3) {
-        JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 4 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 3 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
@@ -72,6 +73,7 @@ ControladorLogin controlador ;
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
@@ -87,7 +89,7 @@ ControladorLogin controlador ;
 
         jButton1.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         jButton1.setText("Enter");
-        jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -97,7 +99,7 @@ ControladorLogin controlador ;
 
         jButton2.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         jButton2.setText("SingUp");
-        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -119,15 +121,11 @@ ControladorLogin controlador ;
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
         );
 
         pack();
@@ -138,6 +136,7 @@ ControladorLogin controlador ;
         VentanaRegistrarPersona ventana = new VentanaRegistrarPersona(this);              
         ventana.setVisible(true);       
         this.dispose();
+        txtUser.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
