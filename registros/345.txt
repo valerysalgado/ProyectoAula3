@@ -1,9 +1,0 @@
-Vuelo345
-Nvuelo1
-ID: 345
-Origen: cali
-Destino: cartagena
-Fecha Ida: 01/05/2025
-Fecha Vuelta: 05/05/2025
-
-Hora: 12:00

@@ -1,7 +1,0 @@
-Vuelo234
-ID: 234
-Origen: bogota
-Destino: cartagena
-Fecha Ida: 01/05/2025
-Fecha Vuelta: 05/05/2025
-Hora: 2:00
