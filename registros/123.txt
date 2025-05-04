@@ -1,7 +1,0 @@
-Vuelo123
-ID: 123
-Origen: Cartagena
-Destino: Bogota
-Fecha Ida: 22/04/2025
-Fecha Vuelta: 24/04/2025
-Hora: 11:00r
