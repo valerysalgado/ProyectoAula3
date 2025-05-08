@@ -1,5 +1,3 @@
-
-
 package view;
 
 import Model.Persona;
@@ -9,12 +7,12 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ventanaLogeado extends javax.swing.JFrame {
+public class ventanaInicio extends javax.swing.JFrame {
 
     ventanaLogin1 ventana ;
     Persona persona;
     
-    public ventanaLogeado(ventanaLogin1 ventana , Persona persona) {
+    public ventanaInicio(ventanaLogin1 ventana , Persona persona) {
         initComponents();
         setLocationRelativeTo(null);
         this.ventana = ventana ;
@@ -26,7 +24,7 @@ public class ventanaLogeado extends javax.swing.JFrame {
     txtContraseña.setText(persona.getContraseña());     // contraseña
     txtEmail.setText(persona.getEmail());               // email
     txtDocumento.setText(persona.getDocumento());      //telefono
-    txtNombre.setText(persona.getNombre());            //Nombre 
+          
     
    java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
    java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern(" HH:mm dd-MM-yyyy ");
@@ -38,7 +36,6 @@ public class ventanaLogeado extends javax.swing.JFrame {
     txtContraseña.setEditable(false);
     txtEmail.setEditable(false);
     txtDocumento.setEditable(false);
-    txtNombre.setEditable(false);
     txtFecha.setEditable(false);
     
 
@@ -63,27 +60,26 @@ public class ventanaLogeado extends javax.swing.JFrame {
         txtContraseña = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         VerVuelos = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 510));
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setBackground(new java.awt.Color(102, 153, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Nombre  de usuario:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, 130, 20));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 100, 130, 20));
 
         txtnombreUser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.add(txtnombreUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, 150, -1));
 
         jVolver.setText("Volver");
-        jVolver.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jVolver.setBorder(null);
         jVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jVolverActionPerformed(evt);
@@ -118,12 +114,6 @@ public class ventanaLogeado extends javax.swing.JFrame {
         jLabel6.setText("Ver Vuelos Disponbles");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 350, 140, 20));
 
-        txtNombre.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 150, -1));
-
-        jLabel7.setText("Nombre :");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 180, 70, -1));
-
         txtFecha.setDisabledTextColor(new java.awt.Color(153, 153, 153));
         txtFecha.setEnabled(false);
         txtFecha.addActionListener(new java.awt.event.ActionListener() {
@@ -136,9 +126,10 @@ public class ventanaLogeado extends javax.swing.JFrame {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 580, -1));
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI Historic", 1, 18)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Datos de su Registro");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, 210, 30));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, 270, 50));
 
         VerVuelos.setText("Enter");
         VerVuelos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -149,19 +140,18 @@ public class ventanaLogeado extends javax.swing.JFrame {
         });
         jPanel1.add(VerVuelos, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 350, 80, 30));
 
+        jLabel5.setText("jLabel5");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 60, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 6, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
         );
 
         pack();
@@ -207,22 +197,24 @@ public class ventanaLogeado extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ventanaLogeado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ventanaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ventanaLogeado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ventanaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ventanaLogeado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ventanaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ventanaLogeado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ventanaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-              Persona persona = new Persona("usuario123", "1234", "correo@ejemplo.com", "123456789", "Juan Pérez");
+              Persona persona = new Persona( "1234", "correo@ejemplo.com", "123456789", "Juan Pérez");
             ventanaLogin1 login = new ventanaLogin1(); 
-            new ventanaLogeado(login, persona).setVisible(true);
+            new ventanaInicio(login, persona).setVisible(true);
 
             }
         });
@@ -234,8 +226,8 @@ public class ventanaLogeado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -244,7 +236,6 @@ public class ventanaLogeado extends javax.swing.JFrame {
     private javax.swing.JTextField txtDocumento;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtFecha;
-    private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtnombreUser;
     // End of variables declaration//GEN-END:variables
 }

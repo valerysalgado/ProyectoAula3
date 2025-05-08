@@ -2,13 +2,13 @@
 package Model;
  
 public class Persona {
-  private String nombre ;
+ 
   private String documento ;
   private String nombreUser ;
   private String contraseña ;
   private String email;
-    public Persona(String nombre, String documento, String nombreUser, String contraseña,String email) {
-        this.nombre = nombre;
+    public Persona( String documento, String nombreUser, String contraseña,String email) {
+     
         this.documento = documento;
         this.nombreUser = nombreUser;
         this.contraseña = contraseña;
@@ -20,12 +20,8 @@ public class Persona {
     public void setEmail(String email) {
         this.email = email;
     }
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+  
+    
     public String getDocumento() {
         return documento;
     }
