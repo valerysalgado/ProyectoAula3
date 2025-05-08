@@ -3,8 +3,11 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[800, 510]"/>
+    </Property>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[600, 500]"/>
+      <Dimension value="[800, 500]"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -27,25 +30,28 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jPanel1" pref="820" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="jPanel1" pref="460" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
+          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="99" red="66" type="rgb"/>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[800, 510]"/>
+        </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[600, 500]"/>
+          <Dimension value="[800, 510]"/>
         </Property>
       </Properties>
 
@@ -59,7 +65,7 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="30" y="50" width="550" height="340"/>
+              <AbsoluteConstraints x="0" y="10" width="780" height="390"/>
             </Constraint>
           </Constraints>
 
@@ -67,23 +73,30 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="jTextArea1">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="*T&#xc9;RMINOS Y CONDICIONES DE NOESAVIANCA*&#xa;&#xa;*Fecha de entrada en vigor:* 01 de octubre de 2024&#xa;&#xa;Por favor, lea detenidamente estos T&#xe9;rminos y Condiciones antes de utilizar los servicios ofrecidos por *NoesAvianca*. Al acceder o utilizar nuestro sitio web, acepta estar sujeto a los siguientes t&#xe9;rminos y condiciones. Si no est&#xe1; de acuerdo con alguna parte de estos t&#xe9;rminos, no deber&#xed;a utilizar nuestros servicios.&#xa;1. *Definiciones*&#xa;   - *Empresa:* Se refiere a *NoesAvianca*, con sede en [Direcci&#xf3;n], dedicada a ofrecer servicios de transporte a&#xe9;reo y complementarios a nivel internacional.&#xa;   - *Usuario:* Toda persona que acceda a nuestro sitio web o utilice los servicios ofrecidos por *NoesAvianca*.&#xa;   - *Servicios:* Se refiere a los vuelos comerciales, servicios de carga a&#xe9;rea, reservaciones en l&#xed;nea, programas de fidelidad y cualquier otro producto o servicio proporcionado por *NoesAvianca* a trav&#xe9;s del sitio web www.noesavianca.com o mediante otros canales autorizados.&#xa;&#xa;2. *Aceptaci&#xf3;n de los T&#xe9;rminos*&#xa;   Al acceder o utilizar cualquiera de nuestros servicios, el Usuario acepta estar legalmente vinculado por estos T&#xe9;rminos y Condiciones. *NoesAvianca* se reserva el derecho de modificar, actualizar o cambiar estos t&#xe9;rminos en cualquier momento sin previo aviso. Es responsabilidad del Usuario revisar peri&#xf3;dicamente esta p&#xe1;gina para estar al tanto de los cambios.&#xa;&#xa;3. *Registro y Cuenta de Usuario*&#xa;   Para acceder a ciertos servicios, el Usuario puede estar obligado a crear una cuenta en nuestro sitio web. El Usuario acepta proporcionar informaci&#xf3;n veraz, actualizada y completa durante el proceso de registro. El Usuario es responsable de mantener la confidencialidad de su cuenta y contrase&#xf1;a y de todas las actividades que ocurran bajo su cuenta.&#xa;&#xa;4. *Reservaciones y Compras*&#xa;   - *Reservaciones:* Todas las reservaciones realizadas a trav&#xe9;s de *NoesAvianca* est&#xe1;n sujetas a disponibilidad y a la confirmaci&#xf3;n del pago.&#xa;   - *Pagos:* Los pagos de los boletos a&#xe9;reos y otros servicios deben realizarse en las formas de pago aceptadas por *NoesAvianca. En caso de que el pago sea rechazado o invalidado, **NoesAvianca* se reserva el derecho de cancelar la reserva sin previo aviso.&#xa;   - *Cancelaciones y Cambios:* Las cancelaciones o cambios en las reservaciones pueden estar sujetas a tarifas adicionales, de acuerdo con las pol&#xed;ticas espec&#xed;ficas del boleto adquirido. Consulte nuestras pol&#xed;ticas de cancelaci&#xf3;n en [Enlace a la p&#xe1;gina de pol&#xed;ticas de cancelaci&#xf3;n].&#xa;&#xa;5. *Pol&#xed;tica de Equipaje*&#xa;   El equipaje permitido en los vuelos de *NoesAvianca* est&#xe1; sujeto a las pol&#xed;ticas de cada tipo de tarifa. Cualquier exceso de equipaje o art&#xed;culos adicionales estar&#xe1;n sujetos a tarifas adicionales, que ser&#xe1;n determinadas por *NoesAvianca*. Consulte nuestra pol&#xed;tica de equipaje completa en [Enlace a la p&#xe1;gina de pol&#xed;ticas de equipaje].&#xa;&#xa;6. *Responsabilidades del Usuario*&#xa;   El Usuario se compromete a:&#xa;   - No utilizar los servicios de *NoesAvianca* con fines ilegales o no autorizados.&#xa;   - No interferir con el funcionamiento del sitio web o intentar obtener acceso no autorizado a nuestros sistemas o cuentas de otros usuarios.&#xa;   - Cumplir con todas las leyes locales, nacionales e internacionales aplicables en el uso de nuestros servicios.&#xa;&#xa;7. *Limitaci&#xf3;n de Responsabilidad*&#xa;   *NoesAvianca* no ser&#xe1; responsable de:&#xa;   - Cualquier p&#xe9;rdida, da&#xf1;o o gasto derivado del uso de nuestro sitio web o servicios.&#xa;   - Da&#xf1;os indirectos, incidentales o consecuentes, incluidas p&#xe9;rdidas de beneficios o ingresos, que puedan resultar del uso o incapacidad de uso de nuestros servicios.&#xa;   - Retrasos o cancelaciones causados por circunstancias fuera del control de *NoesAvianca*, como condiciones clim&#xe1;ticas, problemas de tr&#xe1;fico a&#xe9;reo, fallos t&#xe9;cnicos, entre otros.&#xa;&#xa;8. *Pol&#xed;tica de Privacidad*&#xa;   *NoesAvianca* est&#xe1; comprometida con la protecci&#xf3;n de la privacidad de los usuarios. Toda la informaci&#xf3;n recopilada a trav&#xe9;s de nuestro sitio web o en el curso de la prestaci&#xf3;n de servicios ser&#xe1; tratada de acuerdo con nuestra *Pol&#xed;tica de Privacidad*, la cual puede ser consultada en [Enlace a la Pol&#xed;tica de Privacidad].&#xa;&#xa;9. *Propiedad Intelectual*&#xa;   Todos los derechos de propiedad intelectual del contenido, dise&#xf1;o, logotipos, im&#xe1;genes, y materiales presentados en el sitio web de *NoesAvianca* son propiedad exclusiva de *NoesAvianca* o de sus licenciantes. Est&#xe1; prohibida la reproducci&#xf3;n, distribuci&#xf3;n, o cualquier otro uso no autorizado del contenido sin el consentimiento previo y por escrito de *NoesAvianca*.&#xa;&#xa;10. *Ley Aplicable y Jurisdicci&#xf3;n*&#xa;   Estos T&#xe9;rminos y Condiciones se rigen por las leyes de [Pa&#xed;s]. Cualquier disputa que surja en relaci&#xf3;n con estos t&#xe9;rminos ser&#xe1; sometida a la jurisdicci&#xf3;n exclusiva de los tribunales competentes en [Ciudad], [Pa&#xed;s].&#xa;&#xa;11. *Contacto*&#xa;   Si tiene alguna pregunta sobre estos T&#xe9;rminos y Condiciones, puede ponerse en contacto con nosotros en:&#xa;&#xa;   *NoesAvianca*  &#xa;   Correo electr&#xf3;nico: [correo@noesavianca.com]  &#xa;   Tel&#xe9;fono: [+123 456 7890]  &#xa;   Direcci&#xf3;n: Cartagena, Colombia"/>
+                <Property name="text" type="java.lang.String" value="*T&#xc9;RMINOS Y CONDICIONES DE NOESAVIANCA*&#xa;&#xa;*Fecha de entrada en vigor:* 01 de octubre de 2024&#xa;&#xa;Por favor, lea detenidamente estos T&#xe9;rminos y Condiciones antes de utilizar los servicios ofrecidos por *NoesAvianca*. &#xa;Al acceder o utilizar nuestro sitio web, acepta estar sujeto a los siguientes t&#xe9;rminos y condiciones. &#xa;Si no est&#xe1; de acuerdo con alguna parte de estos t&#xe9;rminos, no deber&#xed;a utilizar nuestros servicios.&#xa;1. *Definiciones*&#xa;   - *Empresa:* Se refiere a *NoesAvianca*, con sede en [Direcci&#xf3;n],&#xa;      dedicada a ofrecer servicios de transporte a&#xe9;reo y complementarios a nivel internacional.&#xa;   - *Usuario:* Toda persona que acceda a nuestro sitio web o utilice los servicios ofrecidos por *NoesAvianca*.&#xa;   - *Servicios:* Se refiere a los vuelos comerciales, servicios de carga a&#xe9;rea, reservaciones en l&#xed;nea,&#xa; programas de fidelidad y cualquier otro producto o servicio proporcionado por *NoesAvianca*&#xa; a trav&#xe9;s del sitio web www.noesavianca.com o mediante otros canales autorizados.&#xa;&#xa;2. *Aceptaci&#xf3;n de los T&#xe9;rminos*&#xa;   Al acceder o utilizar cualquiera de nuestros servicios, el Usuario acepta estar legalmente vinculado por estos T&#xe9;rminos y Condiciones. &#xa;*NoesAvianca* se reserva el derecho de modificar, actualizar o cambiar estos t&#xe9;rminos en cualquier momento sin previo aviso. &#xa;Es responsabilidad del Usuario revisar peri&#xf3;dicamente esta p&#xe1;gina para estar al tanto de los cambios.&#xa;&#xa;3. *Registro y Cuenta de Usuario*&#xa;   Para acceder a ciertos servicios, el Usuario puede estar obligado a crear una cuenta en nuestro sitio web.&#xa; El Usuario acepta proporcionar informaci&#xf3;n veraz, actualizada y completa durante el proceso de registro.&#xa; El Usuario es responsable de mantener la confidencialidad de su cuenta y contrase&#xf1;a y de todas las actividades que ocurran bajo su cuenta.&#xa;&#xa;4. *Reservaciones y Compras*&#xa;   - *Reservaciones:* Todas las reservaciones realizadas a trav&#xe9;s de *NoesAvianca* est&#xe1;n sujetas a disponibilidad y a la confirmaci&#xf3;n del pago.&#xa;   - *Pagos:* Los pagos de los boletos a&#xe9;reos y otros servicios deben realizarse en las formas de pago aceptadas por *NoesAvianca. &#xa;En caso de que el pago sea rechazado o invalidado, **NoesAvianca* se reserva el derecho de cancelar la reserva sin previo aviso.&#xa;   - *Cancelaciones y Cambios:* Las cancelaciones o cambios en las reservaciones pueden estar sujetas a tarifas adicionales,&#xa; de acuerdo con las pol&#xed;ticas espec&#xed;ficas del boleto adquirido. &#xa;Consulte nuestras pol&#xed;ticas de cancelaci&#xf3;n en [Enlace a la p&#xe1;gina de pol&#xed;ticas de cancelaci&#xf3;n].&#xa;&#xa;5. *Pol&#xed;tica de Equipaje*&#xa;   El equipaje permitido en los vuelos de *NoesAvianca* est&#xe1; sujeto a las pol&#xed;ticas de cada tipo de tarifa.&#xa; Cualquier exceso de equipaje o art&#xed;culos adicionales estar&#xe1;n sujetos a tarifas adicionales, que ser&#xe1;n determinadas por *NoesAvianca*. &#xa;Consulte nuestra pol&#xed;tica de equipaje completa en [Enlace a la p&#xe1;gina de pol&#xed;ticas de equipaje].&#xa;&#xa;6. *Responsabilidades del Usuario*&#xa;   El Usuario se compromete a:&#xa;   - No utilizar los servicios de *NoesAvianca* con fines ilegales o no autorizados.&#xa;   - No interferir con el funcionamiento del sitio web o intentar obtener acceso no autorizado a nuestros sistemas o cuentas de otros usuarios.&#xa;   - Cumplir con todas las leyes locales, nacionales e internacionales aplicables en el uso de nuestros servicios.&#xa;&#xa;7. *Limitaci&#xf3;n de Responsabilidad*&#xa;   *NoesAvianca* no ser&#xe1; responsable de:&#xa;   - Cualquier p&#xe9;rdida, da&#xf1;o o gasto derivado del uso de nuestro sitio web o servicios.&#xa;   - Da&#xf1;os indirectos, incidentales o consecuentes, incluidas p&#xe9;rdidas de beneficios o ingresos, &#xa;que puedan resultar del uso o incapacidad de uso de nuestros servicios.&#xa;   - Retrasos o cancelaciones causados por circunstancias fuera del control de *NoesAvianca*,&#xa; como condiciones clim&#xe1;ticas, problemas de tr&#xe1;fico a&#xe9;reo, fallos t&#xe9;cnicos, entre otros.&#xa;&#xa;8. *Pol&#xed;tica de Privacidad*&#xa;   *NoesAvianca* est&#xe1; comprometida con la protecci&#xf3;n de la privacidad de los usuarios. &#xa;Toda la informaci&#xf3;n recopilada a trav&#xe9;s de nuestro sitio web o en el curso de la prestaci&#xf3;n de servicios ser&#xe1; tratada de acuerdo con nuestra&#xa; *Pol&#xed;tica de Privacidad*, la cual puede ser consultada en [Enlace a la Pol&#xed;tica de Privacidad].&#xa;&#xa;9. *Propiedad Intelectual*&#xa;   Todos los derechos de propiedad intelectual del contenido, dise&#xf1;o, logotipos, im&#xe1;genes,&#xa; y materiales presentados en el sitio web de *NoesAvianca* son propiedad exclusiva de *NoesAvianca* o de sus licenciantes. &#xa;Est&#xe1; prohibida la reproducci&#xf3;n, distribuci&#xf3;n, o cualquier otro uso no autorizado del contenido sin el consentimiento previo y por escrito de&#xa; *NoesAvianca*.&#xa;&#xa;10. *Ley Aplicable y Jurisdicci&#xf3;n*&#xa;   Estos T&#xe9;rminos y Condiciones se rigen por las leyes de [Pa&#xed;s]. &#xa;Cualquier disputa que surja en relaci&#xf3;n con estos t&#xe9;rminos ser&#xe1; sometida a la jurisdicci&#xf3;n exclusiva de los tribunales competentes en [Ciudad], [Pa&#xed;s].&#xa;&#xa;11. *Contacto*&#xa;   Si tiene alguna pregunta sobre estos T&#xe9;rminos y Condiciones, puede ponerse en contacto con nosotros en:&#xa;&#xa;   *NoesAvianca*  &#xa;   Correo electr&#xf3;nico: [correo@noesavianca.com]  &#xa;   Tel&#xe9;fono: [+123 456 7890]  &#xa;   Direcci&#xf3;n: Cartagena, Colombia"/>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Acepto"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Nirmala UI" size="12" style="1"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="C:\Users\User\OneDrive\Documents\IMAGENES\ICON\Arrow_left_long.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Regresar"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="240" y="410" width="-1" height="-1"/>
+              <AbsoluteConstraints x="320" y="410" width="200" height="50"/>
             </Constraint>
           </Constraints>
         </Component>

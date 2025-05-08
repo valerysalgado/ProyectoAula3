@@ -22,7 +22,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
 }
     
 
-    public VentanaRegistrarPersona(ventanaLogin1 ventana ) {
+    public VentanaRegistrarPersona(ventanaLogin1 ventana) {
         initComponents();
         setLocationRelativeTo(this);
         this.ventana = ventana;
@@ -100,6 +100,11 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         txtDocumento.setBackground(new java.awt.Color(102, 153, 255));
         txtDocumento.setBorder(null);
         txtDocumento.setVerifyInputWhenFocusTarget(false);
+        txtDocumento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDocumentoActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtDocumento, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, 190, 20));
 
         txtNombreUser.setBackground(new java.awt.Color(102, 153, 255));
@@ -113,6 +118,11 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
 
         txtContraseña.setBackground(new java.awt.Color(102, 153, 255));
         txtContraseña.setBorder(null);
+        txtContraseña.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtContraseñaActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, 190, 20));
 
         btnVolver.setBackground(new java.awt.Color(102, 153, 255));
@@ -141,6 +151,11 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
 
         txtEmail.setBackground(new java.awt.Color(102, 153, 255));
         txtEmail.setBorder(null);
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmailActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 250, 190, 20));
 
         Check.setBackground(new java.awt.Color(102, 153, 255));
@@ -273,12 +288,26 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
     }//GEN-LAST:event_CheckActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+       VentanaTerminos terminos = new VentanaTerminos();
+       terminos.setVisible(true);
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtNombreUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreUserActionPerformed
-        // TODO add your handling code here:
+       txtContraseña.requestFocus(); // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreUserActionPerformed
+
+    private void txtDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDocumentoActionPerformed
+       txtNombreUser.requestFocus(); // TODO add your handling code here:
+    }//GEN-LAST:event_txtDocumentoActionPerformed
+
+    private void txtContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraseñaActionPerformed
+       txtEmail.requestFocus();       // TODO add your handling code here:
+    }//GEN-LAST:event_txtContraseñaActionPerformed
+
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+        Check.requestFocus();// TODO add your handling code here:
+    }//GEN-LAST:event_txtEmailActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

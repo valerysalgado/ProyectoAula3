@@ -7,12 +7,12 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ventanaInicio extends javax.swing.JFrame {
+public class ventanaDatosRegistros extends javax.swing.JFrame {
 
     ventanaLogin1 ventana ;
     Persona persona;
     
-    public ventanaInicio(ventanaLogin1 ventana , Persona persona) {
+    public ventanaDatosRegistros(ventanaLogin1 ventana , Persona persona) {
         initComponents();
         setLocationRelativeTo(null);
         this.ventana = ventana ;
@@ -67,7 +67,6 @@ public class ventanaInicio extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 510));
 
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -197,14 +196,18 @@ public class ventanaInicio extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ventanaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ventanaDatosRegistros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ventanaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ventanaDatosRegistros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ventanaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ventanaDatosRegistros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ventanaInicio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ventanaDatosRegistros.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -214,7 +217,7 @@ public class ventanaInicio extends javax.swing.JFrame {
             public void run() {
               Persona persona = new Persona( "1234", "correo@ejemplo.com", "123456789", "Juan Pérez");
             ventanaLogin1 login = new ventanaLogin1(); 
-            new ventanaInicio(login, persona).setVisible(true);
+            new ventanaDatosRegistros(login, persona).setVisible(true);
 
             }
         });

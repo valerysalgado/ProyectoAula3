@@ -8,12 +8,12 @@ import javax.swing.table.DefaultTableModel;
 
 public class VentanaVuelosDisponibles extends javax.swing.JFrame {
     
-private ventanaInicio ventanaAnterior;
+private ventanaDatosRegistros ventanaAnterior;
 public VentanaVuelosDisponibles() {
     initComponents();
     setLocationRelativeTo(null);
 }
-    public VentanaVuelosDisponibles(ventanaInicio ventanaAnterior) {
+    public VentanaVuelosDisponibles(ventanaDatosRegistros ventanaAnterior) {
         initComponents();
         setLocationRelativeTo(null);
         this.ventanaAnterior = ventanaAnterior;

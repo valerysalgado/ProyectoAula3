@@ -4,7 +4,7 @@ package view;
 
 public class VentanaTikect extends javax.swing.JFrame {
 
-  ventanaInicio ventana ;
+  ventanaDatosRegistros ventana ;
     public VentanaTikect() {
         initComponents();
          setLocationRelativeTo(this);

@@ -40,7 +40,7 @@ ControladorLogin controlador ;
 
     if (aux != null) {
         if (aux.getContraseña().equals(contra)) {
-            ventanaInicio ventana = new ventanaInicio(this, aux);
+            ventanaDatosRegistros ventana = new ventanaDatosRegistros(this, aux);
             ventana.setVisible(true);
             this.dispose();
             txtUser.setText("");
@@ -50,7 +50,7 @@ ControladorLogin controlador ;
             txtPassword.setText("");
         }
     } else {
-        JOptionPane.showMessageDialog(this, "La persona no se encuentra registrada.");
+        JOptionPane.showMessageDialog(this, "La persona no se encuentra registrada. "+  " \n !Crea una Cuenta!");
         txtPassword.setText("");
     }
 }
@@ -106,6 +106,11 @@ ControladorLogin controlador ;
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 40, -1));
 
         txtPassword.setBorder(null);
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
         jPanel2.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 220, 30));
 
         jButton1.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
@@ -129,6 +134,11 @@ ControladorLogin controlador ;
         jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 390, 90, 30));
 
         txtUser.setBorder(null);
+        txtUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserActionPerformed(evt);
+            }
+        });
         jPanel2.add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 220, 30));
 
         jLabel3.setText("Need an acoount?");
@@ -218,6 +228,14 @@ ControladorLogin controlador ;
         realizarLogin();
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
+       txtPassword.requestFocus(); // TODO add your handling code here:
+    }//GEN-LAST:event_txtUserActionPerformed
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+       realizarLogin();// TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordActionPerformed
 
     /**
      * @param args the command line arguments
