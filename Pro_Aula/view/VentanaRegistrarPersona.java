@@ -1,7 +1,7 @@
 
 package view;
 
-import Model.Persona;
+import Model.Pasajero;
 import controller.ControladorLogin;
 import javax.swing.JOptionPane;
 import view.ventanaLogin1;
@@ -249,7 +249,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         String contraseña = txtContraseña.getText().trim();
         
         
-        Persona persona = new Persona(documento,nombreUser,contraseña,email);
+        Pasajero persona = new Pasajero(documento,nombreUser,contraseña,email);
         boolean respuesta = ventana.getControlador().agregarPersona(persona);
     
         if (respuesta) {

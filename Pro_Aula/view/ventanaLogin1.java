@@ -1,61 +1,58 @@
-
 package view;
 
-import Model.Persona;
+import Model.Pasajero;
 import controller.ControladorLogin;
 import javax.swing.JOptionPane;
 
 public class ventanaLogin1 extends javax.swing.JFrame {
-    
-ControladorLogin controlador ;
 
-   
+    ControladorLogin controlador;
+
     public ventanaLogin1() {
         initComponents();
         setLocationRelativeTo(this);
-         this.controlador = new ControladorLogin();
-          getRootPane().setDefaultButton(jButton1);
-         
+        this.controlador = new ControladorLogin();
+        getRootPane().setDefaultButton(jButton1);
+
     }
 
     public ControladorLogin getControlador() {
         return controlador;
     }
-    
+
     private void realizarLogin() {
-    String user = txtUser.getText().trim();
-    String contra = new String(txtPassword.getPassword());
+        String user = txtUser.getText().trim();
+        String contra = new String(txtPassword.getPassword());
 
-    if (user.isEmpty() || contra.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe completar todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        if (user.isEmpty() || contra.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe completar todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    if (contra.length() < 3) {
-        JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 3 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        if (contra.length() < 3) {
+            JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 3 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    Persona aux = controlador.buscarPersona(user);
+        Pasajero aux = controlador.buscarPersona(user);
 
-    if (aux != null) {
-        if (aux.getContraseña().equals(contra)) {
-            ventanaDatosRegistros ventana = new ventanaDatosRegistros(this, aux);
-            ventana.setVisible(true);
-            this.dispose();
-            txtUser.setText("");
-            txtPassword.setText("");
+        if (aux != null) {
+            if (aux.getContraseña().equals(contra)) {
+                ventanaDatosRegistros ventana = new ventanaDatosRegistros(this, aux);
+                ventana.setVisible(true);
+                this.dispose();
+                txtUser.setText("");
+                txtPassword.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "La contraseña es incorrecta.");
+                txtPassword.setText("");
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "La contraseña es incorrecta.");
+            JOptionPane.showMessageDialog(this, "La persona no se encuentra registrada. " + " \n !Crea una Cuenta!");
             txtPassword.setText("");
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "La persona no se encuentra registrada. "+  " \n !Crea una Cuenta!");
-        txtPassword.setText("");
     }
-}
 
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -217,8 +214,8 @@ ControladorLogin controlador ;
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        VentanaRegistrarPersona ventana = new VentanaRegistrarPersona(this);              
-        ventana.setVisible(true);       
+        VentanaRegistrarPersona ventana = new VentanaRegistrarPersona(this);
+        ventana.setVisible(true);
         this.dispose();
         txtUser.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -226,23 +223,21 @@ ControladorLogin controlador ;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         realizarLogin();
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
-       txtPassword.requestFocus(); // TODO add your handling code here:
+        txtPassword.requestFocus(); // TODO add your handling code here:
     }//GEN-LAST:event_txtUserActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-       realizarLogin();// TODO add your handling code here:
+        realizarLogin();// TODO add your handling code here:
     }//GEN-LAST:event_txtPasswordActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-
-
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -280,6 +275,4 @@ ControladorLogin controlador ;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 
-   
 }
-

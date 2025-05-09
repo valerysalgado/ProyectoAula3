@@ -1,6 +1,6 @@
 package view;
 
-import Model.Persona;
+import Model.Pasajero;
 import Model.Vuelos;
 import view.ventanaLogin1;
 import javax.swing.table.DefaultTableModel;
@@ -10,16 +10,16 @@ import java.util.ArrayList;
 public class ventanaDatosRegistros extends javax.swing.JFrame {
 
     ventanaLogin1 ventana ;
-    Persona persona;
+    Pasajero persona;
     
-    public ventanaDatosRegistros(ventanaLogin1 ventana , Persona persona) {
+    public ventanaDatosRegistros(ventanaLogin1 ventana , Pasajero persona) {
         initComponents();
         setLocationRelativeTo(null);
         this.ventana = ventana ;
         this.persona = persona ;
         
         
-    // Cargar los datos desde el objeto Persona
+    // Cargar los datos desde el objeto Pasajero
     txtnombreUser.setText(persona.getNombreUser());     // nombre de usuario
     txtContraseña.setText(persona.getContraseña());     // contraseña
     txtEmail.setText(persona.getEmail());               // email
@@ -215,7 +215,7 @@ public class ventanaDatosRegistros extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-              Persona persona = new Persona( "1234", "correo@ejemplo.com", "123456789", "Juan Pérez");
+              Pasajero persona = new Pasajero( "1234", "correo@ejemplo.com", "123456789", "Juan Pérez");
             ventanaLogin1 login = new ventanaLogin1(); 
             new ventanaDatosRegistros(login, persona).setVisible(true);
 
