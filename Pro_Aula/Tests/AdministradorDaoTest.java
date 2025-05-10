@@ -26,7 +26,7 @@ public class AdministradorDaoTest {
     
     public static void buscarAdministradorEnBDDebeMostrarElNombre(){
         // Preperar los datos de prueba
-        var adminId = 2;
+        var adminId = 73;
         var emf = Persistence.createEntityManagerFactory("ConfigDB");
         var em = emf.createEntityManager();
         var adminDao = new AdministradorDAO(em);

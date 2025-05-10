@@ -1,110 +1,133 @@
-
 package Dominio.Entidades;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author valer
  */
-public class Vuelo {
-    private String idVuelos;
+@Entity
+@Table(name = "vuelo")
+public class Vuelo implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idVuelo;
+    
+    @Column(length = 50, nullable = false)
+    private String numeroVuelo;
+    
+    @Column(length = 100, nullable = false)
     private String origen;
+    
+    @Column(length = 100, nullable = false)
     private String destino;
-    private LocalDate fSalida;
-    private LocalDate fVuelta;
-    private int asientosDisponibles;
-    private LocalTime hSalida;
-    private LocalTime hLlegada;
-    private List<Asiento> asientos;
-  
+    
+    @Column(length = 50, nullable = false)
+    private String fechaSalida;
+    
+    @Column(length = 50, nullable = false)
+    private String fechaLlegada;
+    
+    @OneToMany(mappedBy = "vuelo", cascade = javax.persistence.CascadeType.ALL)
+    private List<Asiento> asientos = new ArrayList<>();
 
-    // Constructor
-    public Vuelo(String idVuelos, String origen, String destino, LocalDate fSalida, LocalDate fVuelta,
-                 int asientosDisponibles, LocalTime hSalida, LocalTime hLlegada) {
-        this.idVuelos = idVuelos;
-        this.origen = origen;
-        this.destino = destino;
-        this.fSalida = fSalida;
-        this.fVuelta = fVuelta;
-        this.asientosDisponibles = asientosDisponibles;
-        this.hSalida = hSalida;
-        this.hLlegada = hLlegada;
+    public Vuelo() {
     }
 
-    // Getters
-    public String getIdVuelos() {
-        return idVuelos;
+    public Vuelo(String numeroVuelo, String origen, String destino, String fechaSalida, String fechaLlegada) {
+        this.numeroVuelo = numeroVuelo;
+        this.origen = origen;
+        this.destino = destino;
+        this.fechaSalida = fechaSalida;
+        this.fechaLlegada = fechaLlegada;
+    }
+
+    // Getters y Setters
+    public int getIdVuelo() {
+        return idVuelo;
+    }
+
+    public void setIdVuelo(int idVuelo) {
+        this.idVuelo = idVuelo;
+    }
+
+    public String getNumeroVuelo() {
+        return numeroVuelo;
+    }
+
+    public void setNumeroVuelo(String numeroVuelo) {
+        this.numeroVuelo = numeroVuelo;
     }
 
     public String getOrigen() {
         return origen;
     }
 
-    public String getDestino() {
-        return destino;
-    }
-
-    public LocalDate getfSalida() {
-        return fSalida;
-    }
-
-    public LocalDate getfVuelta() {
-        return fVuelta;
-    }
-
-    public int getAsientosDisponibles() {
-        return asientosDisponibles;
-    }
-
-    public LocalTime gethSalida() {
-        return hSalida;
-    }
-
-    public LocalTime gethLlegada() {
-        return hLlegada;
-    }
-
-    public List<Asiento> getAsientos() {
-        return asientos;
-    }
-
-    // Setters
-    public void setIdVuelos(String idVuelos) {
-        this.idVuelos = idVuelos;
-    }
-
     public void setOrigen(String origen) {
         this.origen = origen;
+    }
+
+    public String getDestino() {
+        return destino;
     }
 
     public void setDestino(String destino) {
         this.destino = destino;
     }
 
-    public void setfSalida(LocalDate fSalida) {
-        this.fSalida = fSalida;
+    public String getFechaSalida() {
+        return fechaSalida;
     }
 
-    public void setfVuelta(LocalDate fVuelta) {
-        this.fVuelta = fVuelta;
+    public void setFechaSalida(String fechaSalida) {
+        this.fechaSalida = fechaSalida;
     }
 
-    public void setAsientosDisponibles(int asientosDisponibles) {
-        this.asientosDisponibles = asientosDisponibles;
+    public String getFechaLlegada() {
+        return fechaLlegada;
     }
 
-    public void sethSalida(LocalTime hSalida) {
-        this.hSalida = hSalida;
+    public void setFechaLlegada(String fechaLlegada) {
+        this.fechaLlegada = fechaLlegada;
     }
 
-    public void sethLlegada(LocalTime hLlegada) {
-        this.hLlegada = hLlegada;
+    public List<Asiento> getAsientos() {
+        return asientos;
     }
 
     public void setAsientos(List<Asiento> asientos) {
         this.asientos = asientos;
+    }
+    
+    // Métodos para manejar la relación con Asientos
+    public void agregarAsiento(Asiento asiento) {
+        asientos.add(asiento);
+        asiento.setVuelo(this);
+    }
+    
+    public void removerAsiento(Asiento asiento) {
+        asientos.remove(asiento);
+        asiento.setVuelo(null);
+    }
+
+    @Override
+    public String toString() {
+        return "Vuelo\n" + "-------------------------\n" + 
+               "ID: " + idVuelo + "\n" + 
+               "Número: " + numeroVuelo + "\n" + 
+               "Origen: " + origen + "\n" + 
+               "Destino: " + destino + "\n" + 
+               "Salida: " + fechaSalida + "\n" + 
+               "Llegada: " + fechaLlegada + "\n" +
+               "Asientos: " + asientos.size() + "\n";
     }
 }
