@@ -1,29 +1,42 @@
 package view;
 
+import Dominio.Entidades.Avion;
 import Dominio.Entidades.Pasajero;
+import Persistence.Dao.AvionDAO;
 import Persistence.Dao.PasajeroDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import org.hibernate.exception.ConstraintViolationException;
 
 public class adminInterfaz extends javax.swing.JFrame {
 
     private EntityManager em;
     private PasajeroDAO pasajeroDAO = null;
     private DefaultTableModel modeloTabla;
+    private AvionDAO avionDAO = null;
 
     public adminInterfaz() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
         this.em = emf.createEntityManager();
         pasajeroDAO = new PasajeroDAO(this.em);
+        avionDAO = new AvionDAO(this.em);
 
         initComponents();
         initTabla();
+        inittablaaviones();
+        ajustarColumnas();
+        inittablaaviones();
         cargarTodosPasajeros();
+        cargarTodosAviones();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -77,14 +90,25 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel25 = new javax.swing.JLabel();
         txtbuscar = new javax.swing.JTextField();
         botoneliminar1 = new javax.swing.JButton();
+        jLabel29 = new javax.swing.JLabel();
+        jScrollBar1 = new javax.swing.JScrollBar();
         jPanel4 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaaviones = new javax.swing.JTable();
+        jLabel26 = new javax.swing.JLabel();
+        capmatricula = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        capcapacidad = new javax.swing.JTextField();
+        jLabel32 = new javax.swing.JLabel();
+        comborol1 = new javax.swing.JComboBox<>();
+        txtbuscarAvion = new javax.swing.JTextField();
+        botonbuscar1 = new javax.swing.JButton();
+        botonagregar1 = new javax.swing.JButton();
+        botoneditar1 = new javax.swing.JButton();
+        botonlistar1 = new javax.swing.JButton();
+        botoneliminar2 = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
@@ -119,20 +143,23 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel7.setText("←");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 50));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 810, 60));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 60));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel14.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setForeground(new java.awt.Color(102, 153, 255));
+        jPanel7.setMinimumSize(new java.awt.Dimension(174, 50));
         jPanel7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel7MouseClicked(evt);
             }
         });
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setBackground(new java.awt.Color(102, 153, 255));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -143,30 +170,15 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jLabel3MouseClicked(evt);
             }
         });
+        jPanel7.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 14, 104, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\users-02.png")); // NOI18N
+        jPanel7.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 52, 39));
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
+        jPanel14.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 50));
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setMinimumSize(new java.awt.Dimension(174, 50));
         jPanel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel8MouseClicked(evt);
@@ -182,10 +194,12 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jLabel2MouseClicked(evt);
             }
         });
-        jPanel8.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 80, 50));
+        jPanel8.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 80, 30));
 
         jLabel10.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\Flight.png")); // NOI18N
-        jPanel8.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, -1, -1));
+        jPanel8.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, -1));
+
+        jPanel14.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 174, 50));
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -203,18 +217,22 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jLabel4MouseClicked(evt);
             }
         });
-        jPanel9.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 90, 50));
+        jPanel9.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 90, 50));
 
         jLabel11.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\calendar (1) (2).png")); // NOI18N
-        jPanel9.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, -1, -1));
+        jPanel9.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 10, 40, -1));
+
+        jPanel14.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 174, 50));
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel14.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 320, 4, -1));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setMinimumSize(new java.awt.Dimension(174, 50));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(102, 153, 255));
         jLabel8.setText("ADMINISTRADORES");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -222,9 +240,12 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jLabel8MouseClicked(evt);
             }
         });
-        jPanel6.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 140, 30));
+        jPanel6.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 160, 30));
+
+        jPanel14.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 170, 48));
 
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel13.setMinimumSize(new java.awt.Dimension(174, 50));
         jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -235,43 +256,12 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jLabel23MouseClicked(evt);
             }
         });
-        jPanel13.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 90, 30));
+        jPanel13.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 90, 30));
 
         jLabel24.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\ticket (2).png")); // NOI18N
-        jPanel13.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, -1, 30));
+        jPanel13.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 30));
 
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 119, Short.MAX_VALUE))
-        );
+        jPanel14.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 170, 50));
 
         jPanel5.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 170, 450));
 
@@ -288,10 +278,10 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Nirmala UI", 1, 36)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(102, 153, 255));
         jLabel6.setText("BIENVENIDO ADMINISTADOR");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 520, -1));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, 520, -1));
 
         jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\iloveimg-resized\\gerente.png")); // NOI18N
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, -1, -1));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 130, -1, -1));
 
         TabPanelPrincipal.addTab("INICIO", jPanel2);
 
@@ -301,12 +291,11 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel15.setBackground(new java.awt.Color(102, 153, 255));
         jLabel15.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(102, 153, 255));
-        jLabel15.setText("Pasajeros");
-        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 120, -1));
+        jLabel15.setText("Pasajeros registrados");
+        jPanel3.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 260, -1));
 
         jScrollPane5.setBackground(new java.awt.Color(204, 204, 204));
 
-        tablapasajero.setBackground(new java.awt.Color(204, 204, 204));
         tablapasajero.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -318,6 +307,8 @@ public class adminInterfaz extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablapasajero.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        tablapasajero.setSelectionForeground(new java.awt.Color(102, 153, 255));
         tablapasajero.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablapasajeroMouseClicked(evt);
@@ -325,7 +316,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(tablapasajero);
 
-        jPanel3.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 410, 320));
+        jPanel3.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 670, 180));
 
         botonagregar.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonagregar.setForeground(new java.awt.Color(102, 153, 255));
@@ -336,7 +327,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonagregarActionPerformed(evt);
             }
         });
-        jPanel3.add(botonagregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 80, 30));
+        jPanel3.add(botonagregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 80, 30));
 
         botoneditar.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botoneditar.setForeground(new java.awt.Color(102, 153, 255));
@@ -347,7 +338,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botoneditarActionPerformed(evt);
             }
         });
-        jPanel3.add(botoneditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 80, 30));
+        jPanel3.add(botoneditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, 80, 30));
 
         botonlistar.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonlistar.setForeground(new java.awt.Color(102, 153, 255));
@@ -358,7 +349,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonlistarActionPerformed(evt);
             }
         });
-        jPanel3.add(botonlistar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 80, 30));
+        jPanel3.add(botonlistar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, 80, 30));
 
         botonbuscar.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonbuscar.setForeground(new java.awt.Color(102, 153, 255));
@@ -369,46 +360,46 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonbuscarActionPerformed(evt);
             }
         });
-        jPanel3.add(botonbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, 80, 30));
+        jPanel3.add(botonbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 170, 80, 30));
 
         txtapellido.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel3.add(txtapellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 130, -1));
+        jPanel3.add(txtapellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 130, -1));
 
         jLabel17.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
         jLabel17.setText("Ingrese los siguientes datos:");
-        jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, -1, -1));
 
         jLabel18.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel18.setText("Nombre:");
-        jPanel3.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
+        jPanel3.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
 
         jLabel19.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel19.setText("Apellido:");
-        jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+        jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
 
         jLabel20.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
-        jLabel20.setText("Correo:");
-        jPanel3.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
+        jLabel20.setText("Ingrese Id para buscar pasajero");
+        jPanel3.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 150, -1, -1));
 
         jLabel21.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel21.setText("Telefono:");
-        jPanel3.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
+        jPanel3.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, -1, -1));
 
         jLabel22.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel22.setText("Rol:");
-        jPanel3.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, -1, -1));
+        jPanel3.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 110, -1, -1));
 
         txtcorreo.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel3.add(txtcorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, 130, -1));
+        jPanel3.add(txtcorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 80, 130, -1));
 
         txttelefono.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel3.add(txttelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 130, -1));
+        jPanel3.add(txttelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 110, 110, -1));
 
         txtidentificacion.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel3.add(txtidentificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, 110, -1));
+        jPanel3.add(txtidentificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 80, 110, -1));
 
         txtnombre.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel3.add(txtnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 130, -1));
+        jPanel3.add(txtnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 130, -1));
 
         comborol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PASAJERO", "ADMINISTRADOR", " " }));
         comborol.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
@@ -417,21 +408,21 @@ public class adminInterfaz extends javax.swing.JFrame {
                 comborolActionPerformed(evt);
             }
         });
-        jPanel3.add(comborol, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, 110, -1));
+        jPanel3.add(comborol, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 110, 130, -1));
 
         jLabel25.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel25.setText("Identificación:");
-        jPanel3.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
+        jPanel3.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, -1, -1));
 
         txtbuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtbuscarActionPerformed(evt);
             }
         });
-        jPanel3.add(txtbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 110, 20));
+        jPanel3.add(txtbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 180, 110, -1));
 
+        botoneliminar1.setBackground(new java.awt.Color(255, 51, 51));
         botoneliminar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        botoneliminar1.setForeground(new java.awt.Color(102, 153, 255));
         botoneliminar1.setText("Eliminar");
         botoneliminar1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
         botoneliminar1.addActionListener(new java.awt.event.ActionListener() {
@@ -439,61 +430,22 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botoneliminar1ActionPerformed(evt);
             }
         });
-        jPanel3.add(botoneliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 350, 80, 30));
+        jPanel3.add(botoneliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 150, 80, 30));
+
+        jLabel29.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel29.setText("Correo:");
+        jPanel3.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 80, -1, -1));
+        jPanel3.add(jScrollBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 238, 670, 150));
 
         TabPanelPrincipal.addTab("PASAJEROS", jPanel3);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel12.setBackground(new java.awt.Color(102, 153, 255));
-        jLabel12.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(102, 153, 255));
-        jLabel12.setText("Aviones registrados");
-
-        jButton8.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(102, 153, 255));
-        jButton8.setText("Agregar");
-        jButton8.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-
-        jButton9.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton9.setForeground(new java.awt.Color(102, 153, 255));
-        jButton9.setText("Editar");
-        jButton9.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
-
-        jButton10.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton10.setForeground(new java.awt.Color(102, 153, 255));
-        jButton10.setText("Eliminar");
-        jButton10.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(102, 153, 255));
-        jButton2.setText("Listar");
-        jButton2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jScrollPane2.setBackground(new java.awt.Color(204, 204, 204));
 
-        jTable2.setBackground(new java.awt.Color(204, 204, 204));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaaviones.setBackground(new java.awt.Color(204, 204, 204));
+        tablaaviones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -504,50 +456,113 @@ public class adminInterfaz extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        tablaaviones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaavionesMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaaviones);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
-            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel4Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addGap(10, 10, 10)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(20, 20, 20)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 415, Short.MAX_VALUE)
-            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel4Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel12)
-                    .addGap(8, 8, 8)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addGap(60, 60, 60)
-                            .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(30, 30, 30)
-                            .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(30, 30, 30)
-                            .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(30, 30, 30)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, 470, 320));
+
+        jLabel26.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
+        jLabel26.setText("Ingrese los siguientes datos:");
+        jPanel4.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
+
+        capmatricula.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel4.add(capmatricula, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 130, -1));
+
+        jLabel27.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel27.setText("Matricula:");
+        jPanel4.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
+
+        jLabel28.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel28.setText("Capacidad de pasajeros:");
+        jPanel4.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
+
+        capcapacidad.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel4.add(capcapacidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 60, -1));
+
+        jLabel32.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel32.setText("Estado de avion:");
+        jPanel4.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
+
+        comborol1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EN TIERRA", "EN AIRE", "EN MANTENIMIENTO", "INACTIVO" }));
+        comborol1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        comborol1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comborol1ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(comborol1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, 110, -1));
+
+        txtbuscarAvion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtbuscarAvionActionPerformed(evt);
+            }
+        });
+        jPanel4.add(txtbuscarAvion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 110, 20));
+
+        botonbuscar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botonbuscar1.setForeground(new java.awt.Color(102, 153, 255));
+        botonbuscar1.setText("Buscar");
+        botonbuscar1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botonbuscar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonbuscar1ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(botonbuscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 80, 30));
+
+        botonagregar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botonagregar1.setForeground(new java.awt.Color(102, 153, 255));
+        botonagregar1.setText("Registrar");
+        botonagregar1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botonagregar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonagregar1ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(botonagregar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 80, 30));
+
+        botoneditar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botoneditar1.setForeground(new java.awt.Color(102, 153, 255));
+        botoneditar1.setText("Editar");
+        botoneditar1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botoneditar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botoneditar1ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(botoneditar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 80, 30));
+
+        botonlistar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botonlistar1.setForeground(new java.awt.Color(102, 153, 255));
+        botonlistar1.setText("Listar");
+        botonlistar1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botonlistar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonlistar1ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(botonlistar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 80, 30));
+
+        botoneliminar2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botoneliminar2.setForeground(new java.awt.Color(102, 153, 255));
+        botoneliminar2.setText("Eliminar");
+        botoneliminar2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botoneliminar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botoneliminar2ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(botoneliminar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 350, 80, 30));
+
+        jLabel16.setBackground(new java.awt.Color(102, 153, 255));
+        jLabel16.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(102, 153, 255));
+        jLabel16.setText("Aviones registrados");
+        jPanel4.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 240, -1));
 
         TabPanelPrincipal.addTab("AVIONES", jPanel4);
 
@@ -619,7 +634,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(jTable3);
 
-        jPanel11.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, 410, 320));
+        jPanel11.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, 490, 320));
 
         TabPanelPrincipal.addTab("RESERVAS", jPanel11);
 
@@ -690,7 +705,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
             .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel12Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -709,7 +724,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 415, Short.MAX_VALUE)
+            .addGap(0, 475, Short.MAX_VALUE)
             .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel12Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -731,9 +746,9 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         TabPanelPrincipal.addTab("ADMINISTRADORES", jPanel12);
 
-        jPanel5.add(TabPanelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 640, 450));
+        jPanel5.add(TabPanelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 730, 450));
 
-        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 810, 510));
+        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 510));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -761,22 +776,6 @@ public class adminInterfaz extends javax.swing.JFrame {
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         TabPanelPrincipal.setSelectedIndex(3);
     }//GEN-LAST:event_jLabel4MouseClicked
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton9ActionPerformed
-
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton10ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
@@ -812,39 +811,40 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void botonagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregarActionPerformed
 
-if (!validarCampos()) {
-        return;
-    }
-
-    EntityTransaction tx = em.getTransaction();
-    try {
-        tx.begin();
-        
-        Pasajero nuevo = new Pasajero();
-        nuevo.setNombre(txtnombre.getText());
-        nuevo.setApellido(txtapellido.getText());
-        nuevo.setCorreo(txtcorreo.getText());
-        nuevo.setTelefono(txttelefono.getText());
-        nuevo.setIdentificacion(txtidentificacion.getText());
-        nuevo.setRol(comborol.getSelectedItem().toString());
-        
-        // Modificación clave: Usar solo persist() sin manejar transacción en el DAO
-        em.persist(nuevo);
-        
-        tx.commit();
-        
-        cargarTodosPasajeros();
-        limpiarCampos();
-        JOptionPane.showMessageDialog(this, "Pasajero registrado exitosamente");
-    } catch (Exception e) {
-        if (tx.isActive()) {
-            tx.rollback();
+        if (!validarCampos()) {
+            return;
         }
-        JOptionPane.showMessageDialog(this, 
-            "Error al registrar: " + e.getMessage(), 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE);
-    }
+
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            Pasajero nuevo = new Pasajero();
+            nuevo.setNombre(txtnombre.getText());
+            nuevo.setApellido(txtapellido.getText());
+            nuevo.setIdentificacion(txtidentificacion.getText());
+            nuevo.setTelefono(txttelefono.getText());
+
+            nuevo.setCorreo(txtcorreo.getText());
+            nuevo.setRol(comborol.getSelectedItem().toString());
+
+            em.persist(nuevo);
+
+            tx.commit();
+
+            cargarTodosPasajeros();
+            limpiarCampos();
+            JOptionPane.showMessageDialog(this, "Pasajero registrado exitosamente");
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            JOptionPane.showMessageDialog(this,
+                    "Error al registrar: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        limpiarCampos();
     }//GEN-LAST:event_botonagregarActionPerformed
 
     private void botoneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditarActionPerformed
@@ -863,15 +863,63 @@ if (!validarCampos()) {
         actualizado.setCorreo(txtcorreo.getText());
         actualizado.setTelefono(txttelefono.getText());
         actualizado.setIdentificacion(txtidentificacion.getText());
+
         actualizado.setRol(comborol.getSelectedItem().toString());
 
         pasajeroDAO.actualizar(actualizado);
         cargarTodosPasajeros();
-        JOptionPane.showMessageDialog(this, "Pasajero actualizado");        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Pasajero actualizado");
+        limpiarCampos();// TODO add your handling code here:
     }//GEN-LAST:event_botoneditarActionPerformed
 
     private void botonlistarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistarActionPerformed
-        
+        try {
+            // 1. Obtener todos los pasajeros desde el DAO
+            List<Pasajero> pasajeros = pasajeroDAO.listarTodos();
+
+            // 2. Obtener el modelo de la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tablapasajero.getModel();
+            modelo.setRowCount(0); // Limpiar tabla existente
+
+            // 3. Llenar la tabla con los datos
+            for (Pasajero p : pasajeros) {
+                modelo.addRow(new Object[]{
+                    p.getIdUsuario(),
+                    p.getnombre(),
+                    p.getApellido(),
+                    p.getCorreo(),
+                    p.getTelefono(),
+                    p.getIdentificacion(),
+                    p.getRol()
+                });
+            }
+
+            // 4. Ajustar el ancho de columnas (opcional)
+            ajustarAnchoColumnas();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar pasajeros: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+    }
+
+// Método auxiliar para ajustar columnas (opcional)
+    private void ajustarAnchoColumnas() {
+        tablapasajero.setAutoResizeMode(tablapasajero.AUTO_RESIZE_OFF);
+
+        // Ajustes personalizados (en píxeles)
+        tablapasajero.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
+        tablapasajero.getColumnModel().getColumn(1).setPreferredWidth(100); // Nombre
+        tablapasajero.getColumnModel().getColumn(2).setPreferredWidth(100); // Apellido
+        tablapasajero.getColumnModel().getColumn(3).setPreferredWidth(150); // Correo
+        tablapasajero.getColumnModel().getColumn(4).setPreferredWidth(80);  // Teléfono
+        tablapasajero.getColumnModel().getColumn(5).setPreferredWidth(100); // Identificación
+        tablapasajero.getColumnModel().getColumn(6).setPreferredWidth(120); // Rol
+
     }//GEN-LAST:event_botonlistarActionPerformed
 
     private void botonbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonbuscarActionPerformed
@@ -893,7 +941,7 @@ if (!validarCampos()) {
             JOptionPane.showMessageDialog(this, "ID inválido. Ingrese un número.");
 
         }
-
+        limpiarCampos();
     }//GEN-LAST:event_botonbuscarActionPerformed
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
@@ -904,18 +952,6 @@ if (!validarCampos()) {
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel23MouseClicked
 
-    private void tablapasajeroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablapasajeroMouseClicked
-        int fila = tablapasajero.getSelectedRow();
-        if (fila >= 0) {
-            txtnombre.setText(modeloTabla.getValueAt(fila, 1).toString());
-            txtapellido.setText(modeloTabla.getValueAt(fila, 2).toString());
-            txtcorreo.setText(modeloTabla.getValueAt(fila, 3).toString());
-            txttelefono.setText(modeloTabla.getValueAt(fila, 4).toString());
-            txtidentificacion.setText(modeloTabla.getValueAt(fila, 5).toString());
-            comborol.setSelectedItem(modeloTabla.getValueAt(fila, 6).toString());
-        }
-    }//GEN-LAST:event_tablapasajeroMouseClicked
-
     private void comborolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comborolActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comborolActionPerformed
@@ -925,7 +961,7 @@ if (!validarCampos()) {
     }//GEN-LAST:event_txtbuscarActionPerformed
 
     private void botoneliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar1ActionPerformed
-int fila = tablapasajero.getSelectedRow();
+        int fila = tablapasajero.getSelectedRow();
         if (fila < 0) {
             JOptionPane.showMessageDialog(this, "Seleccione un pasajero");
             return;
@@ -946,6 +982,257 @@ int fila = tablapasajero.getSelectedRow();
         }        // TODO add your handling code here:
     }//GEN-LAST:event_botoneliminar1ActionPerformed
 
+    private void comborol1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comborol1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comborol1ActionPerformed
+
+    private void txtbuscarAvionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarAvionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtbuscarAvionActionPerformed
+
+    private void botonbuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonbuscar1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonbuscar1ActionPerformed
+
+    private void botonagregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregar1ActionPerformed
+
+        // Validar campos primero
+        if (!validarCamposAvion()) {
+            return;
+        }
+
+        String matricula = capmatricula.getText().trim();
+        int capacidad = Integer.parseInt(capcapacidad.getText());
+        String estado = comborol1.getSelectedItem().toString();
+
+        // Verificar si la matrícula ya existe
+        if (avionExiste(matricula)) {
+            JOptionPane.showMessageDialog(this,
+                    "Error: La matrícula " + matricula + " ya está registrada",
+                    "Matrícula duplicada",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            Avion nuevoAvion = new Avion();
+            nuevoAvion.setMatricula(matricula);
+            nuevoAvion.setCapacidadPasajeros(capacidad);
+            nuevoAvion.setEstado(estado);
+
+            em.persist(nuevoAvion);
+            tx.commit();
+
+            JOptionPane.showMessageDialog(this, "Avión registrado exitosamente");
+            cargarTodosAviones();
+            limpiarCamposAvion();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            manejarErrorRegistro(e);
+        }
+
+    }//GEN-LAST:event_botonagregar1ActionPerformed
+
+    private void botoneditar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditar1ActionPerformed
+
+        try {
+            // Validar selección
+            if (tablaaviones.getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(this, "Seleccione un avión", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Validar campos
+            if (!validarCamposAvion()) {
+                return;
+            }
+
+            // Obtener ID (manejo seguro de tipos)
+            DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+            long idAvion = ((Number) modelo.getValueAt(tablaaviones.getSelectedRow(), 0)).longValue();
+
+            // Confirmar edición
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Actualizar este avión?",
+                    "Confirmar",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                EntityTransaction tx = em.getTransaction();
+                try {
+                    tx.begin();
+
+                    Avion avion = em.find(Avion.class, idAvion);
+                    if (avion == null) {
+                        throw new Exception("Avión no encontrado");
+                    }
+
+                    // Actualizar datos
+                    avion.setMatricula(capmatricula.getText().toUpperCase()); // Forzar mayúsculas
+                    avion.setCapacidadPasajeros(Integer.parseInt(capcapacidad.getText()));
+                    avion.setEstado(comborol1.getSelectedItem().toString());
+
+                    em.merge(avion);
+                    tx.commit();
+
+                    // Actualizar UI
+                    cargarTodosAviones();
+                    limpiarCamposAvion();
+                    JOptionPane.showMessageDialog(this, "Avión actualizado");
+                } catch (Exception e) {
+                    if (tx != null && tx.isActive()) {
+                        tx.rollback();
+                    }
+                    throw e;
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al actualizar: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_botoneditar1ActionPerformed
+
+    private void botonlistar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistar1ActionPerformed
+
+        try {
+            // 1. Obtener todos los aviones desde el DAO
+            List<Avion> aviones = avionDAO.listarTodos();
+
+            // 2. Obtener el modelo de la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+            modelo.setRowCount(0); // Limpiar tabla existente
+
+            // 3. Llenar la tabla con los datos
+            for (Avion a : aviones) {
+                modelo.addRow(new Object[]{
+                    a.getIdAvion(),
+                    a.getMatricula(),
+                    a.getCapacidadPasajeros(),
+                    a.getEstado()
+                });
+            }
+
+            // 4. Ajustar el ancho de columnas (opcional)
+            ajustarAnchoColumnasAviones();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar aviones: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+// Método auxiliar para ajustar columnas de aviones
+    private void ajustarAnchoColumnasAviones() {
+        tablaaviones.setAutoResizeMode(tablaaviones.AUTO_RESIZE_OFF);
+
+        // Ajustes personalizados (en píxeles)
+        tablaaviones.getColumnModel().getColumn(0).setPreferredWidth(50);   // ID
+        tablaaviones.getColumnModel().getColumn(1).setPreferredWidth(120);  // Matrícula
+        tablaaviones.getColumnModel().getColumn(2).setPreferredWidth(80);   // Capacidad
+        tablaaviones.getColumnModel().getColumn(3).setPreferredWidth(150);  // Estado
+
+
+    }//GEN-LAST:event_botonlistar1ActionPerformed
+
+    private void botoneliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar2ActionPerformed
+
+        int filaSeleccionada = tablaaviones.getSelectedRow();
+        if (filaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor seleccione un avión de la tabla",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 2. Obtener el ID del avión a eliminar
+        DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+        long idAvion = (long) modelo.getValueAt(filaSeleccionada, 0); // Columna 0 es el ID
+
+        // 3. Confirmar eliminación
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro que desea eliminar este avión?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // 4. Proceso de eliminación
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            // Buscar y eliminar el avión
+            Avion avion = em.find(Avion.class, idAvion);
+            if (avion != null) {
+                em.remove(avion);
+                tx.commit();
+
+                // Actualizar interfaz
+                cargarTodosAviones();
+                limpiarCamposAvion();
+                JOptionPane.showMessageDialog(this,
+                        "Avión eliminado correctamente",
+                        "Éxito",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "El avión seleccionado no existe en la base de datos",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            JOptionPane.showMessageDialog(this,
+                    "Error al eliminar avión: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_botoneliminar2ActionPerformed
+
+    private void tablaavionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaavionesMouseClicked
+        int fila = tablaaviones.getSelectedRow();
+        if (fila >= 0) {
+            DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+            capmatricula.setText(modelo.getValueAt(fila, 1).toString());
+            capcapacidad.setText(modelo.getValueAt(fila, 2).toString());
+            comborol1.setSelectedItem(modelo.getValueAt(fila, 3).toString());
+        }
+    }//GEN-LAST:event_tablaavionesMouseClicked
+
+    private void tablapasajeroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablapasajeroMouseClicked
+        int fila = tablapasajero.getSelectedRow();
+        if (fila >= 0) {
+            txtnombre.setText(modeloTabla.getValueAt(fila, 1).toString());
+            txtapellido.setText(modeloTabla.getValueAt(fila, 2).toString());
+            txtidentificacion.setText(modeloTabla.getValueAt(fila, 5).toString());
+            txttelefono.setText(modeloTabla.getValueAt(fila, 4).toString());
+            txtcorreo.setText(modeloTabla.getValueAt(fila, 3).toString());
+
+            comborol.setSelectedItem(modeloTabla.getValueAt(fila, 6).toString());
+        }
+    }//GEN-LAST:event_tablapasajeroMouseClicked
+
     public static void main(String args[]) {
 
 
@@ -961,30 +1248,34 @@ int fila = tablapasajero.getSelectedRow();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabPanelPrincipal;
     private javax.swing.JButton botonagregar;
+    private javax.swing.JButton botonagregar1;
     public javax.swing.JButton botonbuscar;
+    public javax.swing.JButton botonbuscar1;
     private javax.swing.JButton botoneditar;
+    private javax.swing.JButton botoneditar1;
     private javax.swing.JButton botoneliminar1;
+    private javax.swing.JButton botoneliminar2;
     private javax.swing.JButton botonlistar;
+    private javax.swing.JButton botonlistar1;
+    private javax.swing.JTextField capcapacidad;
+    private javax.swing.JTextField capmatricula;
     private javax.swing.JComboBox<String> comborol;
-    private javax.swing.JButton jButton10;
+    private javax.swing.JComboBox<String> comborol1;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -995,7 +1286,12 @@ int fila = tablapasajero.getSelectedRow();
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1016,16 +1312,18 @@ int fila = tablapasajero.getSelectedRow();
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
-    public javax.swing.JTable tablapasajero;
+    private javax.swing.JTable tablaaviones;
+    private javax.swing.JTable tablapasajero;
     private javax.swing.JTextField txtapellido;
     private javax.swing.JTextField txtbuscar;
+    private javax.swing.JTextField txtbuscarAvion;
     private javax.swing.JTextField txtcorreo;
     private javax.swing.JTextField txtidentificacion;
     private javax.swing.JTextField txtnombre;
@@ -1037,6 +1335,11 @@ int fila = tablapasajero.getSelectedRow();
         cargarPasajerosEnTabla(lista);
     }
 
+    private void cargarTodosAviones() {
+        List<Avion> lista = avionDAO.listarTodos();
+        cargarAvionesEnTabla(lista);
+    }
+
     private void cargarPasajerosEnTabla(List<Pasajero> pasajeros) {
         modeloTabla.setRowCount(0); // Limpiar tabla
 
@@ -1045,23 +1348,43 @@ int fila = tablapasajero.getSelectedRow();
                 p.getIdUsuario(),
                 p.getnombre(),
                 p.getApellido(),
-                p.getCorreo(),
-                p.getTelefono(),
                 p.getIdentificacion(),
+                p.getTelefono(),
+                p.getCorreo(),
                 p.getRol()
             });
         }
 
     }
 
+    private void cargarAvionesEnTabla(List<Avion> aviones) {
+        DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+        modelo.setRowCount(0);
+
+        for (Avion a : aviones) {
+            modelo.addRow(new Object[]{
+                a.getIdAvion(),
+                a.getMatricula(),
+                a.getCapacidadPasajeros(),
+                a.getEstado()
+            });
+        }
+    }
+
     private void limpiarCampos() {
         txtnombre.setText("");
         txtapellido.setText("");
-        txtcorreo.setText("");
-        txttelefono.setText("");
         txtidentificacion.setText("");
+        txttelefono.setText("");
+        txtcorreo.setText("");
         comborol.setSelectedIndex(0);
         txtnombre.requestFocus();
+    }
+
+    private void limpiarCamposAvion() {
+        capmatricula.setText("");
+        capcapacidad.setText("");
+        comborol1.setSelectedIndex(0);
     }
 
     private boolean validarCampos() {
@@ -1099,6 +1422,32 @@ int fila = tablapasajero.getSelectedRow();
         return true;
     }
 
+    private boolean validarCamposAvion() {
+        if (!capmatricula.getText().matches("^[A-Z]{2,3}-\\d{3,4}$")) {
+            JOptionPane.showMessageDialog(this,
+                    "Formato de matrícula inválido. Use: ABC-1234",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        // Validar capacidad
+        try {
+            int capacidad = Integer.parseInt(capcapacidad.getText());
+            if (capacidad <= 0 || capacidad > 500) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Capacidad debe ser entre 1-500",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        return true;
+    }
+
     private void initTabla() {
         modeloTabla = new DefaultTableModel() {
             @Override
@@ -1109,11 +1458,131 @@ int fila = tablapasajero.getSelectedRow();
         modeloTabla.addColumn("ID");
         modeloTabla.addColumn("Nombre");
         modeloTabla.addColumn("Apellido");
-        modeloTabla.addColumn("Correo");
-        modeloTabla.addColumn("Teléfono");
         modeloTabla.addColumn("Identificación");
+        modeloTabla.addColumn("Teléfono");
+        modeloTabla.addColumn("Correo");
         modeloTabla.addColumn("Rol");
 
         tablapasajero.setModel(modeloTabla);
     }
+
+    private void inittablaaviones() {
+        try {
+            DefaultTableModel modelo = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
+            modelo.addColumn("ID");
+            modelo.addColumn("Matrícula");
+            modelo.addColumn("Capacidad");
+            modelo.addColumn("Estado");
+
+            if (tablaaviones != null) {
+                tablaaviones.setModel(modelo);
+
+                tablaaviones.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        tablaavionesMouseClicked(evt);
+                    }
+                });
+            } else {
+                System.err.println("Error: jTable2 es null");
+            }
+        } catch (Exception e) {
+            System.err.println("Error al inicializar tabla de aviones:");
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Error al inicializar la tabla de aviones: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    private void configurarValidacionesEnTiempo() {
+        capmatricula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!(Character.isUpperCase(c) || Character.isDigit(c) || c == '-')) {
+                    evt.consume();
+                }
+
+                if (capmatricula.getText().length() >= 8) {
+                    evt.consume();
+                }
+
+                SwingUtilities.invokeLater(() -> {
+                    String text = capmatricula.getText().toUpperCase();
+                    if (text.length() == 3 && !text.contains("-")) {
+                        text += "-";
+                        capmatricula.setText(text);
+                    }
+                    capmatricula.setText(text);
+                });
+            }
+        });
+
+        capcapacidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                char c = evt.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    evt.consume();
+                }
+
+                if (capcapacidad.getText().length() >= 3) {
+                    evt.consume();
+                }
+            }
+        });
+
+        comborol1.setModel(new DefaultComboBoxModel<>(Avion.getOpcionesEstado()));
+        comborol1.setSelectedItem("EN TIERRA");
+    }
+
+    private boolean avionExiste(String matricula) {
+        try {
+            return avionDAO.existeMatricula(matricula);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al verificar matrícula: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return true; // Asumir que existe para prevenir duplicados
+        }
+    }
+
+    private void manejarErrorRegistro(Exception e) {
+        String mensaje = "Error al registrar avión: ";
+
+        if (e.getCause() != null && e.getCause().getMessage().contains("Duplicate entry")) {
+            mensaje += "La matrícula ya existe en el sistema";
+        } else {
+            mensaje += e.getMessage();
+        }
+
+        JOptionPane.showMessageDialog(this,
+                mensaje,
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void ajustarColumnas() {
+
+        tablapasajero.getColumnModel().getColumn(0).setPreferredWidth(50); 
+        tablapasajero.getColumnModel().getColumn(1).setPreferredWidth(120);  
+        tablapasajero.getColumnModel().getColumn(2).setPreferredWidth(80);   
+        tablapasajero.getColumnModel().getColumn(3).setPreferredWidth(150);
+        tablapasajero.getColumnModel().getColumn(4).setPreferredWidth(120);  
+        tablapasajero.getColumnModel().getColumn(5).setPreferredWidth(150);   
+        tablapasajero.getColumnModel().getColumn(6).setPreferredWidth(150);
+
+        tablapasajero.setAutoResizeMode(tablapasajero.AUTO_RESIZE_OFF); 
+
+        tablapasajero.revalidate();
+        tablapasajero.repaint();
+    }
+
 }

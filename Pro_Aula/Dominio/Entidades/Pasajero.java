@@ -16,33 +16,35 @@ public class Pasajero implements Serializable {
     @Column(length = 150, nullable = false)
     private String apellido;
     @Column(length = 150, nullable = false)
-    private String correo;
+    private String identificacion;
     @Column(length = 15)
     private String telefono;
     @Column(length = 150, nullable = false)
-    private String identificacion;
+    private String correo;
+    
+    
     private String rol;
 
     public Pasajero() {
     }
 
-    public Pasajero(String nombre, String apellido, String correo, String telefono, String identificacion, String rol) {
+    public Pasajero(String nombre, String apellido, String identificacion, String telefono, String correo, String rol) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.correo = correo;
+        this.correo = identificacion;
         this.telefono = telefono;
-        this.identificacion = identificacion;
+        this.identificacion = correo;
         this.rol = rol;
     }
     
-    public Pasajero(int idUsuario, String nombre, String apellido, String correo, String telefono, String identificacion, String rol) {
+    public Pasajero(int idUsuario, String nombre, String apellido, String identificacion, String telefono, String correo, String rol) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.correo = correo;
+        this.correo = identificacion;
         this.telefono = telefono;
-        this.identificacion = identificacion;
+        this.identificacion = correo;
         this.rol = rol;
     }
 
@@ -57,18 +59,18 @@ public class Pasajero implements Serializable {
     public String getApellido() {
         return apellido;
     }
-
-    public String getCorreo() {
-        return correo;
+ public String getIdentificacion() {
+        return identificacion;
     }
+    
 
     public String getTelefono() {
         return telefono;
     }
-
-    public String getIdentificacion() {
-        return identificacion;
+public String getCorreo() {
+        return correo;
     }
+   
 
     public String getRol() {
         return rol;
@@ -87,18 +89,18 @@ public class Pasajero implements Serializable {
         this.apellido = apellido;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+     public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
     }
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
-    public void setIdentificacion(String identificacion) {
-        this.identificacion = identificacion;
+   
+public void setCorreo(String correo) {
+        this.correo = correo;
     }
-
     public void setRol(String rol) {
         this.rol = rol;
     }
