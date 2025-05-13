@@ -90,15 +90,7 @@ public class PasajeroDAO {
                 .setFirstResult((pagina - 1) * registrosPorPagina)
                 .setMaxResults(registrosPorPagina)
                 .getResultList();
-    }
     
-    public int contarPasajeros(String filtro) {
-        String jpql = "SELECT COUNT(p) FROM Pasajero p WHERE " +
-                     "(p.nombre LIKE :filtro OR p.apellido LIKE :filtro OR p.identificacion LIKE :filtro)";
-        
-        return ((Number) em.createQuery(jpql)
-                         .setParameter("filtro", "%" + filtro + "%")
-                         .getSingleResult()).intValue();
     }
     
 }

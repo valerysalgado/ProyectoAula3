@@ -14,6 +14,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import org.hibernate.exception.ConstraintViolationException;
 
 public class adminInterfaz extends javax.swing.JFrame {
@@ -109,6 +110,8 @@ public class adminInterfaz extends javax.swing.JFrame {
         botonlistar1 = new javax.swing.JButton();
         botoneliminar2 = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
         jPanel11 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
@@ -378,7 +381,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
 
         jLabel20.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
-        jLabel20.setText("Ingrese Id para buscar pasajero");
+        jLabel20.setText("Ingrese Id para buscar pasajero:");
         jPanel3.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 150, -1, -1));
 
         jLabel21.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
@@ -430,7 +433,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botoneliminar1ActionPerformed(evt);
             }
         });
-        jPanel3.add(botoneliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 150, 80, 30));
+        jPanel3.add(botoneliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, 80, 30));
 
         jLabel29.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel29.setText("Correo:");
@@ -442,9 +445,8 @@ public class adminInterfaz extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jScrollPane2.setBackground(new java.awt.Color(204, 204, 204));
+        jScrollPane2.setBackground(new java.awt.Color(102, 153, 255));
 
-        tablaaviones.setBackground(new java.awt.Color(204, 204, 204));
         tablaaviones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -463,29 +465,29 @@ public class adminInterfaz extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tablaaviones);
 
-        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 50, 470, 320));
+        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 660, 170));
 
         jLabel26.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
         jLabel26.setText("Ingrese los siguientes datos:");
-        jPanel4.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
+        jPanel4.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         capmatricula.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel4.add(capmatricula, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 130, -1));
+        jPanel4.add(capmatricula, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, 130, -1));
 
         jLabel27.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel27.setText("Matricula:");
-        jPanel4.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
+        jPanel4.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
 
         jLabel28.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel28.setText("Capacidad de pasajeros:");
-        jPanel4.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
+        jPanel4.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, -1, -1));
 
         capcapacidad.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel4.add(capcapacidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 60, -1));
+        jPanel4.add(capcapacidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, 60, -1));
 
         jLabel32.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel32.setText("Estado de avion:");
-        jPanel4.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
+        jPanel4.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 90, -1, -1));
 
         comborol1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EN TIERRA", "EN AIRE", "EN MANTENIMIENTO", "INACTIVO" }));
         comborol1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
@@ -494,14 +496,14 @@ public class adminInterfaz extends javax.swing.JFrame {
                 comborol1ActionPerformed(evt);
             }
         });
-        jPanel4.add(comborol1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, 110, -1));
+        jPanel4.add(comborol1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 90, 110, -1));
 
         txtbuscarAvion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtbuscarAvionActionPerformed(evt);
             }
         });
-        jPanel4.add(txtbuscarAvion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 110, 20));
+        jPanel4.add(txtbuscarAvion, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 110, 20));
 
         botonbuscar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonbuscar1.setForeground(new java.awt.Color(102, 153, 255));
@@ -512,7 +514,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonbuscar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(botonbuscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 80, 30));
+        jPanel4.add(botonbuscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 150, 80, 30));
 
         botonagregar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonagregar1.setForeground(new java.awt.Color(102, 153, 255));
@@ -523,7 +525,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonagregar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(botonagregar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 80, 30));
+        jPanel4.add(botonagregar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 80, 30));
 
         botoneditar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botoneditar1.setForeground(new java.awt.Color(102, 153, 255));
@@ -534,7 +536,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botoneditar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(botoneditar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 80, 30));
+        jPanel4.add(botoneditar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, 80, 30));
 
         botonlistar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonlistar1.setForeground(new java.awt.Color(102, 153, 255));
@@ -545,10 +547,10 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonlistar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(botonlistar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 80, 30));
+        jPanel4.add(botonlistar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 130, 80, 30));
 
+        botoneliminar2.setBackground(new java.awt.Color(255, 51, 51));
         botoneliminar2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        botoneliminar2.setForeground(new java.awt.Color(102, 153, 255));
         botoneliminar2.setText("Eliminar");
         botoneliminar2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
         botoneliminar2.addActionListener(new java.awt.event.ActionListener() {
@@ -556,23 +558,29 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botoneliminar2ActionPerformed(evt);
             }
         });
-        jPanel4.add(botoneliminar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 350, 80, 30));
+        jPanel4.add(botoneliminar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 130, 80, 30));
 
         jLabel16.setBackground(new java.awt.Color(102, 153, 255));
         jLabel16.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(102, 153, 255));
         jLabel16.setText("Aviones registrados");
-        jPanel4.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 240, -1));
+        jPanel4.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 240, -1));
+
+        jLabel30.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel30.setText("Ingrese Id o matricula para buscar un avion:");
+        jPanel4.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 130, -1, -1));
+        jPanel4.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 100, -1, -1));
 
         TabPanelPrincipal.addTab("AVIONES", jPanel4);
 
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
         jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel13.setBackground(new java.awt.Color(102, 153, 255));
         jLabel13.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(102, 153, 255));
         jLabel13.setText("Reservas registradas");
-        jPanel11.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 260, -1));
+        jPanel11.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 240, -1));
 
         jButton11.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         jButton11.setForeground(new java.awt.Color(102, 153, 255));
@@ -583,7 +591,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jButton11ActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 150, 30));
+        jPanel11.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 150, 30));
 
         jButton12.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         jButton12.setForeground(new java.awt.Color(102, 153, 255));
@@ -594,7 +602,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jButton12ActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 150, 30));
+        jPanel11.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 150, 30));
 
         jButton13.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         jButton13.setForeground(new java.awt.Color(102, 153, 255));
@@ -605,7 +613,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jButton13ActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 260, 150, 30));
+        jPanel11.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, 150, 30));
 
         jButton3.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         jButton3.setForeground(new java.awt.Color(102, 153, 255));
@@ -616,11 +624,10 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 150, 30));
+        jPanel11.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 150, 150, 30));
 
-        jScrollPane3.setBackground(new java.awt.Color(204, 204, 204));
+        jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable3.setBackground(new java.awt.Color(204, 204, 204));
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -634,7 +641,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(jTable3);
 
-        jPanel11.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, 490, 320));
+        jPanel11.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 650, 150));
 
         TabPanelPrincipal.addTab("RESERVAS", jPanel11);
 
@@ -991,7 +998,55 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_txtbuscarAvionActionPerformed
 
     private void botonbuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonbuscar1ActionPerformed
-        // TODO add your handling code here:
+                                     
+    String busqueda = txtbuscarAvion.getText().trim();
+    
+    if (busqueda.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ingrese un ID o matrícula para buscar", "Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        Avion avion;
+        
+        // Búsqueda flexible (ID numérico o matrícula)
+        if (busqueda.matches("\\d+")) {  // Si es solo números (ID)
+            int id = Integer.parseInt(busqueda);
+            avion = avionDAO.buscarPorId(id);
+        } else {  // Si no es numérico (matrícula)
+            avion = avionDAO.buscarPorMatricula(busqueda.toUpperCase()); // Convertir a mayúsculas
+        }
+
+        if (avion != null) {
+            // Mostrar resultados
+            DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+            modelo.setRowCount(0);
+            modelo.addRow(new Object[]{
+                avion.getIdAvion(),
+                avion.getMatricula(),
+                avion.getCapacidadPasajeros(),
+                avion.getEstado()
+            });
+            
+            // Rellenar campos de edición
+            capmatricula.setText(avion.getMatricula());
+            capcapacidad.setText(String.valueOf(avion.getCapacidadPasajeros()));
+            comborol1.setSelectedItem(avion.getEstado());
+            
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "No se encontró un avión con: " + busqueda, 
+                "No encontrado", 
+                JOptionPane.INFORMATION_MESSAGE);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "Error en la búsqueda: " + e.getMessage(), 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+    }
+
+
     }//GEN-LAST:event_botonbuscar1ActionPerformed
 
     private void botonagregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregar1ActionPerformed
@@ -1221,15 +1276,30 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaavionesMouseClicked
 
     private void tablapasajeroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablapasajeroMouseClicked
-        int fila = tablapasajero.getSelectedRow();
-        if (fila >= 0) {
-            txtnombre.setText(modeloTabla.getValueAt(fila, 1).toString());
-            txtapellido.setText(modeloTabla.getValueAt(fila, 2).toString());
-            txtidentificacion.setText(modeloTabla.getValueAt(fila, 5).toString());
-            txttelefono.setText(modeloTabla.getValueAt(fila, 4).toString());
-            txtcorreo.setText(modeloTabla.getValueAt(fila, 3).toString());
 
-            comborol.setSelectedItem(modeloTabla.getValueAt(fila, 6).toString());
+        int filaVista = tablapasajero.getSelectedRow();
+        if (filaVista >= 0) {
+            // Convertir el índice de la fila de la vista al modelo
+            int filaModelo = tablapasajero.convertRowIndexToModel(filaVista);
+            TableModel modelo = tablapasajero.getModel();
+
+            // Obtener los valores de cada columna por su índice en el modelo
+            Object id = modelo.getValueAt(filaModelo, 0);
+            Object nombre = modelo.getValueAt(filaModelo, 1);         // Columna 1: Nombre
+            Object apellido = modelo.getValueAt(filaModelo, 2);       // Columna 2: Apellido
+            Object identificacion = modelo.getValueAt(filaModelo, 3); // Columna 3: Identificación
+            Object telefono = modelo.getValueAt(filaModelo, 4);       // Columna 4: Teléfono
+            Object correo = modelo.getValueAt(filaModelo, 5);         // Columna 5: Correo
+            Object rol = modelo.getValueAt(filaModelo, 6);            // Columna 6: Rol
+
+            // Establecer los valores en los campos de texto
+            txtnombre.setText(nombre != null ? nombre.toString() : "");
+            txtapellido.setText(apellido != null ? apellido.toString() : "");
+            txtidentificacion.setText(identificacion != null ? identificacion.toString() : "");
+            txttelefono.setText(telefono != null ? telefono.toString() : "");
+            txtcorreo.setText(correo != null ? correo.toString() : "");
+            comborol.setSelectedItem(rol != null ? rol.toString() : "");
+
         }
     }//GEN-LAST:event_tablapasajeroMouseClicked
 
@@ -1291,6 +1361,7 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1317,10 +1388,11 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable tablaaviones;
-    private javax.swing.JTable tablapasajero;
+    public javax.swing.JTable tablapasajero;
     private javax.swing.JTextField txtapellido;
     private javax.swing.JTextField txtbuscar;
     private javax.swing.JTextField txtbuscarAvion;
@@ -1345,16 +1417,15 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         for (Pasajero p : pasajeros) {
             modeloTabla.addRow(new Object[]{
-                p.getIdUsuario(),
-                p.getnombre(),
-                p.getApellido(),
-                p.getIdentificacion(),
-                p.getTelefono(),
-                p.getCorreo(),
-                p.getRol()
+                p.getIdUsuario(), // Columna 0: ID
+                p.getnombre(), // Columna 1: Nombre
+                p.getApellido(), // Columna 2: Apellido
+                p.getIdentificacion(),// Columna 3: Identificación
+                p.getTelefono(), // Columna 4: Teléfono
+                p.getCorreo(), // Columna 5: Correo
+                p.getRol() // Columna 6: Rol
             });
         }
-
     }
 
     private void cargarAvionesEnTabla(List<Avion> aviones) {
@@ -1571,15 +1642,15 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void ajustarColumnas() {
 
-        tablapasajero.getColumnModel().getColumn(0).setPreferredWidth(50); 
-        tablapasajero.getColumnModel().getColumn(1).setPreferredWidth(120);  
-        tablapasajero.getColumnModel().getColumn(2).setPreferredWidth(80);   
+        tablapasajero.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tablapasajero.getColumnModel().getColumn(1).setPreferredWidth(120);
+        tablapasajero.getColumnModel().getColumn(2).setPreferredWidth(80);
         tablapasajero.getColumnModel().getColumn(3).setPreferredWidth(150);
-        tablapasajero.getColumnModel().getColumn(4).setPreferredWidth(120);  
-        tablapasajero.getColumnModel().getColumn(5).setPreferredWidth(150);   
+        tablapasajero.getColumnModel().getColumn(4).setPreferredWidth(120);
+        tablapasajero.getColumnModel().getColumn(5).setPreferredWidth(150);
         tablapasajero.getColumnModel().getColumn(6).setPreferredWidth(150);
 
-        tablapasajero.setAutoResizeMode(tablapasajero.AUTO_RESIZE_OFF); 
+        tablapasajero.setAutoResizeMode(tablapasajero.AUTO_RESIZE_OFF);
 
         tablapasajero.revalidate();
         tablapasajero.repaint();
