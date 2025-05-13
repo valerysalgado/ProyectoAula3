@@ -1,11 +1,11 @@
-
 package view;
-import view.ventanaLogeado;
+
+import view.ventanaDatosRegistros;
 
 public class VentanaRegistrarVuelo extends javax.swing.JFrame {
 
-   ventanaLogeado ventana1;
-   
+    ventanaDatosRegistros ventana1;
+
     public VentanaRegistrarVuelo() {
         initComponents();
     }
