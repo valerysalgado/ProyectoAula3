@@ -1,20 +1,20 @@
 
 package controller;
 
-import Model.Persona;
+import Model.Pasajero;
 import java.util.ArrayList;
 
 
 public class ControladorLogin {
  
-    private ArrayList<Persona>listaPersona;
+    private ArrayList<Pasajero>listaPersona;
 
     public ControladorLogin() {
         listaPersona = new ArrayList<> ();
     }
-    public Persona buscarPersona(String nombreUser){
+    public Pasajero buscarPersona(String nombreUser){
         for (int i = 0 ; i <listaPersona.size();i++){
-            Persona persona = listaPersona.get(i);
+            Pasajero persona = listaPersona.get(i);
             if (persona != null){
                 if(persona.getNombreUser().equals(nombreUser)){
                     return persona;
@@ -26,8 +26,8 @@ public class ControladorLogin {
         return null;
     }
     
-    public boolean agregarPersona(Persona persona){
-        Persona aux = buscarPersona(persona.getNombreUser());
+    public boolean agregarPersona(Pasajero persona){
+        Pasajero aux = buscarPersona(persona.getNombreUser());
         
         if (aux == null){
             listaPersona.add(persona);

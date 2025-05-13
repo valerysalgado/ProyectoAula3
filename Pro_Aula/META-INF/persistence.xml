@@ -4,6 +4,8 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>Dominio.Entidades.Administrador</class>
     <class>Dominio.Entidades.Vuelo</class>
+    <class>Dominio.Entidades.Pasajero</class>
+    <class>Dominio.Entidades.Asiento</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proaula_vuelos_bd?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
