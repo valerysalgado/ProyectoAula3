@@ -14,7 +14,7 @@ import javax.persistence.Table;
  * @author valer
  */
 @Entity
-//@Table(name = "Administradores")
+@Table(name = "administrador")
 public class Administrador implements Serializable{
     @Id
      private int id;
