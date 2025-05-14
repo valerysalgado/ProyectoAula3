@@ -7,14 +7,14 @@
     <class>Dominio.Entidades.Pasajero</class>
     <class>Dominio.Entidades.Asiento</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/proaula_vuelos_bd?useSSL=false"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
-	  <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value=""/>
       <property name="javax.persistence.schema-generation.database.action" value="update"/>
-	  <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDB103Dialect"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDB103Dialect"/>
       <property name="hibernate.hbm2ddl.auto" value="none"/>
-	  <property name="hibernate.dialect.storage_engine" value="innodb"/>
+      <property name="hibernate.dialect.storage_engine" value="innodb"/>
     </properties>
   </persistence-unit>
 </persistence>
