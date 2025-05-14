@@ -32,9 +32,9 @@ public class Pasajero implements Serializable {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.correo = identificacion;
+        this.identificacion = identificacion;
         this.telefono = telefono;
-        this.identificacion = correo;
+        this.correo = correo;
         this.rol = rol;
     }
     

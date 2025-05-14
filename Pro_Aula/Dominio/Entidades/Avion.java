@@ -30,8 +30,7 @@ public class Avion implements Serializable {
         this.estado = "En tierra";
     }
 
-    public Avion(int IdAvion, String matricula, String modelo, String aerolinea,
-            int capacidadPasajeros, int capacidadCombustible) {
+    public Avion(String matricula, int IdAvion, String modelo) {
         this.matricula = matricula;
         this.capacidadPasajeros = capacidadPasajeros;
         this.disponible = true;

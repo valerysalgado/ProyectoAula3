@@ -1,89 +1,190 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dominio.Entidades;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.*;
 
-/**
- *
- * @author valer
- */
-class Reserva {
+@Entity
+@Table(name = "reservas")
+public class Reserva implements Serializable {
 
-    private int idReserva;
-    private String estado;
-    private LocalDateTime fechaReserva;
-    private Vuelo vuelo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_reserva")
+    private Integer idReserva;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario", nullable = false)
     private Pasajero pasajero;
-    private List<Asiento> asientosAsignados;
-    private Pago pago;
 
-    public Reserva(int idReserva, String estado, LocalDateTime fechaReserva, Vuelo vuelo, Pasajero pasajero, List<Asiento> asientosAsignados, Pago pago) {
-        this.idReserva = idReserva;
-        this.estado = estado;
-        this.fechaReserva = fechaReserva;
-        this.vuelo = vuelo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idAsiento", referencedColumnName = "idAsiento", nullable = false)
+    private Asiento asiento;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idVuelo", referencedColumnName = "idVuelo", nullable = false)
+    private Vuelo vuelo;
+
+    @Column(length = 100, nullable = false)
+    private String origen;
+
+    @Column(length = 100, nullable = false)
+    private String destino;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, updatable = false)
+    private Date fechaReserva;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private EstadoReserva estado;
+
+    @Column(name = "total_pagado", precision = 10, scale = 2, nullable = false)
+    private BigDecimal totalPagado;
+
+    @Column(length = 20, unique = true)
+    private String codigoReserva;
+
+    @Version
+    private Long version;
+
+    public enum EstadoReserva {
+        PENDIENTE,
+        CONFIRMADA,
+        CANCELADA,
+        COMPLETADA
+    }
+
+    public Reserva() {
+        this.fechaReserva = new Date();
+        this.estado = EstadoReserva.PENDIENTE;
+        this.totalPagado = BigDecimal.ZERO;
+        this.codigoReserva = generarCodigoReserva();
+    }
+
+    public Reserva(Pasajero pasajero, Asiento asiento, Vuelo vuelo,
+            String origen, String destino, BigDecimal totalPagado) {
+        this();
         this.pasajero = pasajero;
-        this.asientosAsignados = asientosAsignados;
-        this.pago = pago;
+        this.asiento = asiento;
+        this.vuelo = vuelo;
+        this.origen = origen;
+        this.destino = destino;
+        this.totalPagado = totalPagado;
     }
 
-    public int getIdReserva() {
+    public void confirmar() {
+        if (this.estado == EstadoReserva.PENDIENTE) {
+            this.estado = EstadoReserva.CONFIRMADA;
+        }
+    }
+
+    public void cancelar() {
+        if (this.estado != EstadoReserva.COMPLETADA) {
+            this.estado = EstadoReserva.CANCELADA;
+        }
+    }
+
+    public void completar() {
+        if (this.estado == EstadoReserva.CONFIRMADA) {
+            this.estado = EstadoReserva.COMPLETADA;
+        }
+    }
+
+    private String generarCodigoReserva() {
+        return "RES-" + System.currentTimeMillis() + "-" + (int) (Math.random() * 1000);
+    }
+
+    public Integer getIdReserva() {
         return idReserva;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public LocalDateTime getFechaReserva() {
-        return fechaReserva;
-    }
-
-    public Vuelo getVuelo() {
-        return vuelo;
     }
 
     public Pasajero getPasajero() {
         return pasajero;
     }
 
-    public List<Asiento> getAsientosAsignados() {
-        return asientosAsignados;
+    public Asiento getAsiento() {
+        return asiento;
     }
 
-    public Pago getPago() {
-        return pago;
+    public Vuelo getVuelo() {
+        return vuelo;
     }
 
-    public void setIdReserva(int idReserva) {
-        this.idReserva = idReserva;
+    public String getOrigen() {
+        return origen;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public String getDestino() {
+        return destino;
     }
 
-    public void setFechaReserva(LocalDateTime fechaReserva) {
-        this.fechaReserva = fechaReserva;
+    public Date getFechaReserva() {
+        return fechaReserva;
     }
 
-    public void setVuelo(Vuelo vuelo) {
-        this.vuelo = vuelo;
+    public EstadoReserva getEstado() {
+        return estado;
+    }
+
+    public BigDecimal getTotalPagado() {
+        return totalPagado;
+    }
+
+    public String getCodigoReserva() {
+        return codigoReserva;
+    }
+
+    public Long getVersion() {
+        return version;
     }
 
     public void setPasajero(Pasajero pasajero) {
         this.pasajero = pasajero;
     }
 
-    public void setAsientosAsignados(List<Asiento> asientosAsignados) {
-        this.asientosAsignados = asientosAsignados;
+    public void setAsiento(Asiento asiento) {
+        this.asiento = asiento;
     }
 
-    public void setPago(Pago pago) {
-        this.pago = pago;
+    public void setVuelo(Vuelo vuelo) {
+        this.vuelo = vuelo;
+    }
+
+    public void setOrigen(String origen) {
+        this.origen = origen;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
+
+    public void setEstado(EstadoReserva estado) {
+        this.estado = estado;
+    }
+
+    public void setTotalPagado(BigDecimal totalPagado) {
+        this.totalPagado = totalPagado;
+    }
+
+    public void setCodigoReserva(String codigoReserva) {
+        this.codigoReserva = codigoReserva;
+    }
+
+    @Override
+    public String toString() {
+        return "Reserva{"
+                + "idReserva=" + idReserva
+                + ", pasajero=" + (pasajero != null ? pasajero.getnombre() : "null")
+                + ", vuelo=" + (vuelo != null ? vuelo.getNumeroVuelo() : "null")
+                + ", asiento=" + (asiento != null ? asiento.getNumero() : "null")
+                + ", origen='" + origen + '\''
+                + ", destino='" + destino + '\''
+                + ", fechaReserva=" + fechaReserva
+                + ", estado=" + estado
+                + ", totalPagado=" + totalPagado
+                + ", codigoReserva='" + codigoReserva + '\''
+                + '}';
     }
 }

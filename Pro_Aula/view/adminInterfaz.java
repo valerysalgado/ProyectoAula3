@@ -2,8 +2,12 @@ package view;
 
 import Dominio.Entidades.Avion;
 import Dominio.Entidades.Pasajero;
+import Dominio.Entidades.Reserva;
+import Dominio.Entidades.Vuelo;
 import Persistence.Dao.AvionDAO;
 import Persistence.Dao.PasajeroDAO;
+import Persistence.Dao.ReservaDAO;
+import Persistence.Dao.VueloDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,8 +39,11 @@ public class adminInterfaz extends javax.swing.JFrame {
         inittablaaviones();
         ajustarColumnas();
         inittablaaviones();
+        initjTableVuelos();
+        initjTableReservas();
         cargarTodosPasajeros();
         cargarTodosAviones();
+        cargarReservasEnTabla();
 
     }
 
@@ -51,19 +58,15 @@ public class adminInterfaz extends javax.swing.JFrame {
         jPanel14 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
         TabPanelPrincipal = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -114,20 +117,37 @@ public class adminInterfaz extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jPanel11 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jPanel12 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
-        jButton14 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        jTableReservas = new javax.swing.JTable();
+        jPanel16 = new javax.swing.JPanel();
+        jLabel24 = new javax.swing.JLabel();
+        jButton17 = new javax.swing.JButton();
+        jButton18 = new javax.swing.JButton();
+        jButton19 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tablavuelos = new javax.swing.JTable();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        txtnombre1 = new javax.swing.JTextField();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jPanel17 = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
+        jButton20 = new javax.swing.JButton();
+        jButton21 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton22 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 510));
@@ -173,10 +193,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jLabel3MouseClicked(evt);
             }
         });
-        jPanel7.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 14, 104, -1));
-
-        jLabel9.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\users-02.png")); // NOI18N
-        jPanel7.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 52, 39));
+        jPanel7.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 130, -1));
 
         jPanel14.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 50));
 
@@ -197,10 +214,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jLabel2MouseClicked(evt);
             }
         });
-        jPanel8.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 80, 30));
-
-        jLabel10.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\Flight.png")); // NOI18N
-        jPanel8.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, -1));
+        jPanel8.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 90, 30));
 
         jPanel14.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 174, 50));
 
@@ -220,10 +234,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jLabel4MouseClicked(evt);
             }
         });
-        jPanel9.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 90, 50));
-
-        jLabel11.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\calendar (1) (2).png")); // NOI18N
-        jPanel9.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 10, 40, -1));
+        jPanel9.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 110, 50));
 
         jPanel14.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 174, 50));
 
@@ -245,26 +256,23 @@ public class adminInterfaz extends javax.swing.JFrame {
         });
         jPanel6.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 160, 30));
 
-        jPanel14.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 170, 48));
+        jPanel14.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 278, 170, 50));
 
-        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel13.setMinimumSize(new java.awt.Dimension(174, 50));
-        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel15.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel15.setMinimumSize(new java.awt.Dimension(174, 50));
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(102, 153, 255));
-        jLabel23.setText("PLANES");
-        jLabel23.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(102, 153, 255));
+        jLabel12.setText("VUELOS");
+        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel23MouseClicked(evt);
+                jLabel12MouseClicked(evt);
             }
         });
-        jPanel13.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 90, 30));
+        jPanel15.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 100, 30));
 
-        jLabel24.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\ticket (2).png")); // NOI18N
-        jPanel13.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 30));
-
-        jPanel14.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 170, 50));
+        jPanel14.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 170, 48));
 
         jPanel5.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 170, 450));
 
@@ -582,53 +590,31 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel13.setText("Reservas registradas");
         jPanel11.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 240, -1));
 
-        jButton11.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton11.setForeground(new java.awt.Color(102, 153, 255));
-        jButton11.setText("Agregar");
-        jButton11.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
-            }
-        });
-        jPanel11.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 150, 30));
-
-        jButton12.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton12.setForeground(new java.awt.Color(102, 153, 255));
-        jButton12.setText("Editar");
-        jButton12.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton12ActionPerformed(evt);
-            }
-        });
-        jPanel11.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 150, 30));
-
+        jButton13.setBackground(new java.awt.Color(153, 153, 153));
         jButton13.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton13.setForeground(new java.awt.Color(102, 153, 255));
-        jButton13.setText("Eliminar");
+        jButton13.setText("Cancelar");
         jButton13.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
         jButton13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton13ActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, 150, 30));
+        jPanel11.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, 90, 30));
 
         jButton3.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         jButton3.setForeground(new java.awt.Color(102, 153, 255));
         jButton3.setText("Listar");
-        jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
+        jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 150, 150, 30));
+        jPanel11.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 340, 80, 30));
 
         jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        jTableReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -639,63 +625,68 @@ public class adminInterfaz extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(jTableReservas);
 
-        jPanel11.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 650, 150));
+        jPanel11.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 670, 250));
 
         TabPanelPrincipal.addTab("RESERVAS", jPanel11);
 
-        jPanel12.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel16.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel16.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel14.setBackground(new java.awt.Color(102, 153, 255));
-        jLabel14.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(102, 153, 255));
-        jLabel14.setText("Pasajeros registrados");
+        jLabel24.setBackground(new java.awt.Color(102, 153, 255));
+        jLabel24.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(102, 153, 255));
+        jLabel24.setText("Pasajeros registrados");
+        jPanel16.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 260, -1));
 
-        jButton14.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton14.setForeground(new java.awt.Color(102, 153, 255));
-        jButton14.setText("Agregar");
-        jButton14.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton14.addActionListener(new java.awt.event.ActionListener() {
+        jButton17.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jButton17.setForeground(new java.awt.Color(102, 153, 255));
+        jButton17.setText("Agregar");
+        jButton17.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton14ActionPerformed(evt);
+                jButton17ActionPerformed(evt);
             }
         });
+        jPanel16.add(jButton17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, 80, 30));
 
-        jButton15.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton15.setForeground(new java.awt.Color(102, 153, 255));
-        jButton15.setText("Editar");
-        jButton15.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton15.addActionListener(new java.awt.event.ActionListener() {
+        jButton18.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jButton18.setForeground(new java.awt.Color(102, 153, 255));
+        jButton18.setText("Editar");
+        jButton18.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jButton18.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton15ActionPerformed(evt);
+                jButton18ActionPerformed(evt);
             }
         });
+        jPanel16.add(jButton18, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 80, 30));
 
-        jButton16.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton16.setForeground(new java.awt.Color(102, 153, 255));
-        jButton16.setText("Eliminar");
-        jButton16.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton16.addActionListener(new java.awt.event.ActionListener() {
+        jButton19.setBackground(new java.awt.Color(255, 51, 51));
+        jButton19.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jButton19.setText("Eliminar");
+        jButton19.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
+        jButton19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton16ActionPerformed(evt);
+                jButton19ActionPerformed(evt);
             }
         });
+        jPanel16.add(jButton19, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 360, 80, 30));
 
-        jButton4.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(102, 153, 255));
-        jButton4.setText("Listar");
-        jButton4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jButton5.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(102, 153, 255));
+        jButton5.setText("Listar");
+        jButton5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButton5ActionPerformed(evt);
             }
         });
+        jPanel16.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 360, 80, 30));
 
-        jScrollPane4.setBackground(new java.awt.Color(204, 204, 204));
+        jScrollPane7.setBackground(new java.awt.Color(204, 204, 204));
 
-        jTable4.setBackground(new java.awt.Color(204, 204, 204));
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        tablavuelos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -706,52 +697,124 @@ public class adminInterfaz extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane7.setViewportView(tablavuelos);
 
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
-            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel12Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel12Layout.createSequentialGroup()
-                            .addGap(10, 10, 10)
-                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(20, 20, 20)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 475, Short.MAX_VALUE)
-            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel12Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jLabel14)
-                    .addGap(8, 8, 8)
-                    .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel12Layout.createSequentialGroup()
-                            .addGap(60, 60, 60)
-                            .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(30, 30, 30)
-                            .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(30, 30, 30)
-                            .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(30, 30, 30)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        jPanel16.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, 660, 120));
 
-        TabPanelPrincipal.addTab("ADMINISTRADORES", jPanel12);
+        jLabel33.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
+        jLabel33.setText("Ingrese los siguientes datos:");
+        jPanel16.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
+
+        jLabel23.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel23.setText("Numero de vuelo:");
+        jPanel16.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
+
+        txtnombre1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel16.add(txtnombre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 90, -1));
+
+        jLabel34.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel34.setText("Origen:");
+        jPanel16.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, -1, -1));
+
+        jLabel35.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel35.setText("Destino:");
+        jPanel16.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, -1, -1));
+
+        jLabel36.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel36.setText("Fecha de salida:");
+        jPanel16.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
+
+        jLabel37.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel37.setText("Fecha de llegada:");
+        jPanel16.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, -1, -1));
+
+        jDateChooser1.setBackground(new java.awt.Color(102, 153, 255));
+        jDateChooser1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel16.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 130, -1));
+
+        jDateChooser2.setBackground(new java.awt.Color(102, 153, 255));
+        jDateChooser2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel16.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 130, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ORIGEN", "CARTAGENA", "BOGOTA", "MEDELLIN", " " }));
+        jComboBox1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel16.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 120, 20));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DESTINO", "CARTAGENA", "BOGOTA", "MEDELLIN", " " }));
+        jComboBox2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel16.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 80, 120, 20));
+
+        TabPanelPrincipal.addTab("VUELOS", jPanel16);
+
+        jPanel17.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel31.setBackground(new java.awt.Color(102, 153, 255));
+        jLabel31.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(102, 153, 255));
+        jLabel31.setText("Pasajeros registrados");
+        jPanel17.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(252, 14, 260, -1));
+
+        jButton20.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jButton20.setForeground(new java.awt.Color(102, 153, 255));
+        jButton20.setText("Agregar");
+        jButton20.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
+        jButton20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton20ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(jButton20, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 150, 30));
+
+        jButton21.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jButton21.setForeground(new java.awt.Color(102, 153, 255));
+        jButton21.setText("Editar");
+        jButton21.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
+        jButton21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton21ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(jButton21, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, 150, 30));
+
+        jButton6.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(102, 153, 255));
+        jButton6.setText("Listar");
+        jButton6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 110, 150, 30));
+
+        jButton22.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jButton22.setForeground(new java.awt.Color(102, 153, 255));
+        jButton22.setText("Eliminar");
+        jButton22.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
+        jButton22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton22ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(jButton22, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 50, 150, 30));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel17.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 650, 220));
+
+        TabPanelPrincipal.addTab("ADMINISTRADORES", jPanel17);
 
         jPanel5.add(TabPanelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 730, 450));
 
@@ -784,314 +847,240 @@ public class adminInterfaz extends javax.swing.JFrame {
         TabPanelPrincipal.setSelectedIndex(3);
     }//GEN-LAST:event_jLabel4MouseClicked
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton11ActionPerformed
+    }//GEN-LAST:event_jLabel8MouseClicked
 
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton12ActionPerformed
+    }//GEN-LAST:event_jLabel12MouseClicked
+
+    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton22ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton21ActionPerformed
+
+    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton20ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton19ActionPerformed
+
+    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton18ActionPerformed
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton17ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            // Obtener todas las reservas desde la base de datos
+            List<Reserva> reservas = ReservaDAO.listarTodos();
+
+            // Obtener el modelo de la tabla
+            DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
+            modelo.setRowCount(0); // Limpiar tabla
+
+            for (Reserva r : reservas) {
+                String nombrePasajero = r.getPasajero() != null ? r.getPasajero().getnombre() : "N/A";
+                String numeroVuelo = r.getVuelo() != null ? r.getVuelo().getNumeroVuelo() : "N/A";
+                String estado = r.getEstado() != null ? r.getEstado().toString() : "Sin estado";
+
+                modelo.addRow(new Object[]{
+                    r.getIdReserva(),
+                    r.getCodigoReserva(),
+                    nombrePasajero,
+                    numeroVuelo,
+                    estado,
+                    r.getTotalPagado()
+                });
+            }
+
+            // Ajustar el ancho de las columnas
+            ajustarAnchoColumnasReservas();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar reservas: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    private void cancelarReservaAction(java.awt.event.ActionEvent evt) {
+        int filaSeleccionada = jTableReservas.getSelectedRow();
+
+        if (filaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor seleccione una reserva de la tabla",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Obtener el ID de la reserva seleccionada
+        DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
+        int idReserva = (int) modelo.getValueAt(filaSeleccionada, 0);
+
+        // Confirmar cancelación
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro que desea cancelar esta reserva?",
+                "Confirmar cancelación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Procesar la cancelación
+        try {
+
+            ReservaDAO reservaDAO = new ReservaDAO(null); // o pasá un EntityManager si lo usás
+            reservaDAO.cambiarEstado(idReserva, Reserva.EstadoReserva.CANCELADA);
+
+            // Actualizar la tabla
+            listarReservasAction(null);
+
+            JOptionPane.showMessageDialog(this,
+                    "Reserva cancelada correctamente",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cancelar reserva: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton13ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void botoneliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar2ActionPerformed
 
-    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton14ActionPerformed
-
-    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton15ActionPerformed
-
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton16ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void botonagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregarActionPerformed
-
-        if (!validarCampos()) {
-            return;
-        }
-
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-
-            Pasajero nuevo = new Pasajero();
-            nuevo.setNombre(txtnombre.getText());
-            nuevo.setApellido(txtapellido.getText());
-            nuevo.setIdentificacion(txtidentificacion.getText());
-            nuevo.setTelefono(txttelefono.getText());
-
-            nuevo.setCorreo(txtcorreo.getText());
-            nuevo.setRol(comborol.getSelectedItem().toString());
-
-            em.persist(nuevo);
-
-            tx.commit();
-
-            cargarTodosPasajeros();
-            limpiarCampos();
-            JOptionPane.showMessageDialog(this, "Pasajero registrado exitosamente");
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
+        int filaSeleccionada = tablaaviones.getSelectedRow();
+        if (filaSeleccionada < 0) {
             JOptionPane.showMessageDialog(this,
-                    "Error al registrar: " + e.getMessage(),
+                    "Por favor seleccione un avión de la tabla",
                     "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-        limpiarCampos();
-    }//GEN-LAST:event_botonagregarActionPerformed
-
-    private void botoneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditarActionPerformed
-
-        int fila = tablapasajero.getSelectedRow();
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un pasajero");
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        int id = (int) modeloTabla.getValueAt(fila, 0);
-        Pasajero actualizado = pasajeroDAO.buscarPorId(id);
+        // 2. Obtener el ID del avión a eliminar
+        DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+        long idAvion = (long) modelo.getValueAt(filaSeleccionada, 0); // Columna 0 es el ID
 
-        actualizado.setNombre(txtnombre.getText());
-        actualizado.setApellido(txtapellido.getText());
-        actualizado.setCorreo(txtcorreo.getText());
-        actualizado.setTelefono(txttelefono.getText());
-        actualizado.setIdentificacion(txtidentificacion.getText());
-
-        actualizado.setRol(comborol.getSelectedItem().toString());
-
-        pasajeroDAO.actualizar(actualizado);
-        cargarTodosPasajeros();
-        JOptionPane.showMessageDialog(this, "Pasajero actualizado");
-        limpiarCampos();// TODO add your handling code here:
-    }//GEN-LAST:event_botoneditarActionPerformed
-
-    private void botonlistarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistarActionPerformed
-        try {
-            // 1. Obtener todos los pasajeros desde el DAO
-            List<Pasajero> pasajeros = pasajeroDAO.listarTodos();
-
-            // 2. Obtener el modelo de la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tablapasajero.getModel();
-            modelo.setRowCount(0); // Limpiar tabla existente
-
-            // 3. Llenar la tabla con los datos
-            for (Pasajero p : pasajeros) {
-                modelo.addRow(new Object[]{
-                    p.getIdUsuario(),
-                    p.getnombre(),
-                    p.getApellido(),
-                    p.getCorreo(),
-                    p.getTelefono(),
-                    p.getIdentificacion(),
-                    p.getRol()
-                });
-            }
-
-            // 4. Ajustar el ancho de columnas (opcional)
-            ajustarAnchoColumnas();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Error al cargar pasajeros: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-
-    }
-
-// Método auxiliar para ajustar columnas (opcional)
-    private void ajustarAnchoColumnas() {
-        tablapasajero.setAutoResizeMode(tablapasajero.AUTO_RESIZE_OFF);
-
-        // Ajustes personalizados (en píxeles)
-        tablapasajero.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
-        tablapasajero.getColumnModel().getColumn(1).setPreferredWidth(100); // Nombre
-        tablapasajero.getColumnModel().getColumn(2).setPreferredWidth(100); // Apellido
-        tablapasajero.getColumnModel().getColumn(3).setPreferredWidth(150); // Correo
-        tablapasajero.getColumnModel().getColumn(4).setPreferredWidth(80);  // Teléfono
-        tablapasajero.getColumnModel().getColumn(5).setPreferredWidth(100); // Identificación
-        tablapasajero.getColumnModel().getColumn(6).setPreferredWidth(120); // Rol
-
-    }//GEN-LAST:event_botonlistarActionPerformed
-
-    private void botonbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonbuscarActionPerformed
-        String idStr = txtbuscar.getText();
-
-        if (idStr.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID.");
-            return;
-        }
-        try {
-            int id = Integer.parseInt(idStr);
-            Pasajero p = pasajeroDAO.buscarPorId(id);
-            if (p != null) {
-                cargarPasajerosEnTabla(List.of(p));
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró el pasajero con ID: " + id);
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "ID inválido. Ingrese un número.");
-
-        }
-        limpiarCampos();
-    }//GEN-LAST:event_botonbuscarActionPerformed
-
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel8MouseClicked
-
-    private void jLabel23MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel23MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel23MouseClicked
-
-    private void comborolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comborolActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comborolActionPerformed
-
-    private void txtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtbuscarActionPerformed
-
-    private void botoneliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar1ActionPerformed
-        int fila = tablapasajero.getSelectedRow();
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un pasajero");
-            return;
-        }
-
+        // 3. Confirmar eliminación
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
-                "¿Está seguro de eliminar este pasajero?",
+                "¿Está seguro que desea eliminar este avión?",
                 "Confirmar eliminación",
                 JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            int id = (int) modeloTabla.getValueAt(fila, 0);
-            pasajeroDAO.eliminar(id);
-            cargarTodosPasajeros();
-            limpiarCampos();
-            JOptionPane.showMessageDialog(this, "Pasajero eliminado");
-        }        // TODO add your handling code here:
-    }//GEN-LAST:event_botoneliminar1ActionPerformed
-
-    private void comborol1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comborol1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comborol1ActionPerformed
-
-    private void txtbuscarAvionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarAvionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtbuscarAvionActionPerformed
-
-    private void botonbuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonbuscar1ActionPerformed
-                                     
-    String busqueda = txtbuscarAvion.getText().trim();
-    
-    if (busqueda.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Ingrese un ID o matrícula para buscar", "Error", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    try {
-        Avion avion;
-        
-        // Búsqueda flexible (ID numérico o matrícula)
-        if (busqueda.matches("\\d+")) {  // Si es solo números (ID)
-            int id = Integer.parseInt(busqueda);
-            avion = avionDAO.buscarPorId(id);
-        } else {  // Si no es numérico (matrícula)
-            avion = avionDAO.buscarPorMatricula(busqueda.toUpperCase()); // Convertir a mayúsculas
-        }
-
-        if (avion != null) {
-            // Mostrar resultados
-            DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
-            modelo.setRowCount(0);
-            modelo.addRow(new Object[]{
-                avion.getIdAvion(),
-                avion.getMatricula(),
-                avion.getCapacidadPasajeros(),
-                avion.getEstado()
-            });
-            
-            // Rellenar campos de edición
-            capmatricula.setText(avion.getMatricula());
-            capcapacidad.setText(String.valueOf(avion.getCapacidadPasajeros()));
-            comborol1.setSelectedItem(avion.getEstado());
-            
-        } else {
-            JOptionPane.showMessageDialog(this, 
-                "No se encontró un avión con: " + busqueda, 
-                "No encontrado", 
-                JOptionPane.INFORMATION_MESSAGE);
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, 
-            "Error en la búsqueda: " + e.getMessage(), 
-            "Error", 
-            JOptionPane.ERROR_MESSAGE);
-    }
-
-
-    }//GEN-LAST:event_botonbuscar1ActionPerformed
-
-    private void botonagregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregar1ActionPerformed
-
-        // Validar campos primero
-        if (!validarCamposAvion()) {
+        if (confirmacion != JOptionPane.YES_OPTION) {
             return;
         }
 
-        String matricula = capmatricula.getText().trim();
-        int capacidad = Integer.parseInt(capcapacidad.getText());
-        String estado = comborol1.getSelectedItem().toString();
-
-        // Verificar si la matrícula ya existe
-        if (avionExiste(matricula)) {
-            JOptionPane.showMessageDialog(this,
-                    "Error: La matrícula " + matricula + " ya está registrada",
-                    "Matrícula duplicada",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
+        // 4. Proceso de eliminación
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
 
-            Avion nuevoAvion = new Avion();
-            nuevoAvion.setMatricula(matricula);
-            nuevoAvion.setCapacidadPasajeros(capacidad);
-            nuevoAvion.setEstado(estado);
+            // Buscar y eliminar el avión
+            Avion avion = em.find(Avion.class, idAvion);
+            if (avion != null) {
+                em.remove(avion);
+                tx.commit();
 
-            em.persist(nuevoAvion);
-            tx.commit();
-
-            JOptionPane.showMessageDialog(this, "Avión registrado exitosamente");
-            cargarTodosAviones();
-            limpiarCamposAvion();
+                // Actualizar interfaz
+                cargarTodosAviones();
+                limpiarCamposAvion();
+                JOptionPane.showMessageDialog(this,
+                        "Avión eliminado correctamente",
+                        "Éxito",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "El avión seleccionado no existe en la base de datos",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         } catch (Exception e) {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            manejarErrorRegistro(e);
+            JOptionPane.showMessageDialog(this,
+                    "Error al eliminar avión: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
-    }//GEN-LAST:event_botonagregar1ActionPerformed
+    }//GEN-LAST:event_botoneliminar2ActionPerformed
+
+    private void botonlistar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistar1ActionPerformed
+
+        try {
+            // 1. Obtener todos los aviones desde el DAO
+            List<Avion> aviones = avionDAO.listarTodos();
+
+            // 2. Obtener el modelo de la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+            modelo.setRowCount(0); // Limpiar tabla existente
+
+            // 3. Llenar la tabla con los datos
+            for (Avion a : aviones) {
+                modelo.addRow(new Object[]{
+                    a.getIdAvion(),
+                    a.getMatricula(),
+                    a.getCapacidadPasajeros(),
+                    a.getEstado()
+                });
+            }
+
+            // 4. Ajustar el ancho de columnas (opcional)
+            ajustarAnchoColumnasAviones();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar aviones: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    // Método auxiliar para ajustar columnas de aviones
+    private void ajustarAnchoColumnasAviones() {
+        tablaaviones.setAutoResizeMode(tablaaviones.AUTO_RESIZE_OFF);
+
+        // Ajustes personalizados (en píxeles)
+        tablaaviones.getColumnModel().getColumn(0).setPreferredWidth(50);   // ID
+        tablaaviones.getColumnModel().getColumn(1).setPreferredWidth(120);  // Matrícula
+        tablaaviones.getColumnModel().getColumn(2).setPreferredWidth(80);   // Capacidad
+        tablaaviones.getColumnModel().getColumn(3).setPreferredWidth(150);  // Estado
+
+    }//GEN-LAST:event_botonlistar1ActionPerformed
 
     private void botoneditar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditar1ActionPerformed
 
@@ -1154,116 +1143,109 @@ public class adminInterfaz extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
 
-
     }//GEN-LAST:event_botoneditar1ActionPerformed
 
-    private void botonlistar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistar1ActionPerformed
+    private void botonagregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregar1ActionPerformed
 
-        try {
-            // 1. Obtener todos los aviones desde el DAO
-            List<Avion> aviones = avionDAO.listarTodos();
+        // Validar campos primero
+        if (!validarCamposAvion()) {
+            return;
+        }
 
-            // 2. Obtener el modelo de la tabla
-            DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
-            modelo.setRowCount(0); // Limpiar tabla existente
+        String matricula = capmatricula.getText().trim();
+        int capacidad = Integer.parseInt(capcapacidad.getText());
+        String estado = comborol1.getSelectedItem().toString();
 
-            // 3. Llenar la tabla con los datos
-            for (Avion a : aviones) {
-                modelo.addRow(new Object[]{
-                    a.getIdAvion(),
-                    a.getMatricula(),
-                    a.getCapacidadPasajeros(),
-                    a.getEstado()
-                });
-            }
-
-            // 4. Ajustar el ancho de columnas (opcional)
-            ajustarAnchoColumnasAviones();
-
-        } catch (Exception e) {
+        // Verificar si la matrícula ya existe
+        if (avionExiste(matricula)) {
             JOptionPane.showMessageDialog(this,
-                    "Error al cargar aviones: " + e.getMessage(),
-                    "Error",
+                    "Error: La matrícula " + matricula + " ya está registrada",
+                    "Matrícula duplicada",
                     JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
-
-// Método auxiliar para ajustar columnas de aviones
-    private void ajustarAnchoColumnasAviones() {
-        tablaaviones.setAutoResizeMode(tablaaviones.AUTO_RESIZE_OFF);
-
-        // Ajustes personalizados (en píxeles)
-        tablaaviones.getColumnModel().getColumn(0).setPreferredWidth(50);   // ID
-        tablaaviones.getColumnModel().getColumn(1).setPreferredWidth(120);  // Matrícula
-        tablaaviones.getColumnModel().getColumn(2).setPreferredWidth(80);   // Capacidad
-        tablaaviones.getColumnModel().getColumn(3).setPreferredWidth(150);  // Estado
-
-
-    }//GEN-LAST:event_botonlistar1ActionPerformed
-
-    private void botoneliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar2ActionPerformed
-
-        int filaSeleccionada = tablaaviones.getSelectedRow();
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(this,
-                    "Por favor seleccione un avión de la tabla",
-                    "Error",
-                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // 2. Obtener el ID del avión a eliminar
-        DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
-        long idAvion = (long) modelo.getValueAt(filaSeleccionada, 0); // Columna 0 es el ID
-
-        // 3. Confirmar eliminación
-        int confirmacion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Está seguro que desea eliminar este avión?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION);
-
-        if (confirmacion != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        // 4. Proceso de eliminación
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
 
-            // Buscar y eliminar el avión
-            Avion avion = em.find(Avion.class, idAvion);
-            if (avion != null) {
-                em.remove(avion);
-                tx.commit();
+            Avion nuevoAvion = new Avion();
+            nuevoAvion.setMatricula(matricula);
+            nuevoAvion.setCapacidadPasajeros(capacidad);
+            nuevoAvion.setEstado(estado);
 
-                // Actualizar interfaz
-                cargarTodosAviones();
-                limpiarCamposAvion();
-                JOptionPane.showMessageDialog(this,
-                        "Avión eliminado correctamente",
-                        "Éxito",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "El avión seleccionado no existe en la base de datos",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
+            em.persist(nuevoAvion);
+            tx.commit();
+
+            JOptionPane.showMessageDialog(this, "Avión registrado exitosamente");
+            cargarTodosAviones();
+            limpiarCamposAvion();
         } catch (Exception e) {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
+            manejarErrorRegistro(e);
+        }
+    }//GEN-LAST:event_botonagregar1ActionPerformed
+
+    private void botonbuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonbuscar1ActionPerformed
+
+        String busqueda = txtbuscarAvion.getText().trim();
+
+        if (busqueda.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un ID o matrícula para buscar", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            Avion avion;
+
+            // Búsqueda flexible (ID numérico o matrícula)
+            if (busqueda.matches("\\d+")) {  // Si es solo números (ID)
+                int id = Integer.parseInt(busqueda);
+                avion = avionDAO.buscarPorId(id);
+            } else {  // Si no es numérico (matrícula)
+                avion = avionDAO.buscarPorMatricula(busqueda.toUpperCase()); // Convertir a mayúsculas
+            }
+
+            if (avion != null) {
+                // Mostrar resultados
+                DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+                modelo.setRowCount(0);
+                modelo.addRow(new Object[]{
+                    avion.getIdAvion(),
+                    avion.getMatricula(),
+                    avion.getCapacidadPasajeros(),
+                    avion.getEstado()
+                });
+
+                // Rellenar campos de edición
+                capmatricula.setText(avion.getMatricula());
+                capcapacidad.setText(String.valueOf(avion.getCapacidadPasajeros()));
+                comborol1.setSelectedItem(avion.getEstado());
+
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No se encontró un avión con: " + busqueda,
+                        "No encontrado",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                    "Error al eliminar avión: " + e.getMessage(),
+                    "Error en la búsqueda: " + e.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
 
+    }//GEN-LAST:event_botonbuscar1ActionPerformed
 
-    }//GEN-LAST:event_botoneliminar2ActionPerformed
+    private void txtbuscarAvionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarAvionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtbuscarAvionActionPerformed
+
+    private void comborol1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comborol1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comborol1ActionPerformed
 
     private void tablaavionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaavionesMouseClicked
         int fila = tablaaviones.getSelectedRow();
@@ -1274,6 +1256,170 @@ public class adminInterfaz extends javax.swing.JFrame {
             comborol1.setSelectedItem(modelo.getValueAt(fila, 3).toString());
         }
     }//GEN-LAST:event_tablaavionesMouseClicked
+
+    private void botoneliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar1ActionPerformed
+        int fila = tablapasajero.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un pasajero");
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de eliminar este pasajero?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            int id = (int) modeloTabla.getValueAt(fila, 0);
+            pasajeroDAO.eliminar(id);
+            cargarTodosPasajeros();
+            limpiarCampos();
+            JOptionPane.showMessageDialog(this, "Pasajero eliminado");
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_botoneliminar1ActionPerformed
+
+    private void txtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtbuscarActionPerformed
+
+    private void comborolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comborolActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comborolActionPerformed
+
+    private void botonbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonbuscarActionPerformed
+        String idStr = txtbuscar.getText();
+
+        if (idStr.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID.");
+            return;
+        }
+        try {
+            int id = Integer.parseInt(idStr);
+            Pasajero p = pasajeroDAO.buscarPorId(id);
+            if (p != null) {
+                cargarPasajerosEnTabla(List.of(p));
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró el pasajero con ID: " + id);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID inválido. Ingrese un número.");
+
+        }
+        limpiarCampos();
+    }//GEN-LAST:event_botonbuscarActionPerformed
+
+    private void botonlistarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistarActionPerformed
+        try {
+            // 1. Obtener todos los pasajeros desde el DAO
+            List<Pasajero> pasajeros = pasajeroDAO.listarTodos();
+
+            // 2. Obtener el modelo de la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tablapasajero.getModel();
+            modelo.setRowCount(0); // Limpiar tabla existente
+
+            // 3. Llenar la tabla con los datos
+            for (Pasajero p : pasajeros) {
+                modelo.addRow(new Object[]{
+                    p.getIdUsuario(),
+                    p.getnombre(),
+                    p.getApellido(),
+                    p.getCorreo(),
+                    p.getTelefono(),
+                    p.getIdentificacion(),
+                    p.getRol()
+                });
+            }
+
+            // 4. Ajustar el ancho de columnas (opcional)
+            ajustarAnchoColumnas();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar pasajeros: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+    }
+
+    // Método auxiliar para ajustar columnas (opcional)
+    private void ajustarAnchoColumnas() {
+        tablapasajero.setAutoResizeMode(tablapasajero.AUTO_RESIZE_OFF);
+
+        // Ajustes personalizados (en píxeles)
+        tablapasajero.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
+        tablapasajero.getColumnModel().getColumn(1).setPreferredWidth(100); // Nombre
+        tablapasajero.getColumnModel().getColumn(2).setPreferredWidth(100); // Apellido
+        tablapasajero.getColumnModel().getColumn(3).setPreferredWidth(150); // Correo
+        tablapasajero.getColumnModel().getColumn(4).setPreferredWidth(80);  // Teléfono
+        tablapasajero.getColumnModel().getColumn(5).setPreferredWidth(100); // Identificación
+        tablapasajero.getColumnModel().getColumn(6).setPreferredWidth(120); // Rol
+    }//GEN-LAST:event_botonlistarActionPerformed
+
+    private void botoneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditarActionPerformed
+
+        int fila = tablapasajero.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione un pasajero");
+            return;
+        }
+
+        int id = (int) modeloTabla.getValueAt(fila, 0);
+        Pasajero actualizado = pasajeroDAO.buscarPorId(id);
+
+        actualizado.setNombre(txtnombre.getText());
+        actualizado.setApellido(txtapellido.getText());
+        actualizado.setCorreo(txtcorreo.getText());
+        actualizado.setTelefono(txttelefono.getText());
+        actualizado.setIdentificacion(txtidentificacion.getText());
+
+        actualizado.setRol(comborol.getSelectedItem().toString());
+
+        pasajeroDAO.actualizar(actualizado);
+        cargarTodosPasajeros();
+        JOptionPane.showMessageDialog(this, "Pasajero actualizado");
+        limpiarCampos();// TODO add your handling code here:
+    }//GEN-LAST:event_botoneditarActionPerformed
+
+    private void botonagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregarActionPerformed
+
+        if (!validarCampos()) {
+            return;
+        }
+
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            Pasajero nuevo = new Pasajero();
+            nuevo.setNombre(txtnombre.getText());
+            nuevo.setApellido(txtapellido.getText());
+            nuevo.setIdentificacion(txtidentificacion.getText());
+            nuevo.setTelefono(txttelefono.getText());
+
+            nuevo.setCorreo(txtcorreo.getText());
+            nuevo.setRol(comborol.getSelectedItem().toString());
+
+            em.persist(nuevo);
+
+            tx.commit();
+
+            cargarTodosPasajeros();
+            limpiarCampos();
+            JOptionPane.showMessageDialog(this, "Pasajero registrado exitosamente");
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            JOptionPane.showMessageDialog(this,
+                    "Error al registrar: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        limpiarCampos();
+    }//GEN-LAST:event_botonagregarActionPerformed
 
     private void tablapasajeroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablapasajeroMouseClicked
 
@@ -1331,19 +1477,23 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JTextField capmatricula;
     private javax.swing.JComboBox<String> comborol;
     private javax.swing.JComboBox<String> comborol1;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton17;
+    private javax.swing.JButton jButton18;
+    private javax.swing.JButton jButton19;
+    private javax.swing.JButton jButton20;
+    private javax.swing.JButton jButton21;
+    private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -1362,19 +1512,25 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1384,21 +1540,24 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollBar jScrollBar1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableReservas;
     private javax.swing.JTable tablaaviones;
     public javax.swing.JTable tablapasajero;
+    private javax.swing.JTable tablavuelos;
     private javax.swing.JTextField txtapellido;
     private javax.swing.JTextField txtbuscar;
     private javax.swing.JTextField txtbuscarAvion;
     private javax.swing.JTextField txtcorreo;
     private javax.swing.JTextField txtidentificacion;
     private javax.swing.JTextField txtnombre;
+    private javax.swing.JTextField txtnombre1;
     private javax.swing.JTextField txttelefono;
     // End of variables declaration//GEN-END:variables
 
@@ -1656,4 +1815,114 @@ public class adminInterfaz extends javax.swing.JFrame {
         tablapasajero.repaint();
     }
 
+
+    private void listarReservasAction(Object object) {
+        ReservaDAO reservaDAO = new ReservaDAO(null); // o pasar un EntityManager si ya lo tienes
+        List<Reserva> reservas = reservaDAO.obtenerTodas();
+        cargarReservasEnTabla();
+    }
+
+    private void initjTableReservas() {
+        String[] columnas = {"ID", "Pasajero", "Vuelo", "Fecha Reserva", "Estado"};
+        DefaultTableModel modelo = new DefaultTableModel(null, columnas);
+        jTableReservas.setModel(modelo);
+    }
+
+   private void listarReservasAction() {
+    ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías pasar un EntityManager válido
+    List<Reserva> reservas = reservaDAO.obtenerTodas();
+    cargarReservasEnTabla(); // Pasar las reservas como parámetro
+}
+
+private void cargarReservasEnTabla() {
+    // 1. Obtener las reservas desde el DAO
+    ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías usar un EntityManager válido
+    List<Reserva> reservas = reservaDAO.obtenerTodas();
+    
+    // 2. Obtener el modelo de la tabla
+    DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
+    modelo.setRowCount(0); // Limpiar tabla
+
+    // 3. Llenar la tabla con los datos
+    for (Reserva r : reservas) {
+        Object[] fila = {
+            r.getIdReserva(),
+            r.getPasajero() != null ? r.getPasajero().getnombre() : "Sin pasajero", // Corregí getnombre() a getNombre()
+            r.getVuelo() != null ? r.getVuelo().getNumeroVuelo() : "Sin vuelo",
+            r.getFechaReserva(),
+            r.getEstado()
+        };
+        modelo.addRow(fila);
+    }
+    
+    // 4. Ajustar ancho de columnas
+    ajustarAnchoColumnasReservas();
+}
+
+// Método mejorado para ajustar columnas
+private void ajustarAnchoColumnasReservas() {
+    if (jTableReservas == null) return;
+    
+    jTableReservas.setAutoResizeMode(jTableReservas.AUTO_RESIZE_OFF);
+    
+    // Ajustes específicos para cada columna
+    int[] anchos = {50, 150, 100, 120, 100}; // ID, Pasajero, Vuelo, Fecha, Estado
+    
+    for (int i = 0; i < anchos.length; i++) {
+        if (i < jTableReservas.getColumnModel().getColumnCount()) {
+            jTableReservas.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+        }
+    }
+    
+    jTableReservas.revalidate();
+    jTableReservas.repaint();
+}
+
+
+private void cargarVuelosEnTabla(List<Vuelo> vuelos) {
+    DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
+    modelo.setRowCount(0); // Limpiar tabla
+
+    for (Vuelo v : vuelos) {
+        Object[] fila = {
+            v.getIdVuelo(),
+            v.getNumeroVuelo(),
+            v.getOrigen(),
+            v.getDestino(),
+            v.getFechaSalida(),
+            v.getFechaLlegada()
+        };
+        modelo.addRow(fila);
+    }
+    
+    // Ajustar ancho de columnas para vuelos
+    ajustarAnchoColumnasVuelos();
+}
+
+private void ajustarAnchoColumnasVuelos() {
+    tablavuelos.setAutoResizeMode(tablavuelos.AUTO_RESIZE_OFF);
+    
+    tablavuelos.getColumnModel().getColumn(0).setPreferredWidth(50);   // ID Vuelo
+    tablavuelos.getColumnModel().getColumn(1).setPreferredWidth(120);  // Número Vuelo
+    tablavuelos.getColumnModel().getColumn(2).setPreferredWidth(100);  // Origen
+    tablavuelos.getColumnModel().getColumn(3).setPreferredWidth(100);  // Destino
+    tablavuelos.getColumnModel().getColumn(4).setPreferredWidth(120);  // Fecha Salida
+    tablavuelos.getColumnModel().getColumn(5).setPreferredWidth(120);  // Fecha Llegada
+    
+    tablavuelos.revalidate();
+    tablavuelos.repaint();
+}
+    private void initjTableVuelos() {
+    String[] columnas = {"ID Vuelo", "Número Vuelo", "Origen", "Destino", "Fecha Salida", "Fecha Llegada"};
+    DefaultTableModel modelo = new DefaultTableModel(null, columnas);
+    tablavuelos.setModel(modelo);
+}
+
+private void listarVuelosAction() {
+    VueloDAO vueloDAO = new VueloDAO(null); // o pasar EntityManager si corresponde
+    List<Vuelo> vuelos = vueloDAO.obtenerTodos(); // Método que devuelve lista de vuelos
+    cargarVuelosEnTabla(vuelos);
+}
+
+    
 }

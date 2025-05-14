@@ -37,7 +37,7 @@ public class Asiento implements Serializable {
     public Asiento() {
     }
 
-    public Asiento(String numero, String clase, boolean disponible) {
+    public Asiento(Vuelo vuelo1, String numero, String clase, boolean disponible) {
         this.numero = numero;
         this.clase = clase;
         this.disponible = disponible;
