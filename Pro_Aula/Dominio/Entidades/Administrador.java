@@ -4,6 +4,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,6 +19,7 @@ import javax.persistence.Table;
 @Table(name = "administrador")
 public class Administrador implements Serializable{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
      private int id;
     @Column(length = 150, nullable = false)
      private String nombre;
@@ -29,11 +32,12 @@ public class Administrador implements Serializable{
     }
      
      
-     public Administrador(String nombre){
-         this.id = id;
-         this.nombre = nombre;
-         this.rol = "Administrador";
-     }
+   public Administrador(String nombre, String telefono, String rol) {
+    this.nombre = nombre;
+    this.telefono = telefono;
+    this.rol = rol;
+}
+
 
     public void setIdAdministrador(int idAdministrador) {
         this.id = idAdministrador;
@@ -66,6 +70,13 @@ public class Administrador implements Serializable{
     public String getRol() {
         return rol;
     }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override 
     public String toString() {
@@ -76,13 +87,7 @@ public class Administrador implements Serializable{
             "Rol: " + rol + "\n";
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    
 }
 
                

@@ -1,25 +1,33 @@
 package view;
 
+import Dominio.Entidades.Administrador;
 import Dominio.Entidades.Avion;
 import Dominio.Entidades.Pasajero;
 import Dominio.Entidades.Reserva;
 import Dominio.Entidades.Vuelo;
+import Persistence.Dao.AdministradorDAO;
 import Persistence.Dao.AvionDAO;
 import Persistence.Dao.PasajeroDAO;
 import Persistence.Dao.ReservaDAO;
 import Persistence.Dao.VueloDAO;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import org.hibernate.exception.ConstraintViolationException;
 
 public class adminInterfaz extends javax.swing.JFrame {
 
@@ -27,23 +35,35 @@ public class adminInterfaz extends javax.swing.JFrame {
     private PasajeroDAO pasajeroDAO = null;
     private DefaultTableModel modeloTabla;
     private AvionDAO avionDAO = null;
+    private VueloDAO vueloDAO = new VueloDAO(em);
+    private AdministradorDAO administradorDAO = new AdministradorDAO(em);
 
     public adminInterfaz() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
         this.em = emf.createEntityManager();
         pasajeroDAO = new PasajeroDAO(this.em);
         avionDAO = new AvionDAO(this.em);
+        vueloDAO = new VueloDAO(em);
+        administradorDAO = new AdministradorDAO(em);
 
         initComponents();
         initTabla();
         inittablaaviones();
         ajustarColumnas();
         inittablaaviones();
-        initjTableVuelos();
         initjTableReservas();
+        initjTableVuelos();
         cargarTodosPasajeros();
         cargarTodosAviones();
         cargarReservasEnTabla();
+        cargarAvionesEnCombo();
+        listarVuelosAction();
+        cargarCiudadesEnCombos();
+        initTablaAdministradores();
+        listarAdministradores();
+        ajustarColumnasAdmin();
+        inicializarComboRolesAdministrador();
+        ajustarColumnasAdmin();
 
     }
 
@@ -123,31 +143,41 @@ public class adminInterfaz extends javax.swing.JFrame {
         jTableReservas = new javax.swing.JTable();
         jPanel16 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
-        jButton17 = new javax.swing.JButton();
-        jButton18 = new javax.swing.JButton();
-        jButton19 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        botonguardar = new javax.swing.JButton();
+        botonedit = new javax.swing.JButton();
+        botonelimi = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         tablavuelos = new javax.swing.JTable();
         jLabel33 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
-        txtnombre1 = new javax.swing.JTextField();
+        txtNumeroVuelo = new javax.swing.JTextField();
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        dateChooserLlegada = new com.toedter.calendar.JDateChooser();
+        dateChooserSalida = new com.toedter.calendar.JDateChooser();
+        comboorigen = new javax.swing.JComboBox<>();
+        comboDestino = new javax.swing.JComboBox<>();
+        comboAvion = new javax.swing.JComboBox<>();
+        jLabel38 = new javax.swing.JLabel();
         jPanel17 = new javax.swing.JPanel();
         jLabel31 = new javax.swing.JLabel();
-        jButton20 = new javax.swing.JButton();
-        jButton21 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton22 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaadministrador = new javax.swing.JTable();
+        botonagregar2 = new javax.swing.JButton();
+        botoneditar2 = new javax.swing.JButton();
+        botonlistar2 = new javax.swing.JButton();
+        botoneliminar3 = new javax.swing.JButton();
+        txtnombre1 = new javax.swing.JTextField();
+        jLabel39 = new javax.swing.JLabel();
+        comborol2 = new javax.swing.JComboBox<>();
+        jLabel40 = new javax.swing.JLabel();
+        txttelefono1 = new javax.swing.JTextField();
+        jLabel41 = new javax.swing.JLabel();
+        jLabel42 = new javax.swing.JLabel();
+        txtbuscar1 = new javax.swing.JTextField();
+        botonbuscar2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 510));
@@ -244,6 +274,11 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setMinimumSize(new java.awt.Dimension(174, 50));
+        jPanel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel6MouseClicked(evt);
+            }
+        });
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
@@ -260,6 +295,11 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         jPanel15.setBackground(new java.awt.Color(255, 255, 255));
         jPanel15.setMinimumSize(new java.awt.Dimension(174, 50));
+        jPanel15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel15MouseClicked(evt);
+            }
+        });
         jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -327,7 +367,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(tablapasajero);
 
-        jPanel3.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 670, 180));
+        jPanel3.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 670, 140));
 
         botonagregar.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonagregar.setForeground(new java.awt.Color(102, 153, 255));
@@ -338,7 +378,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonagregarActionPerformed(evt);
             }
         });
-        jPanel3.add(botonagregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 80, 30));
+        jPanel3.add(botonagregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 350, 80, 30));
 
         botoneditar.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botoneditar.setForeground(new java.awt.Color(102, 153, 255));
@@ -349,7 +389,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botoneditarActionPerformed(evt);
             }
         });
-        jPanel3.add(botoneditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, 80, 30));
+        jPanel3.add(botoneditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 350, 80, 30));
 
         botonlistar.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonlistar.setForeground(new java.awt.Color(102, 153, 255));
@@ -360,7 +400,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonlistarActionPerformed(evt);
             }
         });
-        jPanel3.add(botonlistar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, 80, 30));
+        jPanel3.add(botonlistar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 350, 80, 30));
 
         botonbuscar.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonbuscar.setForeground(new java.awt.Color(102, 153, 255));
@@ -371,7 +411,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonbuscarActionPerformed(evt);
             }
         });
-        jPanel3.add(botonbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 170, 80, 30));
+        jPanel3.add(botonbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 140, 80, 20));
 
         txtapellido.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
         jPanel3.add(txtapellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 130, -1));
@@ -390,7 +430,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         jLabel20.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel20.setText("Ingrese Id para buscar pasajero:");
-        jPanel3.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 150, -1, -1));
+        jPanel3.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, -1));
 
         jLabel21.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel21.setText("Telefono:");
@@ -425,12 +465,13 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel25.setText("Identificación:");
         jPanel3.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, -1, -1));
 
+        txtbuscar.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
         txtbuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtbuscarActionPerformed(evt);
             }
         });
-        jPanel3.add(txtbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 180, 110, -1));
+        jPanel3.add(txtbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 140, 110, -1));
 
         botoneliminar1.setBackground(new java.awt.Color(255, 51, 51));
         botoneliminar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
@@ -441,12 +482,12 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botoneliminar1ActionPerformed(evt);
             }
         });
-        jPanel3.add(botoneliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, 80, 30));
+        jPanel3.add(botoneliminar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 350, 80, 30));
 
         jLabel29.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel29.setText("Correo:");
         jPanel3.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 80, -1, -1));
-        jPanel3.add(jScrollBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 238, 670, 150));
+        jPanel3.add(jScrollBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 238, 670, 90));
 
         TabPanelPrincipal.addTab("PASAJEROS", jPanel3);
 
@@ -473,29 +514,29 @@ public class adminInterfaz extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tablaaviones);
 
-        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 660, 170));
+        jPanel4.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 660, 190));
 
         jLabel26.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
         jLabel26.setText("Ingrese los siguientes datos:");
-        jPanel4.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
+        jPanel4.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         capmatricula.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel4.add(capmatricula, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, 130, -1));
+        jPanel4.add(capmatricula, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 130, -1));
 
         jLabel27.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel27.setText("Matricula:");
-        jPanel4.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
+        jPanel4.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
 
         jLabel28.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel28.setText("Capacidad de pasajeros:");
-        jPanel4.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, -1, -1));
+        jPanel4.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
 
         capcapacidad.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel4.add(capcapacidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, 60, -1));
+        jPanel4.add(capcapacidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, 60, -1));
 
         jLabel32.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel32.setText("Estado de avion:");
-        jPanel4.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 90, -1, -1));
+        jPanel4.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 80, -1, -1));
 
         comborol1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EN TIERRA", "EN AIRE", "EN MANTENIMIENTO", "INACTIVO" }));
         comborol1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
@@ -504,14 +545,15 @@ public class adminInterfaz extends javax.swing.JFrame {
                 comborol1ActionPerformed(evt);
             }
         });
-        jPanel4.add(comborol1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 90, 110, -1));
+        jPanel4.add(comborol1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 80, 110, -1));
 
+        txtbuscarAvion.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
         txtbuscarAvion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtbuscarAvionActionPerformed(evt);
             }
         });
-        jPanel4.add(txtbuscarAvion, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 110, 20));
+        jPanel4.add(txtbuscarAvion, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 110, 110, 20));
 
         botonbuscar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonbuscar1.setForeground(new java.awt.Color(102, 153, 255));
@@ -522,7 +564,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonbuscar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(botonbuscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 150, 80, 30));
+        jPanel4.add(botonbuscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 100, 80, 30));
 
         botonagregar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonagregar1.setForeground(new java.awt.Color(102, 153, 255));
@@ -533,7 +575,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonagregar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(botonagregar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 80, 30));
+        jPanel4.add(botonagregar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 80, 30));
 
         botoneditar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botoneditar1.setForeground(new java.awt.Color(102, 153, 255));
@@ -544,7 +586,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botoneditar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(botoneditar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, 80, 30));
+        jPanel4.add(botoneditar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 360, 80, 30));
 
         botonlistar1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         botonlistar1.setForeground(new java.awt.Color(102, 153, 255));
@@ -555,7 +597,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botonlistar1ActionPerformed(evt);
             }
         });
-        jPanel4.add(botonlistar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 130, 80, 30));
+        jPanel4.add(botonlistar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 360, 80, 30));
 
         botoneliminar2.setBackground(new java.awt.Color(255, 51, 51));
         botoneliminar2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
@@ -566,7 +608,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 botoneliminar2ActionPerformed(evt);
             }
         });
-        jPanel4.add(botoneliminar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 130, 80, 30));
+        jPanel4.add(botoneliminar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 360, 80, 30));
 
         jLabel16.setBackground(new java.awt.Color(102, 153, 255));
         jLabel16.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
@@ -576,7 +618,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         jLabel30.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel30.setText("Ingrese Id o matricula para buscar un avion:");
-        jPanel4.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 130, -1, -1));
+        jPanel4.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 110, -1, -1));
         jPanel4.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 100, -1, -1));
 
         TabPanelPrincipal.addTab("AVIONES", jPanel4);
@@ -637,52 +679,41 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel24.setBackground(new java.awt.Color(102, 153, 255));
         jLabel24.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(102, 153, 255));
-        jLabel24.setText("Pasajeros registrados");
-        jPanel16.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 260, -1));
+        jLabel24.setText("Vuelos registrados");
+        jPanel16.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, 220, -1));
 
-        jButton17.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton17.setForeground(new java.awt.Color(102, 153, 255));
-        jButton17.setText("Agregar");
-        jButton17.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jButton17.addActionListener(new java.awt.event.ActionListener() {
+        botonguardar.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botonguardar.setForeground(new java.awt.Color(102, 153, 255));
+        botonguardar.setText("Agregar");
+        botonguardar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botonguardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton17ActionPerformed(evt);
+                botonguardarActionPerformed(evt);
             }
         });
-        jPanel16.add(jButton17, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, 80, 30));
+        jPanel16.add(botonguardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 360, 80, 30));
 
-        jButton18.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton18.setForeground(new java.awt.Color(102, 153, 255));
-        jButton18.setText("Editar");
-        jButton18.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jButton18.addActionListener(new java.awt.event.ActionListener() {
+        botonedit.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botonedit.setForeground(new java.awt.Color(102, 153, 255));
+        botonedit.setText("Editar");
+        botonedit.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botonedit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton18ActionPerformed(evt);
+                botoneditActionPerformed(evt);
             }
         });
-        jPanel16.add(jButton18, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 80, 30));
+        jPanel16.add(botonedit, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 360, 80, 30));
 
-        jButton19.setBackground(new java.awt.Color(255, 51, 51));
-        jButton19.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton19.setText("Eliminar");
-        jButton19.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton19.addActionListener(new java.awt.event.ActionListener() {
+        botonelimi.setBackground(new java.awt.Color(255, 51, 51));
+        botonelimi.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botonelimi.setText("Eliminar");
+        botonelimi.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
+        botonelimi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton19ActionPerformed(evt);
+                botonelimiActionPerformed(evt);
             }
         });
-        jPanel16.add(jButton19, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 360, 80, 30));
-
-        jButton5.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(102, 153, 255));
-        jButton5.setText("Listar");
-        jButton5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        jPanel16.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 360, 80, 30));
+        jPanel16.add(botonelimi, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 360, 80, 30));
 
         jScrollPane7.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -697,9 +728,14 @@ public class adminInterfaz extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablavuelos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablavuelosMouseClicked(evt);
+            }
+        });
         jScrollPane7.setViewportView(tablavuelos);
 
-        jPanel16.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, 660, 120));
+        jPanel16.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 660, 170));
 
         jLabel33.setFont(new java.awt.Font("Nirmala UI", 0, 14)); // NOI18N
         jLabel33.setText("Ingrese los siguientes datos:");
@@ -707,42 +743,60 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         jLabel23.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel23.setText("Numero de vuelo:");
-        jPanel16.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
+        jPanel16.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
-        txtnombre1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel16.add(txtnombre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 90, -1));
+        txtNumeroVuelo.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel16.add(txtNumeroVuelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 90, -1));
 
         jLabel34.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel34.setText("Origen:");
-        jPanel16.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, -1, -1));
+        jPanel16.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, -1, -1));
 
         jLabel35.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel35.setText("Destino:");
-        jPanel16.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, -1, -1));
+        jPanel16.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 80, -1, -1));
 
         jLabel36.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel36.setText("Fecha de salida:");
-        jPanel16.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
+        jPanel16.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
         jLabel37.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
-        jLabel37.setText("Fecha de llegada:");
-        jPanel16.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, -1, -1));
+        jLabel37.setText("Seleccione un avion: ");
+        jPanel16.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 120, -1, -1));
 
-        jDateChooser1.setBackground(new java.awt.Color(102, 153, 255));
-        jDateChooser1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel16.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 130, -1));
+        dateChooserLlegada.setBackground(new java.awt.Color(102, 153, 255));
+        dateChooserLlegada.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel16.add(dateChooserLlegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 120, 100, -1));
 
-        jDateChooser2.setBackground(new java.awt.Color(102, 153, 255));
-        jDateChooser2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel16.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 130, -1));
+        dateChooserSalida.setBackground(new java.awt.Color(102, 153, 255));
+        dateChooserSalida.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel16.add(dateChooserSalida, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 100, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ORIGEN", "CARTAGENA", "BOGOTA", "MEDELLIN", " " }));
-        jComboBox1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel16.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 120, 20));
+        comboorigen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ORIGEN", "CARTAGENA", "BOGOTA", "MEDELLIN", " " }));
+        comboorigen.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        comboorigen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboorigenActionPerformed(evt);
+            }
+        });
+        jPanel16.add(comboorigen, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, 120, 20));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DESTINO", "CARTAGENA", "BOGOTA", "MEDELLIN", " " }));
-        jComboBox2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jPanel16.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 80, 120, 20));
+        comboDestino.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DESTINO", "CARTAGENA", "BOGOTA", "MEDELLIN", " " }));
+        comboDestino.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel16.add(comboDestino, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, 120, 20));
+
+        comboAvion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboAvion.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        comboAvion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                comboAvionMouseClicked(evt);
+            }
+        });
+        jPanel16.add(comboAvion, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 120, -1, -1));
+
+        jLabel38.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel38.setText("Fecha de llegada:");
+        jPanel16.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, -1, -1));
 
         TabPanelPrincipal.addTab("VUELOS", jPanel16);
 
@@ -752,54 +806,10 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel31.setBackground(new java.awt.Color(102, 153, 255));
         jLabel31.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(102, 153, 255));
-        jLabel31.setText("Pasajeros registrados");
-        jPanel17.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(252, 14, 260, -1));
+        jLabel31.setText("Administradores registrados");
+        jPanel17.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 340, -1));
 
-        jButton20.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton20.setForeground(new java.awt.Color(102, 153, 255));
-        jButton20.setText("Agregar");
-        jButton20.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton20.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton20ActionPerformed(evt);
-            }
-        });
-        jPanel17.add(jButton20, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 150, 30));
-
-        jButton21.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton21.setForeground(new java.awt.Color(102, 153, 255));
-        jButton21.setText("Editar");
-        jButton21.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton21ActionPerformed(evt);
-            }
-        });
-        jPanel17.add(jButton21, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, 150, 30));
-
-        jButton6.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(102, 153, 255));
-        jButton6.setText("Listar");
-        jButton6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        jPanel17.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 110, 150, 30));
-
-        jButton22.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton22.setForeground(new java.awt.Color(102, 153, 255));
-        jButton22.setText("Eliminar");
-        jButton22.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 255, 255), new java.awt.Color(102, 153, 255)));
-        jButton22.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton22ActionPerformed(evt);
-            }
-        });
-        jPanel17.add(jButton22, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 50, 150, 30));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaadministrador.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -810,9 +820,103 @@ public class adminInterfaz extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaadministrador);
 
-        jPanel17.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 650, 220));
+        jPanel17.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 160, 610, 180));
+
+        botonagregar2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botonagregar2.setForeground(new java.awt.Color(102, 153, 255));
+        botonagregar2.setText("Registrar");
+        botonagregar2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botonagregar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonagregar2ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(botonagregar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 80, 30));
+
+        botoneditar2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botoneditar2.setForeground(new java.awt.Color(102, 153, 255));
+        botoneditar2.setText("Editar");
+        botoneditar2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botoneditar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botoneditar2ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(botoneditar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 360, 80, 30));
+
+        botonlistar2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botonlistar2.setForeground(new java.awt.Color(102, 153, 255));
+        botonlistar2.setText("Listar");
+        botonlistar2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botonlistar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonlistar2ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(botonlistar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 360, 80, 30));
+
+        botoneliminar3.setBackground(new java.awt.Color(255, 51, 51));
+        botoneliminar3.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botoneliminar3.setText("Eliminar");
+        botoneliminar3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botoneliminar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botoneliminar3ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(botoneliminar3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 360, 80, 30));
+
+        txtnombre1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel17.add(txtnombre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, 130, -1));
+
+        jLabel39.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel39.setText("Nombre:");
+        jPanel17.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
+
+        comborol2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PASAJERO", "ADMINISTRADOR", " " }));
+        comborol2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        comborol2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comborol2ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(comborol2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 80, 130, -1));
+
+        jLabel40.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel40.setText("Rol:");
+        jPanel17.add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, -1, -1));
+
+        txttelefono1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel17.add(txttelefono1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 110, -1));
+
+        jLabel41.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel41.setText("Telefono:");
+        jPanel17.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, -1, -1));
+
+        jLabel42.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel42.setText("Ingrese Id para buscar administrador:");
+        jPanel17.add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
+
+        txtbuscar1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        txtbuscar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtbuscar1ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(txtbuscar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, 90, -1));
+
+        botonbuscar2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        botonbuscar2.setForeground(new java.awt.Color(102, 153, 255));
+        botonbuscar2.setText("Buscar");
+        botonbuscar2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        botonbuscar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonbuscar2ActionPerformed(evt);
+            }
+        });
+        jPanel17.add(botonbuscar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, 80, 20));
 
         TabPanelPrincipal.addTab("ADMINISTRADORES", jPanel17);
 
@@ -848,44 +952,237 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        // TODO add your handling code here:
+ TabPanelPrincipal.setSelectedIndex(5);        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        // TODO add your handling code here:
+ TabPanelPrincipal.setSelectedIndex(4);        // TODO add your handling code here:
     }//GEN-LAST:event_jLabel12MouseClicked
 
-    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton22ActionPerformed
+    private void botonelimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonelimiActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+        int filaSeleccionada = tablavuelos.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            int idVuelo = (int) tablavuelos.getValueAt(filaSeleccionada, 0);
 
-    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton21ActionPerformed
+            // Confirmar eliminación
+            int confirmar = JOptionPane.showConfirmDialog(this,
+                    "¿Está seguro de eliminar este vuelo?", "Confirmar",
+                    JOptionPane.YES_NO_OPTION);
 
-    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton20ActionPerformed
+            if (confirmar == JOptionPane.YES_OPTION) {
+                try {
+                    vueloDAO.eliminarVuelo(idVuelo);
+                    actualizarTablaVuelos(); // Método para refrescar los datos
+                    JOptionPane.showMessageDialog(this, "Vuelo eliminado correctamente");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this,
+                            "Error al eliminar: " + e.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Seleccione un vuelo para eliminar",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+        }
+        limpiarCamposVuelo();
 
-    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton19ActionPerformed
+    }//GEN-LAST:event_botonelimiActionPerformed
 
-    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton18ActionPerformed
+    private void botoneditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditActionPerformed
+        try {
+            // 1. Validar que haya una fila seleccionada
+            int filaSeleccionada = tablavuelos.getSelectedRow();
+            if (filaSeleccionada < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Por favor seleccione un vuelo de la tabla",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+            // 2. Obtener el ID del vuelo a editar
+            DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
+            int idVuelo = (int) modelo.getValueAt(filaSeleccionada, 0); // Columna 0 es el ID
+
+            // 3. Validar campos del formulario
+            if (txtNumeroVuelo.getText().trim().isEmpty()
+                    || comboorigen.getSelectedIndex() <= 0
+                    || comboDestino.getSelectedIndex() <= 0
+                    || dateChooserSalida.getDate() == null
+                    || dateChooserLlegada.getDate() == null) {
+
+                JOptionPane.showMessageDialog(this,
+                        "Complete todos los campos obligatorios",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // 4. Validar fechas
+            if (dateChooserSalida.getDate().after(dateChooserLlegada.getDate())) {
+                JOptionPane.showMessageDialog(this,
+                        "La fecha de salida no puede ser posterior a la de llegada",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // 5. Validar origen y destino diferentes
+            if (comboorigen.getSelectedItem().equals(comboDestino.getSelectedItem())) {
+                JOptionPane.showMessageDialog(this,
+                        "El origen y destino no pueden ser iguales",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // 6. Confirmar edición
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Está seguro que desea actualizar este vuelo?",
+                    "Confirmar edición",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            // 7. Obtener y actualizar el vuelo
+            Vuelo vueloActualizado = new VueloDAO(em).buscarPorId(idVuelo);
+            if (vueloActualizado == null) {
+                throw new Exception("Vuelo no encontrado");
+            }
+
+            // Actualizar datos
+            vueloActualizado.setNumeroVuelo(txtNumeroVuelo.getText().trim());
+            vueloActualizado.setOrigen(comboorigen.getSelectedItem().toString());
+            vueloActualizado.setDestino(comboDestino.getSelectedItem().toString());
+            vueloActualizado.setFechaSalida(dateChooserSalida.getDate());
+            vueloActualizado.setFechaLlegada(dateChooserLlegada.getDate());
+
+            // Actualizar avión si se seleccionó
+            if (comboAvion.getSelectedIndex() > 0) {
+                String avionSeleccionado = comboAvion.getSelectedItem().toString();
+                int idAvion = Integer.parseInt(avionSeleccionado.split(" - ")[0]);
+                Avion avion = new AvionDAO(em).buscarPorId(idAvion);
+                vueloActualizado.setAvion(avion);
+            } else {
+                vueloActualizado.setAvion(null);
+            }
+
+            // 8. Guardar cambios
+            new VueloDAO(em).actualizar(vueloActualizado);
+
+            // 9. Actualizar interfaz
+            listarVuelosAction();
+            limpiarFormularioVuelo();
+
+            JOptionPane.showMessageDialog(this,
+                    "Vuelo actualizado correctamente",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al actualizar vuelo: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton17ActionPerformed
+    }//GEN-LAST:event_botoneditActionPerformed
+
+    private void botonguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonguardarActionPerformed
+        try {
+            // Validar campos obligatorios
+            if (txtNumeroVuelo.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el número de vuelo", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (comboorigen.getSelectedIndex() <= 0) {
+                JOptionPane.showMessageDialog(this, "Seleccione un origen válido", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (comboDestino.getSelectedIndex() <= 0) {
+                JOptionPane.showMessageDialog(this, "Seleccione un destino válido", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (dateChooserSalida.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Seleccione fecha de salida", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (dateChooserLlegada.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Seleccione fecha de llegada", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Validar que la fecha de salida no sea posterior a la de llegada
+            if (dateChooserSalida.getDate().after(dateChooserLlegada.getDate())) {
+                JOptionPane.showMessageDialog(this,
+                        "La fecha de salida no puede ser posterior a la de llegada",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            String numeroVuelo = txtNumeroVuelo.getText();
+            if (vueloDAO.existeNumeroVuelo(numeroVuelo)) {
+                // tu lógica
+
+                JOptionPane.showMessageDialog(this,
+                        "Ya existe un vuelo con ese número.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Validar que origen y destino sean diferentes
+            if (comboorigen.getSelectedItem().equals(comboDestino.getSelectedItem())) {
+                JOptionPane.showMessageDialog(this,
+                        "El origen y destino no pueden ser iguales",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Crear nuevo vuelo
+            Vuelo nuevoVuelo = new Vuelo();
+            nuevoVuelo.setNumeroVuelo(txtNumeroVuelo.getText().trim());
+            nuevoVuelo.setOrigen(comboorigen.getSelectedItem().toString());
+            nuevoVuelo.setDestino(comboDestino.getSelectedItem().toString());
+            nuevoVuelo.setFechaSalida(dateChooserSalida.getDate());
+            nuevoVuelo.setFechaLlegada(dateChooserLlegada.getDate());
+
+            // Asignar avión si se seleccionó
+            if (comboAvion.getSelectedIndex() > 0) {
+                String avionSeleccionado = comboAvion.getSelectedItem().toString();
+                int idAvion = Integer.parseInt(avionSeleccionado.split(" - ")[0]);
+                Avion avion = new AvionDAO(em).buscarPorId(idAvion);
+                nuevoVuelo.setAvion(avion);
+            }
+
+            // Guardar en base de datos
+            new VueloDAO(em).crear(nuevoVuelo);
+
+            // Actualizar interfaz
+            limpiarFormularioVuelo();
+            listarVuelosAction();
+
+            JOptionPane.showMessageDialog(this,
+                    "Vuelo registrado exitosamente",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al registrar vuelo: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_botonguardarActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
@@ -1449,6 +1746,364 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tablapasajeroMouseClicked
 
+    private void comboAvionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboAvionMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboAvionMouseClicked
+
+    private void tablavuelosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablavuelosMouseClicked
+        int filaVista = tablavuelos.getSelectedRow();
+        if (filaVista >= 0) {
+            // Convertir el índice de la fila de la vista al modelo
+            int filaModelo = tablavuelos.convertRowIndexToModel(filaVista);
+            DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
+
+            try {
+                // Obtener los valores de cada columna
+                String numeroVuelo = modelo.getValueAt(filaModelo, 1).toString();
+                String origen = modelo.getValueAt(filaModelo, 2).toString();
+                String destino = modelo.getValueAt(filaModelo, 3).toString();
+
+                // Formatear fechas antes de parsear (Asegurarse de que las fechas están en el formato "dd/MM/yyyy")
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+                // Obtener las fechas en formato String y parsearlas
+                String fechaSalidaString = modelo.getValueAt(filaModelo, 4).toString();
+                String fechaLlegadaString = modelo.getValueAt(filaModelo, 5).toString();
+
+                Date fechaSalida = sdf.parse(fechaSalidaString);  // Parseo de la fecha
+                Date fechaLlegada = sdf.parse(fechaLlegadaString);  // Parseo de la fecha
+
+                String matriculaAvion = modelo.getValueAt(filaModelo, 6).toString();
+
+                // Establecer los valores en los campos del formulario
+                txtNumeroVuelo.setText(numeroVuelo);
+                comboorigen.setSelectedItem(origen);
+                comboDestino.setSelectedItem(destino);
+                dateChooserSalida.setDate(fechaSalida); // Asignar fecha formateada
+                dateChooserLlegada.setDate(fechaLlegada); // Asignar fecha formateada
+
+                // Buscar el avión correspondiente en el combo
+                for (int i = 0; i < comboAvion.getItemCount(); i++) {
+                    if (comboAvion.getItemAt(i).toString().contains(matriculaAvion)) {
+                        comboAvion.setSelectedIndex(i);
+                        break;
+                    }
+                }
+
+            } catch (ParseException e) {
+                JOptionPane.showMessageDialog(this,
+                        "Error al parsear fechas: " + e.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+
+    }//GEN-LAST:event_tablavuelosMouseClicked
+
+    private void comboorigenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboorigenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboorigenActionPerformed
+
+    private void botonagregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregar2ActionPerformed
+
+        try {
+            // Validar campos obligatorios
+            if (txtnombre1.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el nombre del administrador", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (txttelefono1.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el teléfono", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Validar formato de teléfono
+            if (!txttelefono1.getText().matches("\\d{7,15}")) {
+                JOptionPane.showMessageDialog(this,
+                        "Teléfono debe contener solo números (7-15 dígitos)",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Validar rol seleccionado
+            String rolSeleccionado = comborol2.getSelectedItem().toString();
+            if (comborol2.getSelectedIndex() <= 0
+                    || (!rolSeleccionado.equals("ADMINISTRADOR 1") && !rolSeleccionado.equals("ADMINISTRADOR 2"))) {
+                JOptionPane.showMessageDialog(this,
+                        "Seleccione un rol válido (ADMINISTRADOR 1 o ADMINISTRADOR 2)",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Crear nuevo administrador
+            Administrador nuevoAdmin = new Administrador();
+            nuevoAdmin.setNombre(txtnombre1.getText().trim());
+            nuevoAdmin.setTelefono(txttelefono1.getText().trim());
+            nuevoAdmin.setRol(rolSeleccionado);
+
+            // Guardar en base de datos
+            administradorDAO.crear(nuevoAdmin);
+
+            // Actualizar interfaz
+            limpiarCamposAdministrador();
+            listarAdministradores();
+
+            JOptionPane.showMessageDialog(this,
+                    "Administrador registrado exitosamente",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al registrar administrador: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_botonagregar2ActionPerformed
+
+    private void botoneditar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditar2ActionPerformed
+
+        try {
+            // 1. Validar selección en la tabla
+            int filaSeleccionada = tablaadministrador.getSelectedRow();
+            if (filaSeleccionada < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Por favor seleccione un administrador de la tabla",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // 2. Obtener ID del administrador seleccionado
+            DefaultTableModel modelo = (DefaultTableModel) tablaadministrador.getModel();
+            int idAdmin = (int) modelo.getValueAt(filaSeleccionada, 0);
+
+            // 3. Validar campos del formulario
+            if (txtnombre1.getText().trim().isEmpty()
+                    || txttelefono1.getText().trim().isEmpty()
+                    || comborol2.getSelectedIndex() <= 0) {
+
+                JOptionPane.showMessageDialog(this,
+                        "Complete todos los campos obligatorios",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // 4. Validar formato de teléfono
+            if (!txttelefono1.getText().matches("\\d{7,15}")) {
+                JOptionPane.showMessageDialog(this,
+                        "Teléfono debe contener solo números (7-15 dígitos)",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // 5. Confirmar edición
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Está seguro que desea actualizar este administrador?",
+                    "Confirmar edición",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            // 6. Obtener y actualizar el administrador
+            Administrador adminActualizado = administradorDAO.buscarPorId(idAdmin);
+            if (adminActualizado == null) {
+                throw new Exception("Administrador no encontrado");
+            }
+
+            // Actualizar datos
+            adminActualizado.setNombre(txtnombre1.getText().trim());
+            adminActualizado.setTelefono(txttelefono1.getText().trim());
+            adminActualizado.setRol(comborol2.getSelectedItem().toString());
+
+            // 7. Guardar cambios
+            administradorDAO.actualizar(adminActualizado);
+
+            // 8. Actualizar interfaz
+            listarAdministradores();
+            limpiarCamposAdministrador();
+
+            JOptionPane.showMessageDialog(this,
+                    "Administrador actualizado correctamente",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al actualizar administrador: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_botoneditar2ActionPerformed
+
+    private void botonlistar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistar2ActionPerformed
+        
+        try {
+            // 1. Obtener todos los administradores desde el DAO
+            List<Administrador> administradores = administradorDAO.listarTodos();
+
+            // 2. Obtener el modelo de la tabla
+            DefaultTableModel modelo = (DefaultTableModel) tablaadministrador.getModel();
+            modelo.setRowCount(0); // Limpiar tabla existente
+
+            // 3. Llenar la tabla con los datos
+            for (Administrador admin : administradores) {
+                modelo.addRow(new Object[]{
+                    admin.getId(),
+                    admin.getNombre(),
+                    admin.getTelefono(),
+                    admin.getRol()
+                });
+            }
+
+            // 4. Ajustar el ancho de columnas
+            ajustarColumnasAdmin();
+
+            JOptionPane.showMessageDialog(this,
+                    "Listado de administradores actualizado",
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar administradores: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_botonlistar2ActionPerformed
+
+    private void botoneliminar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar3ActionPerformed
+      
+        try {
+            // 1. Validar selección en la tabla
+            int filaSeleccionada = tablaadministrador.getSelectedRow();
+            if (filaSeleccionada < 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Por favor seleccione un administrador de la tabla",
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // 2. Obtener ID del administrador seleccionado
+            DefaultTableModel modelo = (DefaultTableModel) tablaadministrador.getModel();
+            int idAdmin = (int) modelo.getValueAt(filaSeleccionada, 0);
+
+            // 3. Confirmar eliminación
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Está seguro que desea eliminar este administrador?",
+                    "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            // 4. Eliminar el administrador
+            administradorDAO.eliminar(idAdmin);
+
+            // 5. Actualizar interfaz
+            listarAdministradores();
+            limpiarCamposAdministrador();
+
+            JOptionPane.showMessageDialog(this,
+                    "Administrador eliminado correctamente",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al eliminar administrador: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_botoneliminar3ActionPerformed
+
+    private void comborol2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comborol2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comborol2ActionPerformed
+
+    private void txtbuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscar1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtbuscar1ActionPerformed
+
+    private void botonbuscar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonbuscar2ActionPerformed
+
+        String idStr = txtbuscar1.getText().trim();
+
+        if (idStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Ingrese un ID para buscar",
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // Convertir el ID a entero
+            int idAdmin = Integer.parseInt(idStr);
+
+            // Buscar el administrador
+            Administrador admin = administradorDAO.buscarPorId(idAdmin);
+
+            if (admin != null) {
+                // Mostrar en la tabla
+                DefaultTableModel modelo = (DefaultTableModel) tablaadministrador.getModel();
+                modelo.setRowCount(0); // Limpiar tabla
+                modelo.addRow(new Object[]{
+                    admin.getId(),
+                    admin.getNombre(),
+                    admin.getTelefono(),
+                    admin.getRol()
+                });
+
+                // Mostrar en los campos de edición
+                txtnombre1.setText(admin.getNombre());
+                txttelefono1.setText(admin.getTelefono());
+                comborol2.setSelectedItem(admin.getRol());
+
+                // Ajustar columnas
+                ajustarColumnasAdmin();
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No se encontró un administrador con ID: " + idAdmin,
+                        "No encontrado",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "ID inválido. Debe ser un número entero",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error en la búsqueda: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_botonbuscar2ActionPerformed
+
+    private void jPanel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel15MouseClicked
+ TabPanelPrincipal.setSelectedIndex(4);        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel15MouseClicked
+
+    private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
+ TabPanelPrincipal.setSelectedIndex(5);        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel6MouseClicked
+
     public static void main(String args[]) {
 
 
@@ -1465,32 +2120,34 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JTabbedPane TabPanelPrincipal;
     private javax.swing.JButton botonagregar;
     private javax.swing.JButton botonagregar1;
+    private javax.swing.JButton botonagregar2;
     public javax.swing.JButton botonbuscar;
     public javax.swing.JButton botonbuscar1;
+    public javax.swing.JButton botonbuscar2;
+    private javax.swing.JButton botonedit;
     private javax.swing.JButton botoneditar;
     private javax.swing.JButton botoneditar1;
+    private javax.swing.JButton botoneditar2;
+    private javax.swing.JButton botonelimi;
     private javax.swing.JButton botoneliminar1;
     private javax.swing.JButton botoneliminar2;
+    private javax.swing.JButton botoneliminar3;
+    private javax.swing.JButton botonguardar;
     private javax.swing.JButton botonlistar;
     private javax.swing.JButton botonlistar1;
+    private javax.swing.JButton botonlistar2;
     private javax.swing.JTextField capcapacidad;
     private javax.swing.JTextField capmatricula;
+    private javax.swing.JComboBox<String> comboAvion;
+    private javax.swing.JComboBox<String> comboDestino;
+    private javax.swing.JComboBox<String> comboorigen;
     private javax.swing.JComboBox<String> comborol;
     private javax.swing.JComboBox<String> comborol1;
+    private javax.swing.JComboBox<String> comborol2;
+    private com.toedter.calendar.JDateChooser dateChooserLlegada;
+    private com.toedter.calendar.JDateChooser dateChooserSalida;
     private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
-    private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -1519,7 +2176,12 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1546,19 +2208,22 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTableReservas;
+    private javax.swing.JTable tablaadministrador;
     private javax.swing.JTable tablaaviones;
     public javax.swing.JTable tablapasajero;
     private javax.swing.JTable tablavuelos;
+    private javax.swing.JTextField txtNumeroVuelo;
     private javax.swing.JTextField txtapellido;
     private javax.swing.JTextField txtbuscar;
+    private javax.swing.JTextField txtbuscar1;
     private javax.swing.JTextField txtbuscarAvion;
     private javax.swing.JTextField txtcorreo;
     private javax.swing.JTextField txtidentificacion;
     private javax.swing.JTextField txtnombre;
     private javax.swing.JTextField txtnombre1;
     private javax.swing.JTextField txttelefono;
+    private javax.swing.JTextField txttelefono1;
     // End of variables declaration//GEN-END:variables
 
     private void cargarTodosPasajeros() {
@@ -1815,7 +2480,6 @@ public class adminInterfaz extends javax.swing.JFrame {
         tablapasajero.repaint();
     }
 
-
     private void listarReservasAction(Object object) {
         ReservaDAO reservaDAO = new ReservaDAO(null); // o pasar un EntityManager si ya lo tienes
         List<Reserva> reservas = reservaDAO.obtenerTodas();
@@ -1828,101 +2492,296 @@ public class adminInterfaz extends javax.swing.JFrame {
         jTableReservas.setModel(modelo);
     }
 
-   private void listarReservasAction() {
-    ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías pasar un EntityManager válido
-    List<Reserva> reservas = reservaDAO.obtenerTodas();
-    cargarReservasEnTabla(); // Pasar las reservas como parámetro
-}
-
-private void cargarReservasEnTabla() {
-    // 1. Obtener las reservas desde el DAO
-    ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías usar un EntityManager válido
-    List<Reserva> reservas = reservaDAO.obtenerTodas();
-    
-    // 2. Obtener el modelo de la tabla
-    DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
-    modelo.setRowCount(0); // Limpiar tabla
-
-    // 3. Llenar la tabla con los datos
-    for (Reserva r : reservas) {
-        Object[] fila = {
-            r.getIdReserva(),
-            r.getPasajero() != null ? r.getPasajero().getnombre() : "Sin pasajero", // Corregí getnombre() a getNombre()
-            r.getVuelo() != null ? r.getVuelo().getNumeroVuelo() : "Sin vuelo",
-            r.getFechaReserva(),
-            r.getEstado()
-        };
-        modelo.addRow(fila);
+    private void listarReservasAction() {
+        ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías pasar un EntityManager válido
+        List<Reserva> reservas = reservaDAO.obtenerTodas();
+        cargarReservasEnTabla(); // Pasar las reservas como parámetro
     }
-    
-    // 4. Ajustar ancho de columnas
-    ajustarAnchoColumnasReservas();
-}
+
+    private void cargarReservasEnTabla() {
+        // 1. Obtener las reservas desde el DAO
+        ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías usar un EntityManager válido
+        List<Reserva> reservas = reservaDAO.obtenerTodas();
+
+        // 2. Obtener el modelo de la tabla
+        DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
+        modelo.setRowCount(0); // Limpiar tabla
+
+        // 3. Llenar la tabla con los datos
+        for (Reserva r : reservas) {
+            Object[] fila = {
+                r.getIdReserva(),
+                r.getPasajero() != null ? r.getPasajero().getnombre() : "Sin pasajero", // Corregí getnombre() a getNombre()
+                r.getVuelo() != null ? r.getVuelo().getNumeroVuelo() : "Sin vuelo",
+                r.getFechaReserva(),
+                r.getEstado()
+            };
+            modelo.addRow(fila);
+        }
+
+        // 4. Ajustar ancho de columnas
+        ajustarAnchoColumnasReservas();
+    }
 
 // Método mejorado para ajustar columnas
-private void ajustarAnchoColumnasReservas() {
-    if (jTableReservas == null) return;
-    
-    jTableReservas.setAutoResizeMode(jTableReservas.AUTO_RESIZE_OFF);
-    
-    // Ajustes específicos para cada columna
-    int[] anchos = {50, 150, 100, 120, 100}; // ID, Pasajero, Vuelo, Fecha, Estado
-    
-    for (int i = 0; i < anchos.length; i++) {
-        if (i < jTableReservas.getColumnModel().getColumnCount()) {
-            jTableReservas.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+    private void ajustarAnchoColumnasReservas() {
+        if (jTableReservas == null) {
+            return;
+        }
+
+        jTableReservas.setAutoResizeMode(jTableReservas.AUTO_RESIZE_OFF);
+
+        // Ajustes específicos para cada columna
+        int[] anchos = {50, 150, 100, 120, 100}; // ID, Pasajero, Vuelo, Fecha, Estado
+
+        for (int i = 0; i < anchos.length; i++) {
+            if (i < jTableReservas.getColumnModel().getColumnCount()) {
+                jTableReservas.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+        }
+
+        jTableReservas.revalidate();
+        jTableReservas.repaint();
+    }
+
+    private void cargarVuelosEnTabla(List<Vuelo> vuelos) {
+        DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
+        modelo.setRowCount(0); // Limpiar tabla
+
+        for (Vuelo v : vuelos) {
+            Object[] fila = {
+                v.getIdVuelo(),
+                v.getNumeroVuelo(),
+                v.getOrigen(),
+                v.getDestino(),
+                v.getFechaSalida(),
+                v.getFechaLlegada()
+            };
+            modelo.addRow(fila);
+        }
+
+        // Ajustar ancho de columnas para vuelos
+        ajustarAnchoColumnasVuelos();
+    }
+
+    private void ajustarAnchoColumnasVuelos() {
+        tablavuelos.setAutoResizeMode(tablavuelos.AUTO_RESIZE_OFF);
+
+        tablavuelos.getColumnModel().getColumn(0).setPreferredWidth(50);   // ID Vuelo
+        tablavuelos.getColumnModel().getColumn(1).setPreferredWidth(100);  // Número Vuelo
+        tablavuelos.getColumnModel().getColumn(2).setPreferredWidth(100);  // Origen
+        tablavuelos.getColumnModel().getColumn(3).setPreferredWidth(100);  // Destino
+        tablavuelos.getColumnModel().getColumn(4).setPreferredWidth(120);  // Fecha Salida
+        tablavuelos.getColumnModel().getColumn(5).setPreferredWidth(120);  // Fecha Llegada
+        tablavuelos.getColumnModel().getColumn(6).setPreferredWidth(100);  // Avión
+
+        tablavuelos.revalidate();
+        tablavuelos.repaint();
+    }
+
+    private void initjTableVuelos() {
+        String[] columnas = {"ID Vuelo", "Número Vuelo", "Origen", "Destino", "Fecha Salida", "Fecha Llegada", "Avión"};
+        DefaultTableModel modelo = new DefaultTableModel(null, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tablavuelos.setModel(modelo);
+        ajustarAnchoColumnasVuelos();
+    }
+
+    private void limpiarFormularioVuelo() {
+        txtNumeroVuelo.setText("");
+        comboorigen.setSelectedIndex(0);
+        comboDestino.setSelectedIndex(0);
+        dateChooserSalida.setDate(null);
+        dateChooserLlegada.setDate(null);
+        comboAvion.setSelectedIndex(0);
+        txtNumeroVuelo.requestFocus();
+    }
+
+    private void cargarAvionesEnCombo() {
+        comboAvion.removeAllItems();
+        comboAvion.addItem("-- Seleccione avión --");
+
+        try {
+            List<Avion> aviones = new AvionDAO(em).listarTodos();
+            for (Avion avion : aviones) {
+                comboAvion.addItem(avion.getIdAvion() + " - " + avion.getMatricula());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar aviones: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    jTableReservas.revalidate();
-    jTableReservas.repaint();
-}
 
+    private void cargarCiudadesEnCombos() {
+        comboorigen.removeAllItems();
+        comboDestino.removeAllItems();
 
-private void cargarVuelosEnTabla(List<Vuelo> vuelos) {
-    DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
-    modelo.setRowCount(0); // Limpiar tabla
+        comboorigen.addItem("-- Seleccione origen --");
+        comboDestino.addItem("-- Seleccione destino --");
 
-    for (Vuelo v : vuelos) {
-        Object[] fila = {
-            v.getIdVuelo(),
-            v.getNumeroVuelo(),
-            v.getOrigen(),
-            v.getDestino(),
-            v.getFechaSalida(),
-            v.getFechaLlegada()
-        };
-        modelo.addRow(fila);
+        String[] ciudades = {"CARTAGENA", "BOGOTA", "MEDELLIN", "CALI", "BARRANQUILLA"};
+        for (String ciudad : ciudades) {
+            comboorigen.addItem(ciudad);
+            comboDestino.addItem(ciudad);
+        }
     }
-    
-    // Ajustar ancho de columnas para vuelos
-    ajustarAnchoColumnasVuelos();
-}
 
-private void ajustarAnchoColumnasVuelos() {
-    tablavuelos.setAutoResizeMode(tablavuelos.AUTO_RESIZE_OFF);
-    
-    tablavuelos.getColumnModel().getColumn(0).setPreferredWidth(50);   // ID Vuelo
-    tablavuelos.getColumnModel().getColumn(1).setPreferredWidth(120);  // Número Vuelo
-    tablavuelos.getColumnModel().getColumn(2).setPreferredWidth(100);  // Origen
-    tablavuelos.getColumnModel().getColumn(3).setPreferredWidth(100);  // Destino
-    tablavuelos.getColumnModel().getColumn(4).setPreferredWidth(120);  // Fecha Salida
-    tablavuelos.getColumnModel().getColumn(5).setPreferredWidth(120);  // Fecha Llegada
-    
-    tablavuelos.revalidate();
-    tablavuelos.repaint();
-}
-    private void initjTableVuelos() {
-    String[] columnas = {"ID Vuelo", "Número Vuelo", "Origen", "Destino", "Fecha Salida", "Fecha Llegada"};
-    DefaultTableModel modelo = new DefaultTableModel(null, columnas);
-    tablavuelos.setModel(modelo);
-}
+    private void listarVuelosAction() {
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
+            modelo.setRowCount(0);
 
-private void listarVuelosAction() {
-    VueloDAO vueloDAO = new VueloDAO(null); // o pasar EntityManager si corresponde
-    List<Vuelo> vuelos = vueloDAO.obtenerTodos(); // Método que devuelve lista de vuelos
-    cargarVuelosEnTabla(vuelos);
-}
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-    
+            List<Vuelo> vuelos = new VueloDAO(em).listarTodos();
+            for (Vuelo v : vuelos) {
+                modelo.addRow(new Object[]{
+                    v.getIdVuelo(),
+                    v.getNumeroVuelo(),
+                    v.getOrigen(),
+                    v.getDestino(),
+                    sdf.format(v.getFechaSalida()),
+                    sdf.format(v.getFechaLlegada()),
+                    v.getAvion() != null ? v.getAvion().getMatricula() : "No asignado"
+                });
+            }
+
+            ajustarAnchoColumnasVuelos();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar vuelos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void actualizarTablaVuelos() {
+        DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
+        modelo.setRowCount(0); // Limpiar tabla
+
+        List<Vuelo> vuelos = vueloDAO.obtenerTodos();
+        for (Vuelo v : vuelos) {
+            modelo.addRow(new Object[]{
+                v.getIdVuelo(),
+                v.getNumeroVuelo(),
+                v.getOrigen(),
+                v.getDestino(),
+                v.getFechaSalida(),
+                v.getFechaLlegada(),
+                v.getAvion() != null ? v.getAvion().getMatricula() : ""
+            });
+        }
+    }
+
+    private void limpiarCamposVuelo() {
+        txtNumeroVuelo.setText("");
+
+    }
+
+    public void listarAdministradores() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) tablaadministrador.getModel();
+            modelo.setRowCount(0); // Limpiar tabla
+
+            AdministradorDAO adminDAO = new AdministradorDAO(em);
+            List<Administrador> administradores = adminDAO.listarTodos();
+
+            for (Administrador admin : administradores) {
+                modelo.addRow(new Object[]{
+                    admin.getId(),
+                    admin.getNombre(),
+                    admin.getTelefono(),
+                    admin.getRol()
+                });
+                  ajustarColumnasAdmin();
+            }
+
+            ajustarColumnasAdmin();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar administradores: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            em.close();
+            emf.close();
+        }
+    }
+
+  
+
+    private void initTablaAdministradores() {
+        // Configurar modelo de tabla
+        DefaultTableModel modelo = new DefaultTableModel(
+                new Object[]{"ID", "Nombre", "Teléfono", "Rol"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+            
+        };
+        tablaadministrador.setModel(modelo);
+
+        // Configurar listener para selección de filas
+        tablaadministrador.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int fila = tablaadministrador.getSelectedRow();
+                if (fila >= 0) {
+                    txtnombre1.setText(tablaadministrador.getValueAt(fila, 1).toString());
+                    txttelefono1.setText(tablaadministrador.getValueAt(fila, 2).toString());
+                    comborol2.setSelectedItem(tablaadministrador.getValueAt(fila, 3).toString());
+                }
+                  
+            }
+        });
+    }
+// Método auxiliar para verificar existencia de administrador
+
+    private boolean existeAdministrador(String nombre) {
+        try {
+            Query query = em.createQuery("SELECT COUNT(a) FROM Administrador a WHERE a.nombre = :nombre");
+            query.setParameter("nombre", nombre);
+            Long count = (Long) query.getSingleResult();
+            return count > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+// Método para limpiar campos del formulario de administrador
+    private void limpiarCamposAdministrador() {
+        txtnombre.setText("");
+        txttelefono.setText("");
+        comborol2.setSelectedIndex(0);
+        txtnombre.requestFocus();
+
+    }
+
+    private void ajustarColumnasAdmin() {
+
+        tablaadministrador.getColumnModel().getColumn(0).setPreferredWidth(150);
+        tablaadministrador.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tablaadministrador.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tablaadministrador.getColumnModel().getColumn(3).setPreferredWidth(160);
+
+        tablaadministrador.setAutoResizeMode(tablapasajero.AUTO_RESIZE_OFF);
+
+        tablaadministrador.revalidate();
+        tablaadministrador.repaint();
+    }
+
+    private void inicializarComboRolesAdministrador() {
+        comborol2.removeAllItems(); // Limpiar items existentes
+        comborol2.addItem("-- Seleccione rol --");
+        comborol2.addItem("ADMINISTRADOR 1");
+        comborol2.addItem("ADMINISTRADOR 2");
+    }
 }

@@ -1,34 +1,33 @@
 package Persistence.Dao;
 
 import Dominio.Entidades.Vuelo;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
+import javax.persistence.PersistenceException;
+import java.util.List;
 
 public class VueloDAO {
 
-    private final EntityManager em;
+    private EntityManager em;
 
     public VueloDAO(EntityManager em) {
         this.em = em;
     }
 
-    public void crear(Vuelo vuelo) {
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            em.persist(vuelo);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            throw new RuntimeException("Error al crear vuelo", e);
+public void crear(Vuelo vuelo) {
+    EntityTransaction tx = em.getTransaction();
+    try {
+        tx.begin();
+        em.persist(vuelo);
+        tx.commit();
+    } catch (Exception e) {
+        if (tx.isActive()) {
+            tx.rollback();
         }
+        throw e;
     }
+}
 
     public Vuelo buscarPorId(int id) {
         return em.find(Vuelo.class, id);
@@ -67,21 +66,14 @@ public class VueloDAO {
         }
     }
 
-    public void eliminar(int id) {
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            Vuelo vuelo = em.find(Vuelo.class, id);
-            if (vuelo != null) {
-                em.remove(vuelo);
-            }
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            throw new RuntimeException("Error al eliminar vuelo", e);
+ public void eliminarVuelo(int id) {
+        em.getTransaction().begin();
+        Vuelo vuelo = em.find(Vuelo.class, id);
+        if (vuelo != null) {
+            em.remove(vuelo);
         }
+        em.getTransaction().commit();
+    
     }
 
     public boolean existeNumeroVuelo(String numeroVuelo) {
@@ -99,4 +91,5 @@ public class VueloDAO {
         TypedQuery<Vuelo> query = em.createQuery("SELECT v FROM Vuelo v", Vuelo.class);
         return query.getResultList();
     }
+    
 }

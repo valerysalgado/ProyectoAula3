@@ -8,7 +8,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import static org.hibernate.criterion.Projections.id;
 
 public class AvionDAO {
 
@@ -17,6 +16,8 @@ public class AvionDAO {
     public AvionDAO(EntityManager em) {
         this.em = em;
     }
+
+  
 
     public void crear(Avion avion) {
         if (!em.getTransaction().isActive()) {

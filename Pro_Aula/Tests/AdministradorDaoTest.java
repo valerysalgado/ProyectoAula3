@@ -12,7 +12,7 @@ public class AdministradorDaoTest {
 
     public static void guardarAdministradorEnBDNoDebeGenerarError(){
         // Preperar los datos de prueba
-        var admin = new Administrador("Valery Salgado");
+        var admin = new Administrador("Valery Salgado", telefono, rol);
         admin.setId(7);
         admin.setRol("Admin");
         var emf = Persistence.createEntityManagerFactory("ConfigDB");

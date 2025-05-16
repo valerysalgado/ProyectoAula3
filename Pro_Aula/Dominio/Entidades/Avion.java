@@ -1,6 +1,8 @@
 package Dominio.Entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,17 +26,19 @@ public class Avion implements Serializable {
     private boolean disponible;
     @Column(name = "estado", length = 20)
     private String estado;
+    @OneToMany(mappedBy = "avion")
+    private List<Vuelo> vuelos = new ArrayList<>();
 
     public Avion() {
         this.disponible = true;
         this.estado = "En tierra";
     }
 
-    public Avion(String matricula, int IdAvion, String modelo) {
+    public Avion(String matricula, int capacidadPasajeros) {
         this.matricula = matricula;
         this.capacidadPasajeros = capacidadPasajeros;
         this.disponible = true;
-        this.estado = "En tierra";
+        this.estado = "EN TIERRA";
     }
 
     public long getIdAvion() {
@@ -50,6 +54,9 @@ public class Avion implements Serializable {
     }
 
     public void setMatricula(String matricula) {
+        if (!matricula.matches("^[A-Z]{2,3}-\\d{3,4}$")) {
+            throw new IllegalArgumentException("Formato de matrícula inválido. Debe ser ABC-1234");
+        }
         this.matricula = matricula;
     }
 
@@ -58,6 +65,9 @@ public class Avion implements Serializable {
     }
 
     public void setCapacidadPasajeros(int capacidadPasajeros) {
+        if (capacidadPasajeros <= 0 || capacidadPasajeros > 500) {
+            throw new IllegalArgumentException("La capacidad debe estar entre 1 y 500");
+        }
         this.capacidadPasajeros = capacidadPasajeros;
     }
 
@@ -77,6 +87,10 @@ public class Avion implements Serializable {
         this.estado = estado;
     }
 
+    public void agregarVuelo(Vuelo vuelo) {
+    vuelos.add(vuelo);
+    vuelo.setAvion(this);
+}
     public static String[] getOpcionesEstado() {
         return new String[]{"EN TIERRA", "EN VUELO", "EN MANTENIMIENTO", "RETRASADO"};
     }
