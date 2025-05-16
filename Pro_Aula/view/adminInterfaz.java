@@ -10,8 +10,6 @@ import Persistence.Dao.AvionDAO;
 import Persistence.Dao.PasajeroDAO;
 import Persistence.Dao.ReservaDAO;
 import Persistence.Dao.VueloDAO;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,12 +19,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public class adminInterfaz extends javax.swing.JFrame {
@@ -194,6 +190,11 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI Emoji", 1, 48)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("←");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 50));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 60));
@@ -940,11 +941,11 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
-        TabPanelPrincipal.setSelectedIndex(1);   // TODO add your handling code here:
+        TabPanelPrincipal.setSelectedIndex(1);  
     }//GEN-LAST:event_jPanel7MouseClicked
 
     private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
-        TabPanelPrincipal.setSelectedIndex(3);        // TODO add your handling code here:
+        TabPanelPrincipal.setSelectedIndex(3);      
     }//GEN-LAST:event_jPanel9MouseClicked
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
@@ -952,11 +953,11 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
- TabPanelPrincipal.setSelectedIndex(5);        // TODO add your handling code here:
+        TabPanelPrincipal.setSelectedIndex(5);      
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
- TabPanelPrincipal.setSelectedIndex(4);        // TODO add your handling code here:
+        TabPanelPrincipal.setSelectedIndex(4);      
     }//GEN-LAST:event_jLabel12MouseClicked
 
     private void botonelimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonelimiActionPerformed
@@ -965,7 +966,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         if (filaSeleccionada >= 0) {
             int idVuelo = (int) tablavuelos.getValueAt(filaSeleccionada, 0);
 
-            // Confirmar eliminación
+         
             int confirmar = JOptionPane.showConfirmDialog(this,
                     "¿Está seguro de eliminar este vuelo?", "Confirmar",
                     JOptionPane.YES_NO_OPTION);
@@ -973,7 +974,7 @@ public class adminInterfaz extends javax.swing.JFrame {
             if (confirmar == JOptionPane.YES_OPTION) {
                 try {
                     vueloDAO.eliminarVuelo(idVuelo);
-                    actualizarTablaVuelos(); // Método para refrescar los datos
+                    actualizarTablaVuelos(); 
                     JOptionPane.showMessageDialog(this, "Vuelo eliminado correctamente");
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this,
@@ -993,7 +994,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void botoneditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditActionPerformed
         try {
-            // 1. Validar que haya una fila seleccionada
+         
             int filaSeleccionada = tablavuelos.getSelectedRow();
             if (filaSeleccionada < 0) {
                 JOptionPane.showMessageDialog(this,
@@ -1003,11 +1004,10 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // 2. Obtener el ID del vuelo a editar
+   
             DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
-            int idVuelo = (int) modelo.getValueAt(filaSeleccionada, 0); // Columna 0 es el ID
+            int idVuelo = (int) modelo.getValueAt(filaSeleccionada, 0);
 
-            // 3. Validar campos del formulario
             if (txtNumeroVuelo.getText().trim().isEmpty()
                     || comboorigen.getSelectedIndex() <= 0
                     || comboDestino.getSelectedIndex() <= 0
@@ -1021,7 +1021,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // 4. Validar fechas
             if (dateChooserSalida.getDate().after(dateChooserLlegada.getDate())) {
                 JOptionPane.showMessageDialog(this,
                         "La fecha de salida no puede ser posterior a la de llegada",
@@ -1030,7 +1029,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // 5. Validar origen y destino diferentes
             if (comboorigen.getSelectedItem().equals(comboDestino.getSelectedItem())) {
                 JOptionPane.showMessageDialog(this,
                         "El origen y destino no pueden ser iguales",
@@ -1039,7 +1037,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // 6. Confirmar edición
+         
             int confirmacion = JOptionPane.showConfirmDialog(
                     this,
                     "¿Está seguro que desea actualizar este vuelo?",
@@ -1050,20 +1048,18 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // 7. Obtener y actualizar el vuelo
             Vuelo vueloActualizado = new VueloDAO(em).buscarPorId(idVuelo);
             if (vueloActualizado == null) {
                 throw new Exception("Vuelo no encontrado");
             }
 
-            // Actualizar datos
+           
             vueloActualizado.setNumeroVuelo(txtNumeroVuelo.getText().trim());
             vueloActualizado.setOrigen(comboorigen.getSelectedItem().toString());
             vueloActualizado.setDestino(comboDestino.getSelectedItem().toString());
             vueloActualizado.setFechaSalida(dateChooserSalida.getDate());
             vueloActualizado.setFechaLlegada(dateChooserLlegada.getDate());
 
-            // Actualizar avión si se seleccionó
             if (comboAvion.getSelectedIndex() > 0) {
                 String avionSeleccionado = comboAvion.getSelectedItem().toString();
                 int idAvion = Integer.parseInt(avionSeleccionado.split(" - ")[0]);
@@ -1073,10 +1069,10 @@ public class adminInterfaz extends javax.swing.JFrame {
                 vueloActualizado.setAvion(null);
             }
 
-            // 8. Guardar cambios
+
             new VueloDAO(em).actualizar(vueloActualizado);
 
-            // 9. Actualizar interfaz
+         
             listarVuelosAction();
             limpiarFormularioVuelo();
 
@@ -1092,12 +1088,12 @@ public class adminInterfaz extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-        // TODO add your handling code here:
+      
     }//GEN-LAST:event_botoneditActionPerformed
 
     private void botonguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonguardarActionPerformed
         try {
-            // Validar campos obligatorios
+           
             if (txtNumeroVuelo.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Ingrese el número de vuelo", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -1123,7 +1119,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // Validar que la fecha de salida no sea posterior a la de llegada
             if (dateChooserSalida.getDate().after(dateChooserLlegada.getDate())) {
                 JOptionPane.showMessageDialog(this,
                         "La fecha de salida no puede ser posterior a la de llegada",
@@ -1132,7 +1127,7 @@ public class adminInterfaz extends javax.swing.JFrame {
             }
             String numeroVuelo = txtNumeroVuelo.getText();
             if (vueloDAO.existeNumeroVuelo(numeroVuelo)) {
-                // tu lógica
+              
 
                 JOptionPane.showMessageDialog(this,
                         "Ya existe un vuelo con ese número.",
@@ -1141,7 +1136,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // Validar que origen y destino sean diferentes
             if (comboorigen.getSelectedItem().equals(comboDestino.getSelectedItem())) {
                 JOptionPane.showMessageDialog(this,
                         "El origen y destino no pueden ser iguales",
@@ -1149,7 +1143,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // Crear nuevo vuelo
             Vuelo nuevoVuelo = new Vuelo();
             nuevoVuelo.setNumeroVuelo(txtNumeroVuelo.getText().trim());
             nuevoVuelo.setOrigen(comboorigen.getSelectedItem().toString());
@@ -1157,7 +1150,7 @@ public class adminInterfaz extends javax.swing.JFrame {
             nuevoVuelo.setFechaSalida(dateChooserSalida.getDate());
             nuevoVuelo.setFechaLlegada(dateChooserLlegada.getDate());
 
-            // Asignar avión si se seleccionó
+      
             if (comboAvion.getSelectedIndex() > 0) {
                 String avionSeleccionado = comboAvion.getSelectedItem().toString();
                 int idAvion = Integer.parseInt(avionSeleccionado.split(" - ")[0]);
@@ -1165,10 +1158,9 @@ public class adminInterfaz extends javax.swing.JFrame {
                 nuevoVuelo.setAvion(avion);
             }
 
-            // Guardar en base de datos
+            
             new VueloDAO(em).crear(nuevoVuelo);
 
-            // Actualizar interfaz
             limpiarFormularioVuelo();
             listarVuelosAction();
 
@@ -1186,12 +1178,11 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-            // Obtener todas las reservas desde la base de datos
+            
             List<Reserva> reservas = ReservaDAO.listarTodos();
 
-            // Obtener el modelo de la tabla
             DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
-            modelo.setRowCount(0); // Limpiar tabla
+            modelo.setRowCount(0);
 
             for (Reserva r : reservas) {
                 String nombrePasajero = r.getPasajero() != null ? r.getPasajero().getnombre() : "N/A";
@@ -1208,7 +1199,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 });
             }
 
-            // Ajustar el ancho de las columnas
             ajustarAnchoColumnasReservas();
 
         } catch (Exception e) {
@@ -1231,11 +1221,11 @@ public class adminInterfaz extends javax.swing.JFrame {
             return;
         }
 
-        // Obtener el ID de la reserva seleccionada
+
         DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
         int idReserva = (int) modelo.getValueAt(filaSeleccionada, 0);
 
-        // Confirmar cancelación
+     
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
                 "¿Está seguro que desea cancelar esta reserva?",
@@ -1246,13 +1236,12 @@ public class adminInterfaz extends javax.swing.JFrame {
             return;
         }
 
-        // Procesar la cancelación
+       
         try {
 
-            ReservaDAO reservaDAO = new ReservaDAO(null); // o pasá un EntityManager si lo usás
+            ReservaDAO reservaDAO = new ReservaDAO(null);
             reservaDAO.cambiarEstado(idReserva, Reserva.EstadoReserva.CANCELADA);
 
-            // Actualizar la tabla
             listarReservasAction(null);
 
             JOptionPane.showMessageDialog(this,
@@ -1284,11 +1273,10 @@ public class adminInterfaz extends javax.swing.JFrame {
             return;
         }
 
-        // 2. Obtener el ID del avión a eliminar
+        
         DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
-        long idAvion = (long) modelo.getValueAt(filaSeleccionada, 0); // Columna 0 es el ID
+        long idAvion = (long) modelo.getValueAt(filaSeleccionada, 0); 
 
-        // 3. Confirmar eliminación
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
                 "¿Está seguro que desea eliminar este avión?",
@@ -1299,18 +1287,18 @@ public class adminInterfaz extends javax.swing.JFrame {
             return;
         }
 
-        // 4. Proceso de eliminación
+     
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
 
-            // Buscar y eliminar el avión
+         
             Avion avion = em.find(Avion.class, idAvion);
             if (avion != null) {
                 em.remove(avion);
                 tx.commit();
 
-                // Actualizar interfaz
+           
                 cargarTodosAviones();
                 limpiarCamposAvion();
                 JOptionPane.showMessageDialog(this,
@@ -1338,14 +1326,12 @@ public class adminInterfaz extends javax.swing.JFrame {
     private void botonlistar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistar1ActionPerformed
 
         try {
-            // 1. Obtener todos los aviones desde el DAO
+
             List<Avion> aviones = avionDAO.listarTodos();
 
-            // 2. Obtener el modelo de la tabla
             DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
-            modelo.setRowCount(0); // Limpiar tabla existente
+            modelo.setRowCount(0);
 
-            // 3. Llenar la tabla con los datos
             for (Avion a : aviones) {
                 modelo.addRow(new Object[]{
                     a.getIdAvion(),
@@ -1355,7 +1341,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 });
             }
 
-            // 4. Ajustar el ancho de columnas (opcional)
             ajustarAnchoColumnasAviones();
 
         } catch (Exception e) {
@@ -1367,37 +1352,32 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
     }
 
-    // Método auxiliar para ajustar columnas de aviones
     private void ajustarAnchoColumnasAviones() {
         tablaaviones.setAutoResizeMode(tablaaviones.AUTO_RESIZE_OFF);
 
-        // Ajustes personalizados (en píxeles)
-        tablaaviones.getColumnModel().getColumn(0).setPreferredWidth(50);   // ID
-        tablaaviones.getColumnModel().getColumn(1).setPreferredWidth(120);  // Matrícula
-        tablaaviones.getColumnModel().getColumn(2).setPreferredWidth(80);   // Capacidad
-        tablaaviones.getColumnModel().getColumn(3).setPreferredWidth(150);  // Estado
+        tablaaviones.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tablaaviones.getColumnModel().getColumn(1).setPreferredWidth(120);
+        tablaaviones.getColumnModel().getColumn(2).setPreferredWidth(80);
+        tablaaviones.getColumnModel().getColumn(3).setPreferredWidth(150);
 
     }//GEN-LAST:event_botonlistar1ActionPerformed
 
     private void botoneditar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditar1ActionPerformed
 
         try {
-            // Validar selección
+
             if (tablaaviones.getSelectedRow() < 0) {
                 JOptionPane.showMessageDialog(this, "Seleccione un avión", "Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // Validar campos
             if (!validarCamposAvion()) {
                 return;
             }
 
-            // Obtener ID (manejo seguro de tipos)
             DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
             long idAvion = ((Number) modelo.getValueAt(tablaaviones.getSelectedRow(), 0)).longValue();
 
-            // Confirmar edición
             int confirmacion = JOptionPane.showConfirmDialog(
                     this,
                     "¿Actualizar este avión?",
@@ -1414,7 +1394,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                         throw new Exception("Avión no encontrado");
                     }
 
-                    // Actualizar datos
                     avion.setMatricula(capmatricula.getText().toUpperCase()); // Forzar mayúsculas
                     avion.setCapacidadPasajeros(Integer.parseInt(capcapacidad.getText()));
                     avion.setEstado(comborol1.getSelectedItem().toString());
@@ -1422,7 +1401,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                     em.merge(avion);
                     tx.commit();
 
-                    // Actualizar UI
                     cargarTodosAviones();
                     limpiarCamposAvion();
                     JOptionPane.showMessageDialog(this, "Avión actualizado");
@@ -1444,7 +1422,6 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void botonagregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregar1ActionPerformed
 
-        // Validar campos primero
         if (!validarCamposAvion()) {
             return;
         }
@@ -1453,7 +1430,6 @@ public class adminInterfaz extends javax.swing.JFrame {
         int capacidad = Integer.parseInt(capcapacidad.getText());
         String estado = comborol1.getSelectedItem().toString();
 
-        // Verificar si la matrícula ya existe
         if (avionExiste(matricula)) {
             JOptionPane.showMessageDialog(this,
                     "Error: La matrícula " + matricula + " ya está registrada",
@@ -1497,16 +1473,15 @@ public class adminInterfaz extends javax.swing.JFrame {
         try {
             Avion avion;
 
-            // Búsqueda flexible (ID numérico o matrícula)
-            if (busqueda.matches("\\d+")) {  // Si es solo números (ID)
+            if (busqueda.matches("\\d+")) {
                 int id = Integer.parseInt(busqueda);
                 avion = avionDAO.buscarPorId(id);
-            } else {  // Si no es numérico (matrícula)
-                avion = avionDAO.buscarPorMatricula(busqueda.toUpperCase()); // Convertir a mayúsculas
+            } else {
+                avion = avionDAO.buscarPorMatricula(busqueda.toUpperCase());
             }
 
             if (avion != null) {
-                // Mostrar resultados
+
                 DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
                 modelo.setRowCount(0);
                 modelo.addRow(new Object[]{
@@ -1516,7 +1491,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                     avion.getEstado()
                 });
 
-                // Rellenar campos de edición
                 capmatricula.setText(avion.getMatricula());
                 capcapacidad.setText(String.valueOf(avion.getCapacidadPasajeros()));
                 comborol1.setSelectedItem(avion.getEstado());
@@ -1573,7 +1547,7 @@ public class adminInterfaz extends javax.swing.JFrame {
             cargarTodosPasajeros();
             limpiarCampos();
             JOptionPane.showMessageDialog(this, "Pasajero eliminado");
-        }        // TODO add your handling code here:
+        }
     }//GEN-LAST:event_botoneliminar1ActionPerformed
 
     private void txtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarActionPerformed
@@ -1608,14 +1582,12 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void botonlistarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistarActionPerformed
         try {
-            // 1. Obtener todos los pasajeros desde el DAO
+
             List<Pasajero> pasajeros = pasajeroDAO.listarTodos();
 
-            // 2. Obtener el modelo de la tabla
             DefaultTableModel modelo = (DefaultTableModel) tablapasajero.getModel();
-            modelo.setRowCount(0); // Limpiar tabla existente
+            modelo.setRowCount(0);
 
-            // 3. Llenar la tabla con los datos
             for (Pasajero p : pasajeros) {
                 modelo.addRow(new Object[]{
                     p.getIdUsuario(),
@@ -1628,7 +1600,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 });
             }
 
-            // 4. Ajustar el ancho de columnas (opcional)
             ajustarAnchoColumnas();
 
         } catch (Exception e) {
@@ -1641,11 +1612,9 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     }
 
-    // Método auxiliar para ajustar columnas (opcional)
     private void ajustarAnchoColumnas() {
         tablapasajero.setAutoResizeMode(tablapasajero.AUTO_RESIZE_OFF);
 
-        // Ajustes personalizados (en píxeles)
         tablapasajero.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
         tablapasajero.getColumnModel().getColumn(1).setPreferredWidth(100); // Nombre
         tablapasajero.getColumnModel().getColumn(2).setPreferredWidth(100); // Apellido
@@ -1660,6 +1629,10 @@ public class adminInterfaz extends javax.swing.JFrame {
         int fila = tablapasajero.getSelectedRow();
         if (fila < 0) {
             JOptionPane.showMessageDialog(this, "Seleccione un pasajero");
+            return;
+        }
+        if (!txttelefono.getText().matches("\\d{7,10}")) {
+            JOptionPane.showMessageDialog(this, "Teléfono debe tener 7 a 10 dígitos", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -1677,7 +1650,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         pasajeroDAO.actualizar(actualizado);
         cargarTodosPasajeros();
         JOptionPane.showMessageDialog(this, "Pasajero actualizado");
-        limpiarCampos();// TODO add your handling code here:
+        limpiarCampos();
     }//GEN-LAST:event_botoneditarActionPerformed
 
     private void botonagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregarActionPerformed
@@ -1688,6 +1661,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         EntityTransaction tx = em.getTransaction();
         try {
+
             tx.begin();
 
             Pasajero nuevo = new Pasajero();
@@ -1710,6 +1684,7 @@ public class adminInterfaz extends javax.swing.JFrame {
             if (tx.isActive()) {
                 tx.rollback();
             }
+
             JOptionPane.showMessageDialog(this,
                     "Error al registrar: " + e.getMessage(),
                     "Error",
@@ -1722,20 +1697,18 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         int filaVista = tablapasajero.getSelectedRow();
         if (filaVista >= 0) {
-            // Convertir el índice de la fila de la vista al modelo
+
             int filaModelo = tablapasajero.convertRowIndexToModel(filaVista);
             TableModel modelo = tablapasajero.getModel();
 
-            // Obtener los valores de cada columna por su índice en el modelo
             Object id = modelo.getValueAt(filaModelo, 0);
-            Object nombre = modelo.getValueAt(filaModelo, 1);         // Columna 1: Nombre
-            Object apellido = modelo.getValueAt(filaModelo, 2);       // Columna 2: Apellido
-            Object identificacion = modelo.getValueAt(filaModelo, 3); // Columna 3: Identificación
-            Object telefono = modelo.getValueAt(filaModelo, 4);       // Columna 4: Teléfono
-            Object correo = modelo.getValueAt(filaModelo, 5);         // Columna 5: Correo
-            Object rol = modelo.getValueAt(filaModelo, 6);            // Columna 6: Rol
+            Object nombre = modelo.getValueAt(filaModelo, 1);
+            Object apellido = modelo.getValueAt(filaModelo, 2);
+            Object identificacion = modelo.getValueAt(filaModelo, 3);
+            Object telefono = modelo.getValueAt(filaModelo, 4);
+            Object correo = modelo.getValueAt(filaModelo, 5);
+            Object rol = modelo.getValueAt(filaModelo, 6);
 
-            // Establecer los valores en los campos de texto
             txtnombre.setText(nombre != null ? nombre.toString() : "");
             txtapellido.setText(apellido != null ? apellido.toString() : "");
             txtidentificacion.setText(identificacion != null ? identificacion.toString() : "");
@@ -1753,36 +1726,32 @@ public class adminInterfaz extends javax.swing.JFrame {
     private void tablavuelosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablavuelosMouseClicked
         int filaVista = tablavuelos.getSelectedRow();
         if (filaVista >= 0) {
-            // Convertir el índice de la fila de la vista al modelo
+
             int filaModelo = tablavuelos.convertRowIndexToModel(filaVista);
             DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
 
             try {
-                // Obtener los valores de cada columna
+
                 String numeroVuelo = modelo.getValueAt(filaModelo, 1).toString();
                 String origen = modelo.getValueAt(filaModelo, 2).toString();
                 String destino = modelo.getValueAt(filaModelo, 3).toString();
 
-                // Formatear fechas antes de parsear (Asegurarse de que las fechas están en el formato "dd/MM/yyyy")
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-                // Obtener las fechas en formato String y parsearlas
                 String fechaSalidaString = modelo.getValueAt(filaModelo, 4).toString();
                 String fechaLlegadaString = modelo.getValueAt(filaModelo, 5).toString();
 
-                Date fechaSalida = sdf.parse(fechaSalidaString);  // Parseo de la fecha
-                Date fechaLlegada = sdf.parse(fechaLlegadaString);  // Parseo de la fecha
+                Date fechaSalida = sdf.parse(fechaSalidaString);
+                Date fechaLlegada = sdf.parse(fechaLlegadaString);
 
                 String matriculaAvion = modelo.getValueAt(filaModelo, 6).toString();
 
-                // Establecer los valores en los campos del formulario
                 txtNumeroVuelo.setText(numeroVuelo);
                 comboorigen.setSelectedItem(origen);
                 comboDestino.setSelectedItem(destino);
-                dateChooserSalida.setDate(fechaSalida); // Asignar fecha formateada
-                dateChooserLlegada.setDate(fechaLlegada); // Asignar fecha formateada
+                dateChooserSalida.setDate(fechaSalida);
+                dateChooserLlegada.setDate(fechaLlegada);
 
-                // Buscar el avión correspondiente en el combo
                 for (int i = 0; i < comboAvion.getItemCount(); i++) {
                     if (comboAvion.getItemAt(i).toString().contains(matriculaAvion)) {
                         comboAvion.setSelectedIndex(i);
@@ -1807,7 +1776,7 @@ public class adminInterfaz extends javax.swing.JFrame {
     private void botonagregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregar2ActionPerformed
 
         try {
-            // Validar campos obligatorios
+
             if (txtnombre1.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Ingrese el nombre del administrador", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -1818,15 +1787,21 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // Validar formato de teléfono
             if (!txttelefono1.getText().matches("\\d{7,15}")) {
                 JOptionPane.showMessageDialog(this,
                         "Teléfono debe contener solo números (7-15 dígitos)",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if (!txttelefono.getText().matches("\\d{7,10}")) {
+                JOptionPane.showMessageDialog(this, "Teléfono debe tener 7 a 10 dígitos", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!txtidentificacion.getText().matches("\\d+")) {
+                JOptionPane.showMessageDialog(this, "Identificación debe contener solo números", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            // Validar rol seleccionado
             String rolSeleccionado = comborol2.getSelectedItem().toString();
             if (comborol2.getSelectedIndex() <= 0
                     || (!rolSeleccionado.equals("ADMINISTRADOR 1") && !rolSeleccionado.equals("ADMINISTRADOR 2"))) {
@@ -1836,16 +1811,13 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // Crear nuevo administrador
             Administrador nuevoAdmin = new Administrador();
             nuevoAdmin.setNombre(txtnombre1.getText().trim());
             nuevoAdmin.setTelefono(txttelefono1.getText().trim());
             nuevoAdmin.setRol(rolSeleccionado);
 
-            // Guardar en base de datos
             administradorDAO.crear(nuevoAdmin);
 
-            // Actualizar interfaz
             limpiarCamposAdministrador();
             listarAdministradores();
 
@@ -1865,7 +1837,7 @@ public class adminInterfaz extends javax.swing.JFrame {
     private void botoneditar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditar2ActionPerformed
 
         try {
-            // 1. Validar selección en la tabla
+
             int filaSeleccionada = tablaadministrador.getSelectedRow();
             if (filaSeleccionada < 0) {
                 JOptionPane.showMessageDialog(this,
@@ -1875,11 +1847,9 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // 2. Obtener ID del administrador seleccionado
             DefaultTableModel modelo = (DefaultTableModel) tablaadministrador.getModel();
             int idAdmin = (int) modelo.getValueAt(filaSeleccionada, 0);
 
-            // 3. Validar campos del formulario
             if (txtnombre1.getText().trim().isEmpty()
                     || txttelefono1.getText().trim().isEmpty()
                     || comborol2.getSelectedIndex() <= 0) {
@@ -1891,15 +1861,17 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // 4. Validar formato de teléfono
             if (!txttelefono1.getText().matches("\\d{7,15}")) {
                 JOptionPane.showMessageDialog(this,
                         "Teléfono debe contener solo números (7-15 dígitos)",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if (!txtidentificacion.getText().matches("\\d+")) {
+                JOptionPane.showMessageDialog(this, "Identificación debe contener solo números", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            // 5. Confirmar edición
             int confirmacion = JOptionPane.showConfirmDialog(
                     this,
                     "¿Está seguro que desea actualizar este administrador?",
@@ -1910,21 +1882,17 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // 6. Obtener y actualizar el administrador
             Administrador adminActualizado = administradorDAO.buscarPorId(idAdmin);
             if (adminActualizado == null) {
                 throw new Exception("Administrador no encontrado");
             }
 
-            // Actualizar datos
             adminActualizado.setNombre(txtnombre1.getText().trim());
             adminActualizado.setTelefono(txttelefono1.getText().trim());
             adminActualizado.setRol(comborol2.getSelectedItem().toString());
 
-            // 7. Guardar cambios
             administradorDAO.actualizar(adminActualizado);
 
-            // 8. Actualizar interfaz
             listarAdministradores();
             limpiarCamposAdministrador();
 
@@ -1944,16 +1912,14 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_botoneditar2ActionPerformed
 
     private void botonlistar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistar2ActionPerformed
-        
+
         try {
-            // 1. Obtener todos los administradores desde el DAO
+
             List<Administrador> administradores = administradorDAO.listarTodos();
 
-            // 2. Obtener el modelo de la tabla
             DefaultTableModel modelo = (DefaultTableModel) tablaadministrador.getModel();
-            modelo.setRowCount(0); // Limpiar tabla existente
+            modelo.setRowCount(0);
 
-            // 3. Llenar la tabla con los datos
             for (Administrador admin : administradores) {
                 modelo.addRow(new Object[]{
                     admin.getId(),
@@ -1963,7 +1929,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 });
             }
 
-            // 4. Ajustar el ancho de columnas
             ajustarColumnasAdmin();
 
             JOptionPane.showMessageDialog(this,
@@ -1982,9 +1947,8 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_botonlistar2ActionPerformed
 
     private void botoneliminar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar3ActionPerformed
-      
+
         try {
-            // 1. Validar selección en la tabla
             int filaSeleccionada = tablaadministrador.getSelectedRow();
             if (filaSeleccionada < 0) {
                 JOptionPane.showMessageDialog(this,
@@ -1994,11 +1958,9 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // 2. Obtener ID del administrador seleccionado
             DefaultTableModel modelo = (DefaultTableModel) tablaadministrador.getModel();
             int idAdmin = (int) modelo.getValueAt(filaSeleccionada, 0);
 
-            // 3. Confirmar eliminación
             int confirmacion = JOptionPane.showConfirmDialog(
                     this,
                     "¿Está seguro que desea eliminar este administrador?",
@@ -2009,10 +1971,8 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-            // 4. Eliminar el administrador
             administradorDAO.eliminar(idAdmin);
 
-            // 5. Actualizar interfaz
             listarAdministradores();
             limpiarCamposAdministrador();
 
@@ -2052,16 +2012,15 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
 
         try {
-            // Convertir el ID a entero
+
             int idAdmin = Integer.parseInt(idStr);
 
-            // Buscar el administrador
             Administrador admin = administradorDAO.buscarPorId(idAdmin);
 
             if (admin != null) {
-                // Mostrar en la tabla
+
                 DefaultTableModel modelo = (DefaultTableModel) tablaadministrador.getModel();
-                modelo.setRowCount(0); // Limpiar tabla
+                modelo.setRowCount(0);
                 modelo.addRow(new Object[]{
                     admin.getId(),
                     admin.getNombre(),
@@ -2069,12 +2028,10 @@ public class adminInterfaz extends javax.swing.JFrame {
                     admin.getRol()
                 });
 
-                // Mostrar en los campos de edición
                 txtnombre1.setText(admin.getNombre());
                 txttelefono1.setText(admin.getTelefono());
                 comborol2.setSelectedItem(admin.getRol());
 
-                // Ajustar columnas
                 ajustarColumnasAdmin();
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -2097,17 +2054,18 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_botonbuscar2ActionPerformed
 
     private void jPanel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel15MouseClicked
- TabPanelPrincipal.setSelectedIndex(4);        // TODO add your handling code here:
+        TabPanelPrincipal.setSelectedIndex(4);        // TODO add your handling code here:
     }//GEN-LAST:event_jPanel15MouseClicked
 
     private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
- TabPanelPrincipal.setSelectedIndex(5);        // TODO add your handling code here:
+        TabPanelPrincipal.setSelectedIndex(5);        // TODO add your handling code here:
     }//GEN-LAST:event_jPanel6MouseClicked
 
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+  new VentanaInicio().setVisible(true);
+    }//GEN-LAST:event_jLabel7MouseClicked
+
     public static void main(String args[]) {
-
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -2237,17 +2195,17 @@ public class adminInterfaz extends javax.swing.JFrame {
     }
 
     private void cargarPasajerosEnTabla(List<Pasajero> pasajeros) {
-        modeloTabla.setRowCount(0); // Limpiar tabla
+        modeloTabla.setRowCount(0);
 
         for (Pasajero p : pasajeros) {
             modeloTabla.addRow(new Object[]{
-                p.getIdUsuario(), // Columna 0: ID
-                p.getnombre(), // Columna 1: Nombre
-                p.getApellido(), // Columna 2: Apellido
-                p.getIdentificacion(),// Columna 3: Identificación
-                p.getTelefono(), // Columna 4: Teléfono
-                p.getCorreo(), // Columna 5: Correo
-                p.getRol() // Columna 6: Rol
+                p.getIdUsuario(),
+                p.getnombre(),
+                p.getApellido(),
+                p.getIdentificacion(),
+                p.getTelefono(),
+                p.getCorreo(),
+                p.getRol()
             });
         }
     }
@@ -2326,7 +2284,6 @@ public class adminInterfaz extends javax.swing.JFrame {
             return false;
         }
 
-        // Validar capacidad
         try {
             int capacidad = Integer.parseInt(capcapacidad.getText());
             if (capacidad <= 0 || capacidad > 500) {
@@ -2445,7 +2402,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                     "Error al verificar matrícula: " + e.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-            return true; // Asumir que existe para prevenir duplicados
+            return true;
         }
     }
 
@@ -2481,7 +2438,7 @@ public class adminInterfaz extends javax.swing.JFrame {
     }
 
     private void listarReservasAction(Object object) {
-        ReservaDAO reservaDAO = new ReservaDAO(null); // o pasar un EntityManager si ya lo tienes
+        ReservaDAO reservaDAO = new ReservaDAO(null);
         List<Reserva> reservas = reservaDAO.obtenerTodas();
         cargarReservasEnTabla();
     }
@@ -2493,21 +2450,19 @@ public class adminInterfaz extends javax.swing.JFrame {
     }
 
     private void listarReservasAction() {
-        ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías pasar un EntityManager válido
+        ReservaDAO reservaDAO = new ReservaDAO(null);
         List<Reserva> reservas = reservaDAO.obtenerTodas();
-        cargarReservasEnTabla(); // Pasar las reservas como parámetro
+        cargarReservasEnTabla();
     }
 
     private void cargarReservasEnTabla() {
-        // 1. Obtener las reservas desde el DAO
+
         ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías usar un EntityManager válido
         List<Reserva> reservas = reservaDAO.obtenerTodas();
 
-        // 2. Obtener el modelo de la tabla
         DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
-        modelo.setRowCount(0); // Limpiar tabla
+        modelo.setRowCount(0);
 
-        // 3. Llenar la tabla con los datos
         for (Reserva r : reservas) {
             Object[] fila = {
                 r.getIdReserva(),
@@ -2519,11 +2474,9 @@ public class adminInterfaz extends javax.swing.JFrame {
             modelo.addRow(fila);
         }
 
-        // 4. Ajustar ancho de columnas
         ajustarAnchoColumnasReservas();
     }
 
-// Método mejorado para ajustar columnas
     private void ajustarAnchoColumnasReservas() {
         if (jTableReservas == null) {
             return;
@@ -2531,8 +2484,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         jTableReservas.setAutoResizeMode(jTableReservas.AUTO_RESIZE_OFF);
 
-        // Ajustes específicos para cada columna
-        int[] anchos = {50, 150, 100, 120, 100}; // ID, Pasajero, Vuelo, Fecha, Estado
+        int[] anchos = {50, 150, 100, 120, 100};
 
         for (int i = 0; i < anchos.length; i++) {
             if (i < jTableReservas.getColumnModel().getColumnCount()) {
@@ -2546,7 +2498,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void cargarVuelosEnTabla(List<Vuelo> vuelos) {
         DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
-        modelo.setRowCount(0); // Limpiar tabla
+        modelo.setRowCount(0);
 
         for (Vuelo v : vuelos) {
             Object[] fila = {
@@ -2560,7 +2512,6 @@ public class adminInterfaz extends javax.swing.JFrame {
             modelo.addRow(fila);
         }
 
-        // Ajustar ancho de columnas para vuelos
         ajustarAnchoColumnasVuelos();
     }
 
@@ -2700,7 +2651,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                     admin.getTelefono(),
                     admin.getRol()
                 });
-                  ajustarColumnasAdmin();
+                ajustarColumnasAdmin();
             }
 
             ajustarColumnasAdmin();
@@ -2715,21 +2666,18 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
     }
 
-  
-
     private void initTablaAdministradores() {
-        // Configurar modelo de tabla
+
         DefaultTableModel modelo = new DefaultTableModel(
                 new Object[]{"ID", "Nombre", "Teléfono", "Rol"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-            
+
         };
         tablaadministrador.setModel(modelo);
 
-        // Configurar listener para selección de filas
         tablaadministrador.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int fila = tablaadministrador.getSelectedRow();
@@ -2738,11 +2686,10 @@ public class adminInterfaz extends javax.swing.JFrame {
                     txttelefono1.setText(tablaadministrador.getValueAt(fila, 2).toString());
                     comborol2.setSelectedItem(tablaadministrador.getValueAt(fila, 3).toString());
                 }
-                  
+
             }
         });
     }
-// Método auxiliar para verificar existencia de administrador
 
     private boolean existeAdministrador(String nombre) {
         try {
@@ -2756,7 +2703,6 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
     }
 
-// Método para limpiar campos del formulario de administrador
     private void limpiarCamposAdministrador() {
         txtnombre.setText("");
         txttelefono.setText("");
@@ -2783,5 +2729,17 @@ public class adminInterfaz extends javax.swing.JFrame {
         comborol2.addItem("-- Seleccione rol --");
         comborol2.addItem("ADMINISTRADOR 1");
         comborol2.addItem("ADMINISTRADOR 2");
+    }
+
+    public class Validador {
+
+        public static boolean esEmailValido(String email) {
+            return email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+        }
+
+        public static boolean esTelefonoValido(String telefono) {
+            return telefono.matches("^[0-9]{7,15}$");
+        }
+
     }
 }
