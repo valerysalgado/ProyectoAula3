@@ -36,6 +36,50 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
     });
         
     }
+    
+    private void Ingresar(){
+        
+         if ( txtDocumento.getText().isEmpty() || txtNombreUser.getText().isEmpty() || txtContraseña.getText().isEmpty()|| txtEmail.getText().isEmpty()) {
+    
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+             return;
+}
+        
+       if (!Check.isSelected()) {
+        JOptionPane.showMessageDialog(this, "Debe aceptar los términos y condiciones.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String email = txtEmail.getText().trim();
+    if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        JOptionPane.showMessageDialog(this, "Correo electrónico inválido.\n !debe contener @ , .com !", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+   
+        String documento = txtDocumento.getText().trim();
+        String nombreUser = txtNombreUser.getText().trim();
+        String contraseña = txtContraseña.getText().trim();
+        
+        
+        Pasajero persona = new Pasajero(documento,nombreUser,contraseña,email);
+        boolean respuesta = ventana.getControlador().agregarPersona(persona);
+    
+        if (respuesta) {
+            
+            JOptionPane.showMessageDialog(null, "se agrego la persona ");
+            LimpiarCampos();
+        }else{
+            
+            JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya se encuentra registrado."
+                     , "intentelo Nuevamente ", JOptionPane.ERROR_MESSAGE);
+            
+                txtNombreUser.setText("");
+        }
+      
+        
+                
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -223,47 +267,8 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
         // TODO add your handling code here:
+       Ingresar();
        
-        if ( txtDocumento.getText().isEmpty() || txtNombreUser.getText().isEmpty() || txtContraseña.getText().isEmpty()|| txtEmail.getText().isEmpty()) {
-    
-            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
-             return;
-}
-        
-       if (!Check.isSelected()) {
-        JOptionPane.showMessageDialog(this, "Debe aceptar los términos y condiciones.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    String email = txtEmail.getText().trim();
-    if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-        JOptionPane.showMessageDialog(this, "Correo electrónico inválido.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-   
-        String documento = txtDocumento.getText().trim();
-        String nombreUser = txtNombreUser.getText().trim();
-        String contraseña = txtContraseña.getText().trim();
-        
-        
-        Pasajero persona = new Pasajero(documento,nombreUser,contraseña,email);
-        boolean respuesta = ventana.getControlador().agregarPersona(persona);
-    
-        if (respuesta) {
-            
-            JOptionPane.showMessageDialog(null, "se agrego la persona ");
-            LimpiarCampos();
-        }else{
-            
-            JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya se encuentra registrado."
-                     , "intentelo Nuevamente ", JOptionPane.ERROR_MESSAGE);
-            
-                txtNombreUser.setText("");
-        }
-      
-        
-                
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed

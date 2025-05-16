@@ -3,6 +3,7 @@ package view;
 import Model.Pasajero;
 import controller.ControladorLogin;
 import javax.swing.JOptionPane;
+import java.sql.*;
 
 public class ventanaLogin1 extends javax.swing.JFrame {
 
@@ -15,6 +16,19 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         getRootPane().setDefaultButton(jButton1);
 
     }
+   /** public Connection conector(){
+        Connection con = null;
+        
+        try {
+           con = DriverManager.getConnection("jdbc:mysql://localhost/proaula_vuelos_bd","root","");
+           
+        } catch (SQLException e) {
+            System.err.println(e.toString());
+            JOptionPane.showMessageDialog(this, "Ocurrio un error .\n porfavor comunicarse con el administrador");
+        }
+        return con;
+    
+}*/
 
     public ControladorLogin getControlador() {
         return controlador;
@@ -38,8 +52,9 @@ public class ventanaLogin1 extends javax.swing.JFrame {
 
         if (aux != null) {
             if (aux.getContraseña().equals(contra)) {
-                ventanaDatosRegistros ventana = new ventanaDatosRegistros(this, aux);
-                ventana.setVisible(true);
+                VentanaInicio ventanaInicio = new VentanaInicio();
+        ventanaInicio.setPersona(aux); // Pasa el objeto Pasajero a VentanaInicio
+        ventanaInicio.setVisible(true);
                 this.dispose();
                 txtUser.setText("");
                 txtPassword.setText("");
@@ -183,7 +198,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 290, 120));
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group.png"))); // NOI18N
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 0, 370, 270));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 370, 270));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Groupf.png"))); // NOI18N
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 550, 270));
@@ -195,17 +210,13 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 802, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
         pack();

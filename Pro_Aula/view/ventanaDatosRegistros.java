@@ -1,26 +1,21 @@
 package view;
 
 import Model.Pasajero;
-import Model.Vuelos;
-import view.ventanaLogin1;
-import javax.swing.table.DefaultTableModel;
-import java.util.List;
-import java.util.ArrayList;
 
 public class ventanaDatosRegistros extends javax.swing.JFrame {
 
-    ventanaLogin1 ventana ;
-    Pasajero persona;
+    //ventanaLogin1 ventana ;
+    //Pasajero persona;
     
     public ventanaDatosRegistros(ventanaLogin1 ventana , Pasajero persona) {
         initComponents();
         setLocationRelativeTo(null);
-        this.ventana = ventana ;
-        this.persona = persona ;
+        //this.ventana = ventana ;
+       // this.persona = persona ;
         
         
     // Cargar los datos desde el objeto Pasajero
-    txtnombreUser.setText(persona.getNombreUser());     // nombre de usuario
+   /** txtnombreUser.setText(persona.getNombreUser());     // nombre de usuario
     txtContraseña.setText(persona.getContraseña());     // contraseña
     txtEmail.setText(persona.getEmail());               // email
     txtDocumento.setText(persona.getDocumento());      //telefono
@@ -39,7 +34,7 @@ public class ventanaDatosRegistros extends javax.swing.JFrame {
     txtFecha.setEditable(false);
     
 
-
+*/
 
 
     }
@@ -159,7 +154,7 @@ public class ventanaDatosRegistros extends javax.swing.JFrame {
     private void jVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVolverActionPerformed
         // TODO add your handling code here:
         
-         ventana.setVisible(true);
+        // ventana.setVisible(true);
         this.dispose();
         
     }//GEN-LAST:event_jVolverActionPerformed
