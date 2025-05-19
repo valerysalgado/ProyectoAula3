@@ -134,9 +134,21 @@ public class adminInterfaz extends javax.swing.JFrame {
         jPanel11 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jButton13 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnguardarreservas = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTableReservas = new javax.swing.JTable();
+        tablareservas = new javax.swing.JTable();
+        jLabel9 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        jLabel44 = new javax.swing.JLabel();
+        combovuelo = new javax.swing.JComboBox<>();
+        jLabel45 = new javax.swing.JLabel();
+        combousuario = new javax.swing.JComboBox<>();
+        jLabel46 = new javax.swing.JLabel();
+        dateChooserSalida1 = new com.toedter.calendar.JDateChooser();
+        jLabel47 = new javax.swing.JLabel();
+        comboasiento = new javax.swing.JComboBox<>();
+        jLabel48 = new javax.swing.JLabel();
+        comboestado = new javax.swing.JComboBox<>();
         jPanel16 = new javax.swing.JPanel();
         jLabel24 = new javax.swing.JLabel();
         botonguardar = new javax.swing.JButton();
@@ -642,22 +654,22 @@ public class adminInterfaz extends javax.swing.JFrame {
                 jButton13ActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, 90, 30));
+        jPanel11.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 360, 90, 30));
 
-        jButton3.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(102, 153, 255));
-        jButton3.setText("Listar");
-        jButton3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnguardarreservas.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        btnguardarreservas.setForeground(new java.awt.Color(102, 153, 255));
+        btnguardarreservas.setText("Guardar");
+        btnguardarreservas.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        btnguardarreservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnguardarreservasActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 340, 80, 30));
+        jPanel11.add(btnguardarreservas, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 360, 80, 30));
 
         jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTableReservas.setModel(new javax.swing.table.DefaultTableModel(
+        tablareservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -668,9 +680,68 @@ public class adminInterfaz extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(jTableReservas);
+        jScrollPane3.setViewportView(tablareservas);
 
-        jPanel11.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 670, 250));
+        jPanel11.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 670, 170));
+
+        jLabel9.setText("Añadir reservas:");
+        jPanel11.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
+
+        jButton4.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(102, 153, 255));
+        jButton4.setText("Listar");
+        jButton4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel11.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 360, 80, 30));
+
+        jLabel44.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel44.setText("Vuelo:");
+        jPanel11.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
+
+        combovuelo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VUELO", " " }));
+        combovuelo.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        combovuelo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combovueloActionPerformed(evt);
+            }
+        });
+        jPanel11.add(combovuelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 120, 20));
+
+        jLabel45.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel45.setText("Usuario:");
+        jPanel11.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 80, -1, -1));
+
+        combousuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "USUARIO", " " }));
+        combousuario.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel11.add(combousuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, 120, 20));
+
+        jLabel46.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel46.setText("Fecha de salida:");
+        jPanel11.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
+
+        dateChooserSalida1.setBackground(new java.awt.Color(102, 153, 255));
+        dateChooserSalida1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel11.add(dateChooserSalida1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 100, -1));
+
+        jLabel47.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel47.setText("Asiento:");
+        jPanel11.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 80, -1, -1));
+
+        comboasiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ASIENTO", " " }));
+        comboasiento.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel11.add(comboasiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, 120, 20));
+
+        jLabel48.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jLabel48.setText("Estado:");
+        jPanel11.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, -1, -1));
+
+        comboestado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ESTADO", " ", " " }));
+        comboestado.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 153, 255), new java.awt.Color(102, 153, 255)));
+        jPanel11.add(comboestado, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, 120, 20));
 
         TabPanelPrincipal.addTab("RESERVAS", jPanel11);
 
@@ -1176,12 +1247,12 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botonguardarActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnguardarreservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarreservasActionPerformed
         try {
             
             List<Reserva> reservas = ReservaDAO.listarTodos();
 
-            DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
+            DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
             modelo.setRowCount(0);
 
             for (Reserva r : reservas) {
@@ -1211,7 +1282,7 @@ public class adminInterfaz extends javax.swing.JFrame {
     }
 
     private void cancelarReservaAction(java.awt.event.ActionEvent evt) {
-        int filaSeleccionada = jTableReservas.getSelectedRow();
+        int filaSeleccionada = tablareservas.getSelectedRow();
 
         if (filaSeleccionada < 0) {
             JOptionPane.showMessageDialog(this,
@@ -1222,7 +1293,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
 
 
-        DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
         int idReserva = (int) modelo.getValueAt(filaSeleccionada, 0);
 
      
@@ -1256,7 +1327,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
 
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnguardarreservasActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
@@ -2065,6 +2136,14 @@ public class adminInterfaz extends javax.swing.JFrame {
   new VentanaInicio().setVisible(true);
     }//GEN-LAST:event_jLabel7MouseClicked
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void combovueloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combovueloActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_combovueloActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
@@ -2094,18 +2173,24 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JButton botonlistar;
     private javax.swing.JButton botonlistar1;
     private javax.swing.JButton botonlistar2;
+    private javax.swing.JButton btnguardarreservas;
     private javax.swing.JTextField capcapacidad;
     private javax.swing.JTextField capmatricula;
     private javax.swing.JComboBox<String> comboAvion;
     private javax.swing.JComboBox<String> comboDestino;
+    private javax.swing.JComboBox<String> comboasiento;
+    private javax.swing.JComboBox<String> comboestado;
     private javax.swing.JComboBox<String> comboorigen;
     private javax.swing.JComboBox<String> comborol;
     private javax.swing.JComboBox<String> comborol1;
     private javax.swing.JComboBox<String> comborol2;
+    private javax.swing.JComboBox<String> combousuario;
+    private javax.swing.JComboBox<String> combovuelo;
     private com.toedter.calendar.JDateChooser dateChooserLlegada;
     private com.toedter.calendar.JDateChooser dateChooserSalida;
+    private com.toedter.calendar.JDateChooser dateChooserSalida1;
     private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -2140,10 +2225,16 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -2166,10 +2257,10 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTableReservas;
     private javax.swing.JTable tablaadministrador;
     private javax.swing.JTable tablaaviones;
     public javax.swing.JTable tablapasajero;
+    private javax.swing.JTable tablareservas;
     private javax.swing.JTable tablavuelos;
     private javax.swing.JTextField txtNumeroVuelo;
     private javax.swing.JTextField txtapellido;
@@ -2446,7 +2537,7 @@ public class adminInterfaz extends javax.swing.JFrame {
     private void initjTableReservas() {
         String[] columnas = {"ID", "Pasajero", "Vuelo", "Fecha Reserva", "Estado"};
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
-        jTableReservas.setModel(modelo);
+        tablareservas.setModel(modelo);
     }
 
     private void listarReservasAction() {
@@ -2460,7 +2551,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías usar un EntityManager válido
         List<Reserva> reservas = reservaDAO.obtenerTodas();
 
-        DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
         modelo.setRowCount(0);
 
         for (Reserva r : reservas) {
@@ -2478,22 +2569,22 @@ public class adminInterfaz extends javax.swing.JFrame {
     }
 
     private void ajustarAnchoColumnasReservas() {
-        if (jTableReservas == null) {
+        if (tablareservas == null) {
             return;
         }
 
-        jTableReservas.setAutoResizeMode(jTableReservas.AUTO_RESIZE_OFF);
+        tablareservas.setAutoResizeMode(tablareservas.AUTO_RESIZE_OFF);
 
         int[] anchos = {50, 150, 100, 120, 100};
 
         for (int i = 0; i < anchos.length; i++) {
-            if (i < jTableReservas.getColumnModel().getColumnCount()) {
-                jTableReservas.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            if (i < tablareservas.getColumnModel().getColumnCount()) {
+                tablareservas.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
             }
         }
 
-        jTableReservas.revalidate();
-        jTableReservas.repaint();
+        tablareservas.revalidate();
+        tablareservas.repaint();
     }
 
     private void cargarVuelosEnTabla(List<Vuelo> vuelos) {
