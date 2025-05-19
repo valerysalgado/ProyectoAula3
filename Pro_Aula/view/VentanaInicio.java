@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package view;
 
 import Model.Pasajero;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author User
- */
 public class VentanaInicio extends javax.swing.JFrame {
 
     
@@ -20,11 +13,29 @@ public class VentanaInicio extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
           
+        
+   java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+   java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern(" HH:mm dd-MM-yyyy ");
+   String fechaHoraActual = ahora.format(formato);
+   txtFecha.setText(fechaHoraActual);
+   
+    txtnombreUser.setEditable(false);
+    txtContraseña.setEditable(false);
+    txtEmail.setEditable(false);
+    txtDocumento.setEditable(false);
+    txtFecha.setEditable(false);
+    
+     jButton1.setVisible(true);
+
+   
     }
+    
+    
     public void setPersona(Pasajero persona) {
         if (persona == null) {
             JOptionPane.showMessageDialog(this, "Error: Pasajero no puede ser null");
             return;
+            
         }
         
     this.persona = persona;
@@ -44,6 +55,9 @@ public class VentanaInicio extends javax.swing.JFrame {
     txtDocumento.setEditable(false);
     //txtFecha.setEditable(false);
     
+    
+    jButton1.setVisible(false);
+   
     }
 
     @SuppressWarnings("unchecked")
@@ -58,6 +72,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        txtFecha = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -84,7 +99,7 @@ public class VentanaInicio extends javax.swing.JFrame {
                 jComboBox1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, 150, 40));
+        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 150, 40));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cartagena", "Medellin", "Bogota" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +107,7 @@ public class VentanaInicio extends javax.swing.JFrame {
                 jComboBox2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 40, 160, 40));
+        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 80, 160, 40));
 
         jButton2.setText("Buscar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -103,13 +118,20 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 40, 110, 50));
 
         jLabel2.setText("Vuelo Ida");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, -1, -1));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, -1, -1));
 
         jLabel3.setText("Vuelo Vuelta");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, -1, -1));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 60, -1, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carga 100 x 100.gif"))); // NOI18N
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 110, 90));
+
+        txtFecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFechaActionPerformed(evt);
+            }
+        });
+        jPanel2.add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 170, 180, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 720, 200));
 
@@ -141,10 +163,10 @@ public class VentanaInicio extends javax.swing.JFrame {
                 txtnombreUserActionPerformed(evt);
             }
         });
-        jPanel1.add(txtnombreUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 40, 110, -1));
-        jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 100, -1));
-        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 110, -1));
-        jPanel1.add(txtDocumento, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, 100, -1));
+        jPanel1.add(txtnombreUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 150, 30));
+        jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 150, 30));
+        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, 150, 30));
+        jPanel1.add(txtDocumento, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, 150, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 510));
 
@@ -173,6 +195,10 @@ public class VentanaInicio extends javax.swing.JFrame {
     private void txtnombreUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnombreUserActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtnombreUserActionPerformed
+
+    private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,6 +251,7 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JTextField txtContraseña;
     private javax.swing.JTextField txtDocumento;
     private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtnombreUser;
     // End of variables declaration//GEN-END:variables
 }

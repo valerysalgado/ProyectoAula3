@@ -143,6 +143,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
 
         txtDocumento.setBackground(new java.awt.Color(102, 153, 255));
         txtDocumento.setBorder(null);
+        txtDocumento.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txtDocumento.setVerifyInputWhenFocusTarget(false);
         txtDocumento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
