@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence     http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
   <persistence-unit name="ConfigDB" transaction-type="RESOURCE_LOCAL">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>Dominio.Entidades.Administrador</class>
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <class>Dominio.Entidades.Reserva</class>
+    <class>Dominio.Entidades.Asiento</class>
+    <class>Dominio.Entidades.Avion</class>
+    <class>Dominio.Entidades.Pasajero</class>
     <class>Dominio.Entidades.Vuelo</class>
+    <class>Dominio.Entidades.Administrador</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proaula_vuelos_bd?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/proaula_vuelos_bd?useSSL=false&amp;serverTimezone=UTC"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value=""/>
-      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+      <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDB103Dialect"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="hibernate.dialect.storage_engine" value="innodb"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.use_sql_comments" value="true"/>
+      <property name="hibernate.connection.autocommit" value="false"/>
+      <property name="hibernate.connection.provider_disables_autocommit" value="true"/>
+      <property name="hibernate.id.new_generator_mappings" value="true"/>
+      <property name="hibernate.hbm2ddl.create_namespaces" value="true"/>
+      <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
     </properties>
   </persistence-unit>
 </persistence>
