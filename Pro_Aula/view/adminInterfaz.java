@@ -27,12 +27,17 @@ public class adminInterfaz extends javax.swing.JFrame {
     private AvionDAO avionDAO = null;
 
     public adminInterfaz() {
+        initComponents();
+        setLocationRelativeTo(null);
+       
+        
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
         this.em = emf.createEntityManager();
         pasajeroDAO = new PasajeroDAO(this.em);
         avionDAO = new AvionDAO(this.em);
 
-        initComponents();
+        
+                
         initTabla();
         inittablaaviones();
         ajustarColumnas();
@@ -1451,7 +1456,9 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_tablapasajeroMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+      ventanaLogin1 login = new ventanaLogin1();
+     login.setVisible(true);
+     this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {

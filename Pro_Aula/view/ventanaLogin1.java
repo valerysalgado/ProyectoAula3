@@ -16,20 +16,19 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         getRootPane().setDefaultButton(jButton1);
 
     }
-   /** public Connection conector(){
-        Connection con = null;
-        
-        try {
-           con = DriverManager.getConnection("jdbc:mysql://localhost/proaula_vuelos_bd","root","");
-           
-        } catch (SQLException e) {
-            System.err.println(e.toString());
-            JOptionPane.showMessageDialog(this, "Ocurrio un error .\n porfavor comunicarse con el administrador");
-        }
-        return con;
-    
-}*/
 
+    /**
+     * public Connection conector(){ Connection con = null;
+     *
+     * try { con =
+     * DriverManager.getConnection("jdbc:mysql://localhost/proaula_vuelos_bd","root","");
+     *
+     * } catch (SQLException e) { System.err.println(e.toString());
+     * JOptionPane.showMessageDialog(this, "Ocurrio un error .\n porfavor
+     * comunicarse con el administrador"); } return con;
+     *
+     * }
+     */
     public ControladorLogin getControlador() {
         return controlador;
     }
@@ -47,14 +46,21 @@ public class ventanaLogin1 extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 3 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (ROL.getSelectedItem().equals("Administrador")) {
+            JOptionPane.showMessageDialog(this, "Para acceder como Administrador debe estar registrado.\nPor favor cree una cuenta.");
+            VentanaRegistrarPersona ventana = new VentanaRegistrarPersona(this);
+            ventana.setVisible(true);
+            this.dispose();
+            return;
+        }
 
         Pasajero aux = controlador.buscarPersona(user);
 
         if (aux != null) {
             if (aux.getContraseña().equals(contra)) {
                 VentanaInicio ventanaInicio = new VentanaInicio();
-        ventanaInicio.setPersona(aux); // Pasa el objeto Pasajero a VentanaInicio
-        ventanaInicio.setVisible(true);
+                ventanaInicio.setPersona(aux); // Pasa el objeto Pasajero a VentanaInicio
+                ventanaInicio.setVisible(true);
                 this.dispose();
                 txtUser.setText("");
                 txtPassword.setText("");
@@ -99,6 +105,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 510));
 
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(600, 500));
@@ -221,6 +228,19 @@ public class ventanaLogin1 extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+ void ocultar() {
+        if (ROL.getSelectedItem().equals("ADMINISTRADOR")) {
+            adminInterfaz a = new adminInterfaz();
+            a.show();
+        } else {
+            if (ROL.getSelectedItem().equals("USUARIO")) {
+
+                VentanaInicio v = new VentanaInicio();
+                v.show();
+            }
+        }
+    }
+
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -231,8 +251,19 @@ public class ventanaLogin1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        realizarLogin();
+        String user = txtUser.getText(), con = txtPassword.getText();
+
+        if (user.equals("admin") && con.equals("123")) {
+            JOptionPane.showMessageDialog(null, "Vienvenido " + user);
+            adminInterfaz a = new adminInterfaz();
+            a.show();
+            ocultar();
+            this.dispose();
+        } else {
+            ocultar();
+            realizarLogin();
+        }
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
