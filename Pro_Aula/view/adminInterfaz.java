@@ -1012,11 +1012,11 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
-        TabPanelPrincipal.setSelectedIndex(1);  
+        TabPanelPrincipal.setSelectedIndex(1);
     }//GEN-LAST:event_jPanel7MouseClicked
 
     private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
-        TabPanelPrincipal.setSelectedIndex(3);      
+        TabPanelPrincipal.setSelectedIndex(3);
     }//GEN-LAST:event_jPanel9MouseClicked
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
@@ -1024,11 +1024,11 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        TabPanelPrincipal.setSelectedIndex(5);      
+        TabPanelPrincipal.setSelectedIndex(5);
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        TabPanelPrincipal.setSelectedIndex(4);      
+        TabPanelPrincipal.setSelectedIndex(4);
     }//GEN-LAST:event_jLabel12MouseClicked
 
     private void botonelimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonelimiActionPerformed
@@ -1037,7 +1037,6 @@ public class adminInterfaz extends javax.swing.JFrame {
         if (filaSeleccionada >= 0) {
             int idVuelo = (int) tablavuelos.getValueAt(filaSeleccionada, 0);
 
-         
             int confirmar = JOptionPane.showConfirmDialog(this,
                     "¿Está seguro de eliminar este vuelo?", "Confirmar",
                     JOptionPane.YES_NO_OPTION);
@@ -1045,7 +1044,7 @@ public class adminInterfaz extends javax.swing.JFrame {
             if (confirmar == JOptionPane.YES_OPTION) {
                 try {
                     vueloDAO.eliminarVuelo(idVuelo);
-                    actualizarTablaVuelos(); 
+                    actualizarTablaVuelos();
                     JOptionPane.showMessageDialog(this, "Vuelo eliminado correctamente");
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this,
@@ -1065,7 +1064,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void botoneditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditActionPerformed
         try {
-         
+
             int filaSeleccionada = tablavuelos.getSelectedRow();
             if (filaSeleccionada < 0) {
                 JOptionPane.showMessageDialog(this,
@@ -1075,7 +1074,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 return;
             }
 
-   
             DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
             int idVuelo = (int) modelo.getValueAt(filaSeleccionada, 0);
 
@@ -1101,14 +1099,12 @@ public class adminInterfaz extends javax.swing.JFrame {
             }
 
             if (comboorigen.getSelectedItem().equals(comboDestino.getSelectedItem())) {
-                JOptionPane.showMessageDialog(this,
-                        "El origen y destino no pueden ser iguales",
+                JOptionPane.showMessageDialog(this, "El origen y destino no pueden ser iguales",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-         
             int confirmacion = JOptionPane.showConfirmDialog(
                     this,
                     "¿Está seguro que desea actualizar este vuelo?",
@@ -1124,7 +1120,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 throw new Exception("Vuelo no encontrado");
             }
 
-           
             vueloActualizado.setNumeroVuelo(txtNumeroVuelo.getText().trim());
             vueloActualizado.setOrigen(comboorigen.getSelectedItem().toString());
             vueloActualizado.setDestino(comboDestino.getSelectedItem().toString());
@@ -1140,10 +1135,8 @@ public class adminInterfaz extends javax.swing.JFrame {
                 vueloActualizado.setAvion(null);
             }
 
-
             new VueloDAO(em).actualizar(vueloActualizado);
 
-         
             listarVuelosAction();
             limpiarFormularioVuelo();
 
@@ -1159,12 +1152,12 @@ public class adminInterfaz extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-      
+
     }//GEN-LAST:event_botoneditActionPerformed
 
     private void botonguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonguardarActionPerformed
         try {
-           
+
             if (txtNumeroVuelo.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Ingrese el número de vuelo", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -1198,7 +1191,6 @@ public class adminInterfaz extends javax.swing.JFrame {
             }
             String numeroVuelo = txtNumeroVuelo.getText();
             if (vueloDAO.existeNumeroVuelo(numeroVuelo)) {
-              
 
                 JOptionPane.showMessageDialog(this,
                         "Ya existe un vuelo con ese número.",
@@ -1221,7 +1213,6 @@ public class adminInterfaz extends javax.swing.JFrame {
             nuevoVuelo.setFechaSalida(dateChooserSalida.getDate());
             nuevoVuelo.setFechaLlegada(dateChooserLlegada.getDate());
 
-      
             if (comboAvion.getSelectedIndex() > 0) {
                 String avionSeleccionado = comboAvion.getSelectedItem().toString();
                 int idAvion = Integer.parseInt(avionSeleccionado.split(" - ")[0]);
@@ -1229,7 +1220,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 nuevoVuelo.setAvion(avion);
             }
 
-            
             new VueloDAO(em).crear(nuevoVuelo);
 
             limpiarFormularioVuelo();
@@ -1249,7 +1239,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void btnguardarreservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarreservasActionPerformed
         try {
-            
+
             List<Reserva> reservas = ReservaDAO.listarTodos();
 
             DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
@@ -1292,11 +1282,9 @@ public class adminInterfaz extends javax.swing.JFrame {
             return;
         }
 
-
         DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
         int idReserva = (int) modelo.getValueAt(filaSeleccionada, 0);
 
-     
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
                 "¿Está seguro que desea cancelar esta reserva?",
@@ -1307,7 +1295,6 @@ public class adminInterfaz extends javax.swing.JFrame {
             return;
         }
 
-       
         try {
 
             ReservaDAO reservaDAO = new ReservaDAO(null);
@@ -1344,9 +1331,8 @@ public class adminInterfaz extends javax.swing.JFrame {
             return;
         }
 
-        
         DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
-        long idAvion = (long) modelo.getValueAt(filaSeleccionada, 0); 
+        long idAvion = (long) modelo.getValueAt(filaSeleccionada, 0);
 
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
@@ -1358,18 +1344,15 @@ public class adminInterfaz extends javax.swing.JFrame {
             return;
         }
 
-     
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
 
-         
             Avion avion = em.find(Avion.class, idAvion);
             if (avion != null) {
                 em.remove(avion);
                 tx.commit();
 
-           
                 cargarTodosAviones();
                 limpiarCamposAvion();
                 JOptionPane.showMessageDialog(this,
@@ -2133,7 +2116,7 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel6MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-  new VentanaInicio().setVisible(true);
+        new VentanaInicio().setVisible(true);
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
