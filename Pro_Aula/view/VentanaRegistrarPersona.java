@@ -1,6 +1,5 @@
 package view;
 
-import Model.Pasajero;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import controller.ControladorLogin;
@@ -9,8 +8,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import view.ventanaLogin1;
-import view.ventanaLogin1;
 
 public class VentanaRegistrarPersona extends javax.swing.JFrame {
 
@@ -81,25 +78,29 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         String email = txtEmail.getText().trim();
         if (txtDocumento.getText().isEmpty() || txtNombreUser.getText().isEmpty() || txtContraseña.getText().isEmpty() || txtEmail.getText().isEmpty() || txtapellido.getText().isEmpty()) {
 
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.",
+            JOptionPane.showMessageDialog(null, "TODOS LOS CAMPOS SON OBLIGATORIOS.",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (tipodeUser.equalsIgnoreCase("Seleccionar")) {
 
-            JOptionPane.showMessageDialog(null, "debe seleccionar un usuario.",
+            JOptionPane.showMessageDialog(null, "DEBE SELECCIONAR UN USUARIO.",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return;
 
         }
 
         if (!Check.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Debe aceptar los términos y condiciones.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "DEBE ACEPTAR LOS TERMINOS Y LAS CONDICIONES.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            JOptionPane.showMessageDialog(this, "Correo electrónico inválido.\n !debe contener @ , .com !", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "CORREO ELECTRONICO INVALIDO.\n !EL CORREO DEBE CONTENER ESTOS CARACTERES MINIMOS @  Y .com !", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if(!documento.matches("^[0-9]{7,10}$")){
+            JOptionPane.showMessageDialog(this, "EL NUMERO DE TELEFONO DEBE CONTENER SOLO NUMEROS Y QUE SEAN MINIMO 10   ");
             return;
         }
         try {
@@ -107,26 +108,16 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
             PreparedStatement ps = (PreparedStatement) cn.prepareStatement(consulta);
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "DATOS GUARDADOS CORRECTAMENTE .");
-
+            txtNombreUser.getText();
+            
+            LimpiarCampos();
+            
         } catch (Exception e) {
 
             JOptionPane.showMessageDialog(null, "NO SE PUDO GUARDAR USUARIO ." + e);
+            txtNombreUser.setText("");
         }
 
-        /*Pasajero persona = new Pasajero(documento, nombreUser, contraseña, email);
-        boolean respuesta = ventana.getControlador().agregarPersona(persona);
-
-        if (respuesta) {
-
-            JOptionPane.showMessageDialog(null, "se agrego la persona ");
-            LimpiarCampos();
-        } else {
-
-            JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya se encuentra registrado.",
-                    "intentelo Nuevamente ", JOptionPane.ERROR_MESSAGE);
-
-            txtNombreUser.setText("");
-        }*/
 
     }
 
@@ -155,6 +146,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         Roles = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
         txtapellido = new javax.swing.JTextField();
+        jSeparator5 = new javax.swing.JSeparator();
         jLabel11 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -173,17 +165,17 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Telefono ");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 60, 60, 20));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 60, 60, 20));
 
         jLabel3.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Nombre de Usuario ");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 110, 130, 20));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 110, 130, 20));
 
         jLabel4.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Contraseña ");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 210, 80, 20));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, 80, 20));
 
         btnRegistrar.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         btnRegistrar.setText("Registrar");
@@ -192,9 +184,10 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
                 btnRegistrarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 370, 190, -1));
+        jPanel1.add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 360, 200, 30));
 
         txtDocumento.setBackground(new java.awt.Color(102, 153, 255));
+        txtDocumento.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         txtDocumento.setBorder(null);
         txtDocumento.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         txtDocumento.setVerifyInputWhenFocusTarget(false);
@@ -203,25 +196,27 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
                 txtDocumentoActionPerformed(evt);
             }
         });
-        jPanel1.add(txtDocumento, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, 190, 20));
+        jPanel1.add(txtDocumento, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, 200, 20));
 
         txtNombreUser.setBackground(new java.awt.Color(102, 153, 255));
+        txtNombreUser.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         txtNombreUser.setBorder(null);
         txtNombreUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreUserActionPerformed(evt);
             }
         });
-        jPanel1.add(txtNombreUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 130, 190, 20));
+        jPanel1.add(txtNombreUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 130, 200, 20));
 
         txtContraseña.setBackground(new java.awt.Color(102, 153, 255));
+        txtContraseña.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         txtContraseña.setBorder(null);
         txtContraseña.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtContraseñaActionPerformed(evt);
             }
         });
-        jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 230, 190, 20));
+        jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 230, 200, 20));
 
         btnVolver.setBackground(new java.awt.Color(102, 153, 255));
         btnVolver.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
@@ -245,16 +240,17 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Email");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 260, 40, 20));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 260, 40, 20));
 
         txtEmail.setBackground(new java.awt.Color(102, 153, 255));
+        txtEmail.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         txtEmail.setBorder(null);
         txtEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEmailActionPerformed(evt);
             }
         });
-        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 280, 190, 20));
+        jPanel1.add(txtEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 280, 200, 20));
 
         Check.setBackground(new java.awt.Color(102, 153, 255));
         Check.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
@@ -278,37 +274,45 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 410, 90, 30));
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, 190, 10));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 100, 200, 10));
 
         jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 150, 190, 10));
+        jPanel1.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 150, 200, 10));
 
         jSeparator3.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 250, 190, 10));
+        jPanel1.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 200, 10));
 
         jSeparator4.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 300, 190, 20));
+        jPanel1.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 300, 200, 20));
 
         Roles.setBackground(new java.awt.Color(102, 153, 255));
         Roles.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         Roles.setForeground(new java.awt.Color(255, 255, 255));
         Roles.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "user", "admin", " " }));
-        jPanel1.add(Roles, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 330, 190, -1));
+        jPanel1.add(Roles, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, 200, -1));
 
+        jLabel12.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Apellido");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 160, 100, -1));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 100, -1));
 
+        txtapellido.setBackground(new java.awt.Color(102, 153, 255));
+        txtapellido.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        txtapellido.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
         txtapellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtapellidoActionPerformed(evt);
             }
         });
-        jPanel1.add(txtapellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 180, 190, -1));
+        jPanel1.add(txtapellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 180, 200, 20));
+
+        jSeparator5.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel1.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 200, 200, 20));
 
         jLabel11.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Rol");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 50, -1));
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 310, 70, -1));
 
         jLabel1.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -319,7 +323,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 350, 500));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Frame 2257.png"))); // NOI18N
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 40, 370, 420));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 360, 420));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Signal, Wifi, Battery.png"))); // NOI18N
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 10, 80, 20));
@@ -340,7 +344,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-
+   
         Ingresar();
 
     }//GEN-LAST:event_btnRegistrarActionPerformed
@@ -413,6 +417,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTextField txtContraseña;
     private javax.swing.JTextField txtDocumento;
     private javax.swing.JTextField txtEmail;

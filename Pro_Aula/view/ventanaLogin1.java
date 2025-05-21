@@ -1,13 +1,13 @@
 package view;
 
-import Model.Pasajero;
 import controller.ControladorLogin;
 import javax.swing.JOptionPane;
 import java.sql.*;
 
 public class ventanaLogin1 extends javax.swing.JFrame {
-ControladorLogin con = new ControladorLogin();
-Connection cn = con.conector();
+
+    ControladorLogin con = new ControladorLogin();
+    Connection cn = con.conector();
     ControladorLogin controlador;
 
     public ventanaLogin1() {
@@ -17,20 +17,6 @@ Connection cn = con.conector();
         getRootPane().setDefaultButton(jButton1);
 
     }
-
-    /**
-     * public Connection conector(){ Connection con = null;
-     *
-     * try { con =
-     * DriverManager.getConnection("jdbc:mysql://localhost/proaula_vuelos_bd","root","");
-     *
-     * } catch (SQLException e) { System.err.println(e.toString());
-     * JOptionPane.showMessageDialog(this, "Ocurrio un error .\n porfavor
-     * comunicarse con el administrador"); } return con;
-     *
-     * }
-     */
-    
 
     private void realizarLogin() {
         String user = txtUser.getText().trim();
@@ -45,32 +31,7 @@ Connection cn = con.conector();
             JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 3 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-       /* if (ROL.getSelectedItem().equals("Administrador")) {
-            JOptionPane.showMessageDialog(this, "Para acceder como Administrador debe estar registrado.\nPor favor cree una cuenta.");
-            VentanaRegistrarPersona ventana = new VentanaRegistrarPersona(this);
-            ventana.setVisible(true);
-            this.dispose();
-            return;
-        }
 
-        Pasajero aux = controlador.buscarPersona(user);
-
-        if (aux != null) {
-            if (aux.getContraseña().equals(contra)) {
-                VentanaInicio ventanaInicio = new VentanaInicio();
-                ventanaInicio.setPersona(aux); // Pasa el objeto Pasajero a VentanaInicio
-                ventanaInicio.setVisible(true);
-                this.dispose();
-                txtUser.setText("");
-                txtPassword.setText("");
-            } else {
-                JOptionPane.showMessageDialog(this, "La contraseña es incorrecta.");
-                txtPassword.setText("");
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "La persona no se encuentra registrada. " + " \n !Crea una Cuenta!");
-            txtPassword.setText("");
-        }*/
     }
 
     @SuppressWarnings("unchecked")
@@ -220,7 +181,7 @@ Connection cn = con.conector();
 
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+
         VentanaRegistrarPersona ventana = new VentanaRegistrarPersona(this);
         ventana.setVisible(true);
         this.dispose();
@@ -230,43 +191,39 @@ Connection cn = con.conector();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String user = txtUser.getText();
         String con = txtPassword.getText();
-        
-        if (!user.equals("")||!con.equals("")){
+
+        if (!user.equals("") || !con.equals("")) {
             try {
-                PreparedStatement ps = cn.prepareStatement("SELECT rol FROM login WHERE nombre = '"+user+"' AND contraseña = '"+con+"'");
+                PreparedStatement ps = cn.prepareStatement("SELECT rol FROM login WHERE nombre = '" + user + "' AND contraseña = '" + con + "'");
                 ResultSet rs = ps.executeQuery();
-                if(rs.next()){
+
+                if (rs.next()) {
                     String rol = rs.getString("rol");
-                    if(rol.equalsIgnoreCase("admin")){
+
+                    if (rol.equalsIgnoreCase("admin")) {
                         dispose();
                         adminInterfaz admin = new adminInterfaz();
                         admin.setVisible(true);
-                    }else if(rol.equalsIgnoreCase("user")){
+
+                    } else if (rol.equalsIgnoreCase("user")) {
                         dispose();
                         VentanaInicio inicio = new VentanaInicio();
+
                         inicio.setVisible(true);
+
+                        txtUser.setText("");
+                        txtPassword.setText("");
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "USUARIO O CONTRASEÑA INCORRECTOS .");
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "ERROR AL INICIAR SESION ." + e);
             }
-            
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(null, "DEBE COMPLETAR LOS CAMPOS .");
         }
-
-        /*if (user.equals("admin") && con.equals("123")) {
-            JOptionPane.showMessageDialog(null, "Vienvenido " + user);
-            adminInterfaz a = new adminInterfaz();
-            a.show();
-            ocultar();
-            this.dispose();
-        } else {
-            ocultar();
-            realizarLogin();
-        }*/
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
