@@ -4,13 +4,18 @@ import Model.Pasajero;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import controller.ControladorLogin;
+import java.awt.Color;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import view.ventanaLogin1;
 import view.ventanaLogin1;
 
 public class VentanaRegistrarPersona extends javax.swing.JFrame {
-controller.ControladorLogin con = new ControladorLogin();
-Connection cn =con.conector();
+
+    controller.ControladorLogin con = new ControladorLogin();
+    Connection cn = con.conector();
     ventanaLogin1 ventana;
 
     private void LimpiarCampos() {
@@ -19,12 +24,21 @@ Connection cn =con.conector();
         txtNombreUser.setText("");
         txtContraseña.setText("");
         txtEmail.setText("");
+        txtapellido.setText("");
         Check.setSelected(false);
         btnRegistrar.setEnabled(false);
+        txtDocumento.requestFocus();// Poner foco en el primer campo
+        Roles.setSelectedIndex(0);// Volver a "Seleccionar"
     }
 
     public VentanaRegistrarPersona(ventanaLogin1 ventana) {
         initComponents();
+        setPlaceholder(txtDocumento, "Ingrese su Telefono");
+        setPlaceholder(txtNombreUser, "Ingrese su nombre");
+        setPlaceholder(txtEmail, "Ingrese su correo");
+        setPlaceholder(txtapellido, "Ingrese su apellido");
+        setPlaceholder(txtContraseña, "Ingrese su contraseña");
+        
         setLocationRelativeTo(this);
         this.ventana = ventana;
         txtDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -37,7 +51,26 @@ Connection cn =con.conector();
         });
 
     }
-
+    private void setPlaceholder(JTextField field, String placeholder) {
+    field.setForeground(Color.GRAY);
+    field.setText(placeholder);
+    field.addFocusListener(new FocusAdapter() {
+        @Override
+        public void focusGained(FocusEvent e) {
+            if (field.getText().equals(placeholder)) {
+                field.setText("");
+                field.setForeground(Color.BLACK);
+            }
+        }
+        @Override
+        public void focusLost(FocusEvent e) {
+            if (field.getText().isEmpty()) {
+                field.setForeground(Color.GRAY);
+                field.setText(placeholder);
+            }
+        }
+    });
+    }
     private void Ingresar() {
 
         String tipodeUser = Roles.getSelectedItem().toString();
@@ -45,16 +78,19 @@ Connection cn =con.conector();
         String nombreUser = txtNombreUser.getText().trim();
         String contraseña = txtContraseña.getText().trim();
         String apellido = txtapellido.getText().trim();
+        String email = txtEmail.getText().trim();
         if (txtDocumento.getText().isEmpty() || txtNombreUser.getText().isEmpty() || txtContraseña.getText().isEmpty() || txtEmail.getText().isEmpty() || txtapellido.getText().isEmpty()) {
 
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             return;
-        } else {
-            if (tipodeUser.equalsIgnoreCase("Seleccionar")) {
+        }
+        if (tipodeUser.equalsIgnoreCase("Seleccionar")) {
 
-                JOptionPane.showMessageDialog(null, "debe seleccionar un usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "debe seleccionar un usuario.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
 
-            }
         }
 
         if (!Check.isSelected()) {
@@ -62,7 +98,6 @@ Connection cn =con.conector();
             return;
         }
 
-        String email = txtEmail.getText().trim();
         if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
             JOptionPane.showMessageDialog(this, "Correo electrónico inválido.\n !debe contener @ , .com !", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -72,13 +107,13 @@ Connection cn =con.conector();
             PreparedStatement ps = (PreparedStatement) cn.prepareStatement(consulta);
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "DATOS GUARDADOS CORRECTAMENTE .");
-            LimpiarCampos();
+
         } catch (Exception e) {
-            
+
             JOptionPane.showMessageDialog(null, "NO SE PUDO GUARDAR USUARIO ." + e);
         }
 
-        Pasajero persona = new Pasajero(documento, nombreUser, contraseña, email);
+        /*Pasajero persona = new Pasajero(documento, nombreUser, contraseña, email);
         boolean respuesta = ventana.getControlador().agregarPersona(persona);
 
         if (respuesta) {
@@ -91,7 +126,7 @@ Connection cn =con.conector();
                     "intentelo Nuevamente ", JOptionPane.ERROR_MESSAGE);
 
             txtNombreUser.setText("");
-        }
+        }*/
 
     }
 
@@ -306,13 +341,11 @@ Connection cn =con.conector();
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
-        // TODO add your handling code here:
         Ingresar();
 
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        // TODO add your handling code here:
 
         ventana.setVisible(true);
         this.dispose();
