@@ -268,15 +268,49 @@ public class VentanaInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (persona != null) {
-        VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero);
-        disponible.setVisible(true);
-        this.dispose();
+      if (persona != null) {
+        // Obtener las ciudades seleccionadas
+        String origen = (String) jComboBox1.getSelectedItem();
+        String destino = (String) jComboBox2.getSelectedItem();
+        
+        // Verificar si es la ruta Cartagena-Medellín
+        if ("Cartagena".equals(origen) && "Medellin".equals(destino)) {
+            // Verificar disponibilidad (aquí debes implementar tu lógica real de verificación)
+            boolean vuelosDisponibles = verificarDisponibilidadVuelos(origen, destino);
+            
+            if (vuelosDisponibles) {
+                VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero);
+                disponible.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Lo sentimos, no hay vuelos disponibles para la ruta Cartagena-Medellín en este momento.",
+                    "Vuelos no disponibles", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Actualmente solo ofrecemos vuelos entre Cartagena y Medellín.\n"
+                + "Por favor seleccione Cartagena como origen y Medellín como destino.",
+                "Ruta no disponible", 
+                JOptionPane.WARNING_MESSAGE);
+        }
     } else {
         JOptionPane.showMessageDialog(this, "Por favor inicie sesión primero");
     }
     }//GEN-LAST:event_jButton2ActionPerformed
-
+private boolean verificarDisponibilidadVuelos(String origen, String destino) {
+    // Aquí deberías consultar tu base de datos o sistema de reservas
+    // para verificar si hay vuelos disponibles para esta ruta
+    // Esto es solo un ejemplo:
+    
+    // Supongamos que tenemos una lista de vuelos disponibles
+    // List<Vuelo> vuelosDisponibles = obtenerVuelosDisponibles(origen, destino);
+    // return !vuelosDisponibles.isEmpty();
+    
+    // Por ahora retornamos true como ejemplo
+    return true;
+}
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        ventanaLogin1 ventana = new ventanaLogin1();
        ventana.setVisible(true);

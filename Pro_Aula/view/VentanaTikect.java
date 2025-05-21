@@ -16,7 +16,6 @@ public class VentanaTikect extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jVolver = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -46,17 +45,6 @@ public class VentanaTikect extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
         jPanel1.setMinimumSize(new java.awt.Dimension(800, 510));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jVolver.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
-        jVolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Arrow_left_long.png"))); // NOI18N
-        jVolver.setText("Volver");
-        jVolver.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
-        jVolver.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jVolverActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 470, 350, 40));
 
         jPanel2.setBackground(new java.awt.Color(204, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
@@ -168,14 +156,6 @@ public class VentanaTikect extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVolverActionPerformed
-       VentanaInicio ini = new VentanaInicio();
-       ini.setVisible(true);
-       this.dispose();
-   
-       
-    }//GEN-LAST:event_jVolverActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -238,6 +218,5 @@ public class VentanaTikect extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JButton jVolver;
     // End of variables declaration//GEN-END:variables
 }
