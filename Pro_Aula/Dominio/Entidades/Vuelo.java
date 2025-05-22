@@ -148,18 +148,11 @@ public boolean estaEnVuelo() {
     Date ahora = new Date();
     return ahora.after(this.fechaSalida) && ahora.before(this.fechaLlegada);
 }
+@Override
+public String toString() {
+    return idVuelo + " - " + origen + " a " + destino;
+}
 
-    @Override
-    public String toString() {
-        return "Vuelo\n" + "-------------------------\n"
-                + "ID: " + idVuelo + "\n"
-                + "Número: " + numeroVuelo + "\n"
-                + "Origen: " + origen + "\n"
-                + "Destino: " + destino + "\n"
-                + "Salida: " + fechaSalida + "\n"
-                + "Llegada: " + fechaLlegada + "\n"
-                + "Asientos: " + asientos.size() + "\n";
-    }
 
   
 }

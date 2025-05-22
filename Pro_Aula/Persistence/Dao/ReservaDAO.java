@@ -5,22 +5,23 @@ import Dominio.Entidades.Reserva.EstadoReserva;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 public class ReservaDAO {
 
     public static List<Reserva> listarTodos() {
-       ReservaDAO dao = new ReservaDAO(null); // Puedes pasar null porque no usas el parámetro
-    return dao.obtenerTodas();
+        ReservaDAO dao = new ReservaDAO(null); // Puedes pasar null porque no usas el parámetro
+        return dao.obtenerTodas();
     }
-    
+
     private final EntityManagerFactory emf;
-    
+
     public ReservaDAO(EntityManager em) {
-    this.emf = Persistence.createEntityManagerFactory("ConfigDB");
+        this.emf = Persistence.createEntityManagerFactory("ConfigDB");
     }
-    
+
     public void crear(Reserva reserva) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -36,7 +37,7 @@ public class ReservaDAO {
             em.close();
         }
     }
-    
+
     public void actualizar(Reserva reserva) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -52,7 +53,7 @@ public class ReservaDAO {
             em.close();
         }
     }
-    
+
     public void eliminar(int idReserva) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -71,7 +72,7 @@ public class ReservaDAO {
             em.close();
         }
     }
-    
+
     public Reserva obtenerPorId(int idReserva) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -80,45 +81,45 @@ public class ReservaDAO {
             em.close();
         }
     }
-    
+
     public List<Reserva> obtenerTodas() {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Reserva> query = em.createQuery(
-                "SELECT r FROM Reserva r", Reserva.class);
+                    "SELECT r FROM Reserva r", Reserva.class);
             return query.getResultList();
         } finally {
             em.close();
         }
     }
-    
+
     public List<Reserva> obtenerPorPasajero(int idPasajero) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Reserva> query = em.createQuery(
-                "SELECT r FROM Reserva r WHERE r.pasajero.idPasajero = :idPasajero", 
-                Reserva.class);
+                    "SELECT r FROM Reserva r WHERE r.pasajero.idPasajero = :idPasajero",
+                    Reserva.class);
             query.setParameter("idPasajero", idPasajero);
             return query.getResultList();
         } finally {
             em.close();
         }
     }
-    
+
     public List<Reserva> obtenerPorEstado(String estado) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Reserva> query = em.createQuery(
-                "SELECT r FROM Reserva r WHERE r.estado = :estado", 
-                Reserva.class);
+                    "SELECT r FROM Reserva r WHERE r.estado = :estado",
+                    Reserva.class);
             query.setParameter("estado", estado);
             return query.getResultList();
         } finally {
             em.close();
         }
     }
-    
-    public void cambiarEstado(int idReserva, EstadoReserva  nuevoEstado) {
+
+    public void cambiarEstado(int idReserva, EstadoReserva nuevoEstado) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
@@ -137,6 +138,15 @@ public class ReservaDAO {
             em.close();
         }
     }
-    
-    
+
+    public Reserva buscarPorId(int idReserva) { // Cambiado a Long
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.find(Reserva.class, idReserva);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

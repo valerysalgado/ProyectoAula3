@@ -17,22 +17,25 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "asientos")
 public class Asiento implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idAsiento;
-    
+
     @Column(length = 10, nullable = false)
     private String numero;
-    
+
     @Column(length = 20, nullable = false)
     private String clase;
-    
+
     @Column(nullable = false)
     private boolean disponible;
-    
+
     @ManyToOne
-    @JoinColumn(name = "idVuelo")
-    private Vuelo vuelo;
+    @JoinColumn(name = "id_avion")
+    private Avion avion;
+
+    private boolean ocupado;
 
     public Asiento() {
     }
@@ -41,6 +44,16 @@ public class Asiento implements Serializable {
         this.numero = numero;
         this.clase = clase;
         this.disponible = disponible;
+    }
+// En Asiento.java
+    private Vuelo vuelo;
+
+    public Vuelo getVuelo() {
+        return vuelo;
+    }
+
+    public void setVuelo(Vuelo vuelo) {
+        this.vuelo = vuelo;
     }
 
     // Getters y Setters
@@ -76,22 +89,21 @@ public class Asiento implements Serializable {
         this.disponible = disponible;
     }
 
-    public Vuelo getVuelo() {
-        return vuelo;
+    public Avion getAvion() {
+        return avion;
     }
 
-    public void setVuelo(Vuelo vuelo) {
-        this.vuelo = vuelo;
+    public void setAvion(Avion avion) {
+        this.avion = avion;
     }
 
     @Override
     public String toString() {
-        return "Asiento\n" + "-------------------------\n" + 
-            "ID: " + idAsiento + "\n" + 
-            "Número: " + numero + "\n" + 
-            "Clase: " + clase + "\n" + 
-            "Disponible: " + (disponible ? "Sí" : "No") + "\n" +
-            "Vuelo ID: " + (vuelo != null ? vuelo.getIdVuelo() : "N/A") + "\n";
+        return "Asiento " + this.numero; // podés usar otra propiedad si querés
+    }
+
+    public boolean isOcupado() {
+        return ocupado;
     }
 
 }

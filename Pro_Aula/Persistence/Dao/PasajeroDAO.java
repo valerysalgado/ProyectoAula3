@@ -80,6 +80,7 @@ public class PasajeroDAO {
             throw e;
         }
     }
+    
     public List<Pasajero> listarConFiltro(String filtro, int pagina, int registrosPorPagina) {
         String jpql = "SELECT p FROM Pasajero p WHERE " +
                      "(p.nombre LIKE :filtro OR p.apellido LIKE :filtro OR p.identificacion LIKE :filtro) " +
@@ -92,6 +93,6 @@ public class PasajeroDAO {
                 .getResultList();
     
     }
-    
+   
 }
 

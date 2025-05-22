@@ -1,6 +1,7 @@
 package Persistence.Dao;
 
 import Dominio.Entidades.Vuelo;
+import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
@@ -87,9 +88,14 @@ public void crear(Vuelo vuelo) {
         }
     }
 
-    public List<Vuelo> obtenerTodos() {
+  public List<Vuelo> obtenerTodos() {
+    try {
         TypedQuery<Vuelo> query = em.createQuery("SELECT v FROM Vuelo v", Vuelo.class);
         return query.getResultList();
+    } catch (Exception e) {
+        e.printStackTrace(); // o un logger
+        return new ArrayList<>();
     }
-    
+}
+
 }

@@ -1,6 +1,7 @@
 package Persistence.Dao;
 
 import Dominio.Entidades.Avion;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -41,16 +42,17 @@ public class AvionDAO {
     }
     
     // Método para buscar por matrícula
-    public Avion buscarPorMatricula(String matricula) {
-        try {
-            TypedQuery<Avion> query = em.createQuery(
-                "SELECT a FROM Avion a WHERE a.matricula = :matricula", Avion.class);
-            query.setParameter("matricula", matricula);
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+  public Avion buscarPorMatricula(String matricula) {
+    try {
+        TypedQuery<Avion> query = em.createQuery(
+            "SELECT a FROM Avion a WHERE a.matricula = :matricula", Avion.class);
+        query.setParameter("matricula", matricula);
+        return query.getSingleResult();
+    } catch (NoResultException e) {
+        return null;
     }
+}
+
 
     public List<Avion> listarTodos() {
         TypedQuery<Avion> query = em.createQuery("SELECT a FROM Avion a", Avion.class);
@@ -122,6 +124,24 @@ public class AvionDAO {
         throw new PersistenceException("Error al verificar matrícula", e);
     }
 }
+
+   public List<Avion> obtenerTodos() {
+    try {
+        return em.createQuery("SELECT a FROM Avion a", Avion.class).getResultList();
+    } catch (Exception e) {
+        System.out.println("Error al obtener aviones: " + e.getMessage());
+        return Collections.emptyList();
+    }
+}
+public Avion buscarPorId(Long id) { // Cambiado a Long
+    try {
+        return em.find(Avion.class, id);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+
 }
     
 

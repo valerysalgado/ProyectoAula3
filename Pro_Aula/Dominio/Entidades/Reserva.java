@@ -41,13 +41,17 @@ public class Reserva implements Serializable {
     private EstadoReserva estado;
 
     @Column(name = "total_pagado", precision = 10, scale = 2, nullable = false)
-    private BigDecimal totalPagado;
+    private double totalPagado;
 
     @Column(length = 20, unique = true)
     private String codigoReserva;
 
     @Version
     private Long version;
+
+  
+
+ 
 
     public enum EstadoReserva {
         PENDIENTE,
@@ -59,12 +63,12 @@ public class Reserva implements Serializable {
     public Reserva() {
         this.fechaReserva = new Date();
         this.estado = EstadoReserva.PENDIENTE;
-        this.totalPagado = BigDecimal.ZERO;
+        this.totalPagado = 0.0;
         this.codigoReserva = generarCodigoReserva();
     }
 
     public Reserva(Pasajero pasajero, Asiento asiento, Vuelo vuelo,
-            String origen, String destino, BigDecimal totalPagado) {
+            String origen, String destino, double totalPagado) {
         this();
         this.pasajero = pasajero;
         this.asiento = asiento;
@@ -124,11 +128,15 @@ public class Reserva implements Serializable {
         return fechaReserva;
     }
 
+    public void setFechaReserva(Date fechaReserva) {
+        this.fechaReserva = fechaReserva;
+    }
+
     public EstadoReserva getEstado() {
         return estado;
     }
 
-    public BigDecimal getTotalPagado() {
+    public double getTotalPagado() {
         return totalPagado;
     }
 
@@ -144,9 +152,6 @@ public class Reserva implements Serializable {
         this.pasajero = pasajero;
     }
 
-    public void setAsiento(Asiento asiento) {
-        this.asiento = asiento;
-    }
 
     public void setVuelo(Vuelo vuelo) {
         this.vuelo = vuelo;
@@ -164,13 +169,25 @@ public class Reserva implements Serializable {
         this.estado = estado;
     }
 
-    public void setTotalPagado(BigDecimal totalPagado) {
+    public void setTotalPagado(double totalPagado) {
         this.totalPagado = totalPagado;
     }
 
     public void setCodigoReserva(String codigoReserva) {
         this.codigoReserva = codigoReserva;
     }
+      public void setIdReserva(Integer idReserva) {
+        this.idReserva = idReserva;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public void setAsiento(Asiento asiento) {
+        this.asiento = asiento;
+    }
+    
 
     @Override
     public String toString() {
