@@ -35,7 +35,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         setPlaceholder(txtEmail, "Ingrese su correo");
         setPlaceholder(txtapellido, "Ingrese su apellido");
         setPlaceholder(txtContraseña, "Ingrese su contraseña");
-        
+
         setLocationRelativeTo(this);
         this.ventana = ventana;
         txtDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -48,26 +48,29 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         });
 
     }
+
     private void setPlaceholder(JTextField field, String placeholder) {
-    field.setForeground(Color.GRAY);
-    field.setText(placeholder);
-    field.addFocusListener(new FocusAdapter() {
-        @Override
-        public void focusGained(FocusEvent e) {
-            if (field.getText().equals(placeholder)) {
-                field.setText("");
-                field.setForeground(Color.BLACK);
+        field.setForeground(Color.GRAY);
+        field.setText(placeholder);
+        field.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (field.getText().equals(placeholder)) {
+                    field.setText("");
+                    field.setForeground(Color.BLACK);
+                }
             }
-        }
-        @Override
-        public void focusLost(FocusEvent e) {
-            if (field.getText().isEmpty()) {
-                field.setForeground(Color.GRAY);
-                field.setText(placeholder);
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (field.getText().isEmpty()) {
+                    field.setForeground(Color.GRAY);
+                    field.setText(placeholder);
+                }
             }
-        }
-    });
+        });
     }
+
     private void Ingresar() {
 
         String tipodeUser = Roles.getSelectedItem().toString();
@@ -99,7 +102,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "CORREO ELECTRONICO INVALIDO.\n !EL CORREO DEBE CONTENER ESTOS CARACTERES MINIMOS @  Y .com !", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if(!documento.matches("^[0-9]{7,10}$")){
+        if (!documento.matches("^[0-9]{7,10}$")) {
             JOptionPane.showMessageDialog(this, "EL NUMERO DE TELEFONO DEBE CONTENER SOLO NUMEROS Y QUE SEAN MINIMO 10   ");
             return;
         }
@@ -109,15 +112,14 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "DATOS GUARDADOS CORRECTAMENTE .");
             txtNombreUser.getText();
-            
+
             LimpiarCampos();
-            
+
         } catch (Exception e) {
 
             JOptionPane.showMessageDialog(null, "NO SE PUDO GUARDAR USUARIO ." + e);
             txtNombreUser.setText("");
         }
-
 
     }
 
@@ -344,7 +346,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-   
+
         Ingresar();
 
     }//GEN-LAST:event_btnRegistrarActionPerformed

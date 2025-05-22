@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="GRUPO1">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -154,11 +158,11 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Nirmala UI" size="12" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Vuelo Ida"/>
+                <Property name="text" type="java.lang.String" value="Origen"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="160" y="50" width="-1" height="-1"/>
+                  <AbsoluteConstraints x="120" y="50" width="50" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -167,11 +171,11 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Nirmala UI" size="12" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Vuelo Vuelta"/>
+                <Property name="text" type="java.lang.String" value="Destino"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="350" y="50" width="-1" height="-1"/>
+                  <AbsoluteConstraints x="310" y="50" width="50" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>

@@ -23,6 +23,7 @@ public class VentanaInicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        GRUPO1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -78,12 +79,12 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 60, 150, 70));
 
         jLabel2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jLabel2.setText("Vuelo Ida");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, -1, -1));
+        jLabel2.setText("Origen");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 50, -1));
 
         jLabel3.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jLabel3.setText("Vuelo Vuelta");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, -1, -1));
+        jLabel3.setText("Destino");
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, 50, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carga 100 x 100.gif"))); // NOI18N
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 110, 90));
@@ -136,27 +137,24 @@ public class VentanaInicio extends javax.swing.JFrame {
         String destino = (String) jComboBox2.getSelectedItem();
 
         // Verificar si es la ruta Cartagena-Medellín
-        if ("Cartagena".equals(origen) && "Medellin".equals(destino)) {
-            // Verificar disponibilidad (aquí debes implementar tu lógica real de verificación)
-            boolean vuelosDisponibles = verificarDisponibilidadVuelos(origen, destino);
+       
+    if ("Cartagena".equals(origen) && "Medellin".equals(destino)) {
+        // Inicializa el pasajero (deberías obtenerlo de tu sistema de login)
+        Pasajero pasajero = new Pasajero();
+        pasajero.setIdUsuario(1); // Ejemplo: ID del pasajero
+        
+        VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero);
+        disponible.setVisible(true);
+        this.dispose();
+    } else {
+        JOptionPane.showMessageDialog(
+            this,
+            "Solo disponemos de vuelos Cartagena → Medellín.",
+            "Ruta no disponible",
+            JOptionPane.WARNING_MESSAGE
+        );
+    }
 
-            if (vuelosDisponibles) {
-                VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero);
-                disponible.setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "Lo sentimos, no hay vuelos disponibles para la ruta Cartagena-Medellín en este momento.",
-                        "Vuelos no disponibles",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Actualmente solo ofrecemos vuelos entre Cartagena y Medellín.\n"
-                    + "Por favor seleccione Cartagena como origen y Medellín como destino.",
-                    "Ruta no disponible",
-                    JOptionPane.WARNING_MESSAGE);
-        }
 
     }//GEN-LAST:event_jButton2ActionPerformed
     private boolean verificarDisponibilidadVuelos(String origen, String destino) {
@@ -203,6 +201,7 @@ public class VentanaInicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup GRUPO1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;

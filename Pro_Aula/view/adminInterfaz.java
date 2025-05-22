@@ -959,7 +959,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         // Procesar la cancelación
         try {
 
-            ReservaDAO reservaDAO = new ReservaDAO(null); // o pasá un EntityManager si lo usás
+            ReservaDAO reservaDAO = new ReservaDAO(); // o pasá un EntityManager si lo usás
             reservaDAO.cambiarEstado(idReserva, Reserva.EstadoReserva.CANCELADA);
 
             // Actualizar la tabla
@@ -1830,7 +1830,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
 
     private void listarReservasAction(Object object) {
-        ReservaDAO reservaDAO = new ReservaDAO(null); // o pasar un EntityManager si ya lo tienes
+        ReservaDAO reservaDAO = new ReservaDAO(); // o pasar un EntityManager si ya lo tienes
         List<Reserva> reservas = reservaDAO.obtenerTodas();
         cargarReservasEnTabla();
     }
@@ -1842,14 +1842,14 @@ public class adminInterfaz extends javax.swing.JFrame {
     }
 
    private void listarReservasAction() {
-    ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías pasar un EntityManager válido
+    ReservaDAO reservaDAO = new ReservaDAO(); // Deberías pasar un EntityManager válido
     List<Reserva> reservas = reservaDAO.obtenerTodas();
     cargarReservasEnTabla(); // Pasar las reservas como parámetro
 }
 
 private void cargarReservasEnTabla() {
     // 1. Obtener las reservas desde el DAO
-    ReservaDAO reservaDAO = new ReservaDAO(null); // Deberías usar un EntityManager válido
+    ReservaDAO reservaDAO = new ReservaDAO(); // Deberías usar un EntityManager válido
     List<Reserva> reservas = reservaDAO.obtenerTodas();
     
     // 2. Obtener el modelo de la tabla

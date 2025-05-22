@@ -11,13 +11,13 @@ import javax.persistence.TypedQuery;
 public class ReservaDAO {
 
     public static List<Reserva> listarTodos() {
-       ReservaDAO dao = new ReservaDAO(null); // Puedes pasar null porque no usas el parámetro
+       ReservaDAO dao = new ReservaDAO(); // Puedes pasar null porque no usas el parámetro
     return dao.obtenerTodas();
     }
     
     private final EntityManagerFactory emf;
     
-    public ReservaDAO(EntityManager em) {
+    public ReservaDAO() {
     this.emf = Persistence.createEntityManagerFactory("ConfigDB");
     }
     
