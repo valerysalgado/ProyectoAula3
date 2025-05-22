@@ -44,7 +44,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         ajustarColumnas();
         inittablaaviones();
         initjTableVuelos();
-        initjTableReservas();
+        
         cargarTodosPasajeros();
         cargarTodosAviones();
         cargarReservasEnTabla();
@@ -1835,7 +1835,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         cargarReservasEnTabla();
     }
 
-    private void initjTableReservas() {
+    private void initjTableReservas(List<Reserva> reservas) {
         String[] columnas = {"ID", "Pasajero", "Vuelo", "Fecha Reserva", "Estado"};
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
         jTableReservas.setModel(modelo);
