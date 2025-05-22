@@ -1,6 +1,11 @@
 
 package view;
 
+import javax.swing.JOptionPane;
+
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class VentanaTikect extends javax.swing.JFrame {
 
@@ -10,14 +15,56 @@ public class VentanaTikect extends javax.swing.JFrame {
          setLocationRelativeTo(this);
     }
 
-  
+  private void generarFactura(String tipoPlan) {
+      // Detalles específicos de cada plan
+    String detallesPlan = "";
+    if(tipoPlan.equals("Normal Class")) {
+        detallesPlan = "<ul style='list-style-type: none; padding-left: 0;'>"
+                + "<li>+1 Artículo Personal (bolso)</li>"
+                + "<li>+ Equipaje de mano</li>"
+                + "<li style='color: red;'>X Equipaje de bodega</li>"
+                + "<li style='color: red;'>X Selección de asiento</li>"
+                + "<li style='color: red;'>X Check-in en aeropuerto</li>"
+                + "<li style='color: red;'>X Rembolso</li>"
+                + "</ul>";
+    } else { // Mid Class
+        detallesPlan = "<ul style='list-style-type: none; padding-left: 0;'>"
+                + "<li>+1 Artículo Personal (bolso)</li>"
+                + "<li>+ Equipaje de mano</li>"
+                + "<li>+ Equipaje de bodega</li>"
+                + "<li>+ Asiento económico incluido</li>"
+                + "<li>+ Check-in en aeropuerto</li>"
+                + "<li style='color: red;'>X Rembolso</li>"
+                + "</ul>";
+    }
+
+    // Crear el contenido de la factura
+    String factura = "<html><body style='width: 300px; padding: 10px;'>"
+            + "<h2 style='text-align: center; color: #0066cc;'>AeroNex - Factura</h2>"
+            + "<hr>"
+            + "<p><b>Tipo de plan:</b> " + tipoPlan + "</p>"
+            + "<p><b>Fecha:</b> " + new SimpleDateFormat("dd/MM/yyyy").format(new Date()) + "</p>"
+            + "<p><b>Número de factura:</b> " + (int)(Math.random() * 10000) + "</p>"
+            + "<hr>"
+            + "<h4>Detalles del plan:</h4>"
+            + detallesPlan
+            + "<hr>"
+            + "<h3 style='text-align: right;'>Total: $" 
+            + (tipoPlan.equals("Normal Class") ? "150.000" : "250.000") + "</h3>"
+            + "<p style='text-align: center; font-style: italic;'>Gracias por su compra</p>"
+            + "</body></html>";
+
+    // Mostrar la factura en un JOptionPane
+    JOptionPane.showMessageDialog(this, factura, "Factura Generada", 
+            JOptionPane.INFORMATION_MESSAGE);
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnNormal = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -26,7 +73,7 @@ public class VentanaTikect extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        btnMid = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -51,10 +98,15 @@ public class VentanaTikect extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(140, 250));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton1.setText("get plan");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 310, 80));
+        btnNormal.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        btnNormal.setText("get plan");
+        btnNormal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
+        btnNormal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNormalActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnNormal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 310, 80));
 
         jLabel1.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
         jLabel1.setText("Normal Class");
@@ -91,15 +143,15 @@ public class VentanaTikect extends javax.swing.JFrame {
         jPanel3.setPreferredSize(new java.awt.Dimension(140, 250));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jButton2.setText("get plan");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnMid.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        btnMid.setText("get plan");
+        btnMid.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
+        btnMid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnMidActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 280, 80));
+        jPanel3.add(btnMid, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 280, 80));
 
         jLabel2.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
         jLabel2.setText("Mid Class");
@@ -156,9 +208,21 @@ public class VentanaTikect extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnMidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMidActionPerformed
+       generarFactura("Mid Class");
+       VentanaInicio inicio = new VentanaInicio();
+       inicio.setVisible(true);
+       this.dispose();
+       
+    }//GEN-LAST:event_btnMidActionPerformed
+
+    private void btnNormalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNormalActionPerformed
+        
+        generarFactura("Normal Class");
+        VentanaInicio inicio = new VentanaInicio();
+       inicio.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_btnNormalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,8 +260,8 @@ public class VentanaTikect extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnMid;
+    private javax.swing.JButton btnNormal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
