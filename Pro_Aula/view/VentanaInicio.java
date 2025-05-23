@@ -1,7 +1,11 @@
 package view;
 
 import Dominio.Entidades.Pasajero;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
+import view.VentanaVuelosDisponibles;
 
 public class VentanaInicio extends javax.swing.JFrame {
 
@@ -150,14 +154,26 @@ public class VentanaInicio extends javax.swing.JFrame {
         // Verificar si es la ruta Cartagena-Medellín
        
     if ("Cartagena".equals(origen) && "Medellin".equals(destino)) {
-        // Inicializa el pasajero (deberías obtenerlo de tu sistema de login)
-        Pasajero pasajero = new Pasajero();
-        pasajero.setIdUsuario(1); // Ejemplo: ID del pasajero
-        pasajero.setNombre(this.nombre); 
-        
-        VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero,this.nombre);
-        disponible.setVisible(true);
-        this.dispose();
+        try {
+            // Crear EntityManagerFactory una sola vez en la aplicación
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
+            EntityManager em = emf.createEntityManager();
+            
+            // Crear pasajero (deberías obtenerlo de tu sistema de login)
+            Pasajero pasajero = new Pasajero();
+            pasajero.setIdUsuario(1);
+            pasajero.setNombre(this.nombre);
+            
+            VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero, this.nombre);
+            disponible.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al abrir ventana de vuelos: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     } else {
         JOptionPane.showMessageDialog(
             this,
@@ -166,6 +182,7 @@ public class VentanaInicio extends javax.swing.JFrame {
             JOptionPane.WARNING_MESSAGE
         );
     }
+
 
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -210,7 +227,9 @@ public class VentanaInicio extends javax.swing.JFrame {
                 new VentanaInicio().setVisible(true);
             }
         });
-    }
+}
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup GRUPO1;
@@ -228,4 +247,5 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTextField txtFecha;
     // End of variables declaration//GEN-END:variables
+
 }
