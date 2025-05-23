@@ -71,36 +71,43 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
         });
     
     }
-
-    // Método para guardar una reserva en la BD
-    private void reservarVuelo(Vuelo vuelo) {
-        EntityManager em = null;
-        try {
-            
-            Reserva nuevaReserva = new Reserva();
-            
-            nuevaReserva.setPasajero(this.pasajeroActual);
-            nuevaReserva.setVuelo(vuelo);
-            nuevaReserva.setOrigen(vuelo.getOrigen());
-            nuevaReserva.setDestino(vuelo.getDestino());
-            
-            nuevaReserva.setEstado(EstadoReserva.CONFIRMADA); // Asignar estado inicial
-           
-            
-          
-            
-      
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(
-                this,
-                " Error al reservar: " + ex.getMessage(),
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-            );
-            ex.printStackTrace();
-        }
+private void reservarVuelo(Vuelo vuelo) {
+    try {
+        // Verificar que el pasajero tenga nombre
+        String nombrePasajero = (pasajeroActual.getnombre() != null) ? pasajeroActual.getnombre() : "Invitado";
+        
+        // Crear mensaje de confirmación
+        String mensaje = String.format(
+            "¡Reserva exitosa!\n\n" +
+            "Detalles:\n" +
+            "Vuelo: %s\n" +
+            "Ruta: %s → %s\n" +
+            "Pasajero: %s",
+            vuelo.getNumeroVuelo(),
+            vuelo.getOrigen(),
+            vuelo.getDestino(),
+            nombrePasajero
+        );
+        
+        // Mostrar mensaje
+        JOptionPane.showMessageDialog(
+            this, 
+            mensaje, 
+            "Reserva Confirmada", 
+            JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        // Redirigir
+        VentanaTikect tikect = new VentanaTikect(nombreUsuario);
+        tikect.setVisible(true);
+        this.dispose();
+        
+    } catch (Exception ex) {
+        // Solo para depuración
+        System.err.println("Error en reserva: " + ex.getMessage());
+    }
 }
-
+    // Método para guardar una reserva en la BD
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -175,15 +182,13 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        VentanaTikect tikect = new VentanaTikect(nombreUsuario);
-       tikect.setVisible(true);
-       this.dispose();
+    if (vueloMostrado != null) {
+        reservarVuelo(vueloMostrado);
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        VentanaInicio inicio = new VentanaInicio(nombreUsuario);
-        inicio.setVisible(true);
-        this.dispose();
+       
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     public static void main(String args[]) {
@@ -211,9 +216,8 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
         //</editor-fold>
  // Simulación: Pasajero por defecto (debes reemplazarlo con tu sistema de login)
         Pasajero pasajeroEjemplo = new Pasajero();
-      
-        pasajeroEjemplo.setNombre("Invitado");
-        
+pasajeroEjemplo.setNombre("Invitado");
+pasajeroEjemplo.setId(1);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new VentanaVuelosDisponibles(pasajeroEjemplo,"Invitado").setVisible(true);

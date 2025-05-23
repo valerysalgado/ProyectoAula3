@@ -187,7 +187,7 @@ public class VentanaTikect extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("AeroNex venvenido selecciona el plan de preferencia");
+        jLabel3.setText("AeroNex bienvenido selecciona el plan de preferencia");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 10, 470, 30));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Groupf.png"))); // NOI18N
