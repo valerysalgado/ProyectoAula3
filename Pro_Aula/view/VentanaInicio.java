@@ -1,24 +1,40 @@
 package view;
 
 import Dominio.Entidades.Pasajero;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.JOptionPane;
+import view.VentanaVuelosDisponibles;
 
 public class VentanaInicio extends javax.swing.JFrame {
 
     private Pasajero persona;
     private Dominio.Entidades.Pasajero pasajero;
+   private String nombre; 
 
-    public VentanaInicio() {
+    public VentanaInicio(String nombre) { 
+        this.nombre = (nombre != null && !nombre.isEmpty()) ? nombre : "Invitado";
+      
         initComponents();
         setLocationRelativeTo(null);
+       
 
         java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
         java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern(" HH:mm dd-MM-yyyy ");
         String fechaHoraActual = ahora.format(formato);
         txtFecha.setText(fechaHoraActual);
+        
+         // Mostrar el nombre del usuario
+    lblUsuario.setText("!Bienvenido " +this.nombre + " a nuestra  agencia de vuelo ¡ " );
+    lblUsuario.setFont(new java.awt.Font("Nirmala UI", 1, 20));
+        lblUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        
 
     }
-
+    public VentanaInicio() {
+        this(""); // Valor por defecto
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -34,9 +50,9 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        lblUsuario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -104,18 +120,17 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabel1.setText("INICIO");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 70));
 
-        jLabel4.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("!Bienvenido a nuestra agencia de vuelo ¡");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 30, 390, -1));
-
         jLabel5.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("AeroNex");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 60, 130, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 60, 130, -1));
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Signal, Wifi, Battery.png"))); // NOI18N
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 20, 90, 30));
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 20, 90, 30));
+
+        lblUsuario.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
+        lblUsuario.setText("-------------------------");
+        jPanel1.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, 500, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 510));
 
@@ -139,13 +154,26 @@ public class VentanaInicio extends javax.swing.JFrame {
         // Verificar si es la ruta Cartagena-Medellín
        
     if ("Cartagena".equals(origen) && "Medellin".equals(destino)) {
-        // Inicializa el pasajero (deberías obtenerlo de tu sistema de login)
-        Pasajero pasajero = new Pasajero();
-        pasajero.setIdUsuario(1); // Ejemplo: ID del pasajero
-        
-        VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero);
-        disponible.setVisible(true);
-        this.dispose();
+        try {
+            // Crear EntityManagerFactory una sola vez en la aplicación
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
+            EntityManager em = emf.createEntityManager();
+            
+            // Crear pasajero (deberías obtenerlo de tu sistema de login)
+            Pasajero pasajero = new Pasajero();
+            pasajero.setIdUsuario(1);
+            pasajero.setNombre(this.nombre);
+            
+            VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero, this.nombre);
+            disponible.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al abrir ventana de vuelos: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     } else {
         JOptionPane.showMessageDialog(
             this,
@@ -154,6 +182,7 @@ public class VentanaInicio extends javax.swing.JFrame {
             JOptionPane.WARNING_MESSAGE
         );
     }
+
 
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -198,7 +227,9 @@ public class VentanaInicio extends javax.swing.JFrame {
                 new VentanaInicio().setVisible(true);
             }
         });
-    }
+}
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup GRUPO1;
@@ -209,11 +240,12 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblUsuario;
     private javax.swing.JTextField txtFecha;
     // End of variables declaration//GEN-END:variables
+
 }

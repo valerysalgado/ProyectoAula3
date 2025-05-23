@@ -201,18 +201,19 @@ public class ventanaLogin1 extends javax.swing.JFrame {
                     String rol = rs.getString("rol");
 
                     if (rol.equalsIgnoreCase("admin")) {
-                        dispose();
+
                         adminInterfaz admin = new adminInterfaz();
                         admin.setVisible(true);
+                        dispose();
 
                     } else if (rol.equalsIgnoreCase("user")) {
-                        dispose();
-                        VentanaInicio inicio = new VentanaInicio();
 
+                            VentanaInicio inicio = new VentanaInicio(user);
                         inicio.setVisible(true);
 
                         txtUser.setText("");
                         txtPassword.setText("");
+                        dispose();
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "USUARIO O CONTRASEÑA INCORRECTOS .");
