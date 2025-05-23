@@ -40,6 +40,14 @@ public class Reserva implements Serializable {
     @Version
     private Long version;
 
+    public void setOrigen(String origen) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void setDestino(String destino) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public enum EstadoReserva {
         PENDIENTE,
         CONFIRMADA,

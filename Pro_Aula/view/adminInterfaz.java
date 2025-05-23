@@ -1,3 +1,4 @@
+
 package view;
 
 import Dominio.Entidades.Administrador;
@@ -41,6 +42,10 @@ public class adminInterfaz extends javax.swing.JFrame {
     private AdministradorDAO administradorDAO = new AdministradorDAO(em);
 
     public adminInterfaz() {
+        initComponents();
+        setLocationRelativeTo(null);
+       
+        
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
         this.em = emf.createEntityManager();
         pasajeroDAO = new PasajeroDAO(this.em);
@@ -48,13 +53,18 @@ public class adminInterfaz extends javax.swing.JFrame {
         vueloDAO = new VueloDAO(em);
         administradorDAO = new AdministradorDAO(em);
 
-        initComponents();
+        
+                
         initTabla();
         inittablaaviones();
         ajustarColumnas();
         inittablaaviones();
+
         initjTableReservas();
+
         initjTableVuelos();
+        
+
         cargarTodosPasajeros();
         cargarTodosAviones();
         cargarReservasEnTabla();
@@ -99,7 +109,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -243,16 +253,10 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel1.setText("AeroNex");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 130, 30));
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Emoji", 1, 48)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("←");
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 50));
 
+        
+        
+        
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 60));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
@@ -408,8 +412,6 @@ public class adminInterfaz extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(102, 153, 255));
         jLabel6.setText("BIENVENIDO ADMINISTADOR");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, 520, -1));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\valer\\Downloads\\iloveimg-resized\\gerente.png")); // NOI18N
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 130, -1, -1));
 
         TabPanelPrincipal.addTab("INICIO", jPanel2);
@@ -1301,11 +1303,13 @@ public class adminInterfaz extends javax.swing.JFrame {
                 throw new Exception("Vuelo no encontrado");
             }
 
+
             vueloActualizado.setNumeroVuelo(txtNumeroVuelo.getText().trim());
             vueloActualizado.setOrigen(comboorigen.getSelectedItem().toString());
             vueloActualizado.setDestino(comboDestino.getSelectedItem().toString());
             vueloActualizado.setFechaSalida(dateChooserSalida.getDate());
             vueloActualizado.setFechaLlegada(dateChooserLlegada.getDate());
+
 
             if (comboAvion.getSelectedIndex() > 0) {
                 String avionSeleccionado = comboAvion.getSelectedItem().toString();
@@ -1986,6 +1990,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_tablapasajeroMouseClicked
+
 
     private void comboAvionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboAvionMouseClicked
         // TODO add your handling code here:
@@ -2677,6 +2682,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_comboAvionActionPerformed
 
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
@@ -2721,12 +2727,14 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboorigen;
     private javax.swing.JComboBox<String> comborol;
     private javax.swing.JComboBox<String> comborol1;
+
     private javax.swing.JComboBox<String> comborol2;
     private javax.swing.JComboBox<String> combousuario;
     private javax.swing.JComboBox<String> combovuelo;
     private com.toedter.calendar.JDateChooser dateChooserLlegada;
     private com.toedter.calendar.JDateChooser dateChooserSalida;
     private com.toedter.calendar.JDateChooser dateChooserSalida1;
+
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton4;
@@ -2775,7 +2783,6 @@ public class adminInterfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -3075,25 +3082,21 @@ public class adminInterfaz extends javax.swing.JFrame {
         tablapasajero.repaint();
     }
 
-    private void listarReservasAction(Object object) {
-        ReservaDAO reservaDAO = new ReservaDAO(null);
-        List<Reserva> reservas = reservaDAO.obtenerTodas();
-        cargarReservasEnTabla();
-    }
+ 
+
 
     private void initjTableReservas() {
         String[] columnas = {"ID", "Pasajero", "Vuelo", "Fecha Reserva", "Asiento", "Estado"};
+
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
         tablareservas.setModel(modelo);
     }
 
-    private void listarReservasAction() {
-        ReservaDAO reservaDAO = new ReservaDAO(null);
-        List<Reserva> reservas = reservaDAO.obtenerTodas();
-        cargarReservasEnTabla();
-    }
+
+    
 
     private void cargarReservasEnTabla() {
+
 
         ReservaDAO reservaDAO = new ReservaDAO(null);
         List<Reserva> reservas = reservaDAO.obtenerTodas();

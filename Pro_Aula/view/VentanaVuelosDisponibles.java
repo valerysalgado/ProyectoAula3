@@ -1,148 +1,193 @@
 
 package view;
 
-import Model.Vuelos;
-import java.util.ArrayList;
-import java.util.List;
+import Dominio.Entidades.*;
+import Dominio.Entidades.Reserva.EstadoReserva;
+import Persistence.Dao.ReservaDAO;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+import controller.ControladorLogin;
+import java.math.BigDecimal;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+import javax.persistence.EntityManager;
+import view.VentanaTikect;
+
 
 public class VentanaVuelosDisponibles extends javax.swing.JFrame {
+    ControladorLogin con = new ControladorLogin();
+    Connection cn = con.conector();
+     private String nombreUsuario;
     
-private ventanaDatosRegistros ventanaAnterior;
-public VentanaVuelosDisponibles() {
-    initComponents();
-    setLocationRelativeTo(null);
-}
-    public VentanaVuelosDisponibles(ventanaDatosRegistros ventanaAnterior) {
+    
+// Variables para almacenar los vuelos mostrados
+    private Vuelo vueloMostrado;
+   
+    private Pasajero pasajeroActual; // Debes obtenerlo desde el login
+
+    public VentanaVuelosDisponibles(Pasajero pasajero,String nombreUsuario) {
+        this.pasajeroActual = pasajero;
+        this.nombreUsuario = nombreUsuario;
         initComponents();
-        setLocationRelativeTo(null);
-        this.ventanaAnterior = ventanaAnterior;
+        setLocationRelativeTo(this);
         
         
-       jTable1.setModel(new javax.swing.table.DefaultTableModel(
-    new Object [][] {},
-    new String [] {
-        "Origen", "Destino", "Fecha de Ida", "Fecha de Vuelta", "ID"
+       cargarVuelosEnPantalla(); // Método para mostrar vuelos en los JLabels
+       configurarBotonesReserva(); // Asignar acciones a los botones
     }
-) {
-    @Override
-    public boolean isCellEditable(int row, int column) {
-        return false;
+
+ 
+
+
+    // Método para simular la carga de vuelos (debes reemplazarlo con tu lógica real)
+    private void cargarVuelosEnPantalla() {
+        
+        vueloMostrado = new Vuelo();
+        vueloMostrado.setNumeroVuelo("AAA-001");
+        vueloMostrado.setOrigen("Cartagena");
+        vueloMostrado.setDestino("Medellin");
+        
+     
+
+        // Mostrar datos en los JLabels
+        jLabel1.setText("Vuelo: " + vueloMostrado.getNumeroVuelo() + " | " + vueloMostrado.getOrigen() + " → " + vueloMostrado.getDestino());
+        
     }
-});
-       
-       
-       List<Vuelos> vuelos = new ArrayList<>();
-vuelos.add(new Vuelos("Cartagena", "Medellin", "2025-04-25", "2025-04-30", "V001"));
-vuelos.add(new Vuelos("Medellin", "Cartagena", "2025-05-02", "2025-05-10", "V002"));
 
+    private void configurarBotonesReserva() {
+      
+            jButton1.addActionListener(e -> {
+            if (vueloMostrado != null) {
+                reservarVuelo(vueloMostrado);
+            } else {
+                JOptionPane.showMessageDialog(
+                    this, 
+                    "Error: No hay vuelo disponible.", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        });
+    
+    }
 
-// Llenar la tabla
-DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-model.setRowCount(0);
-
-
-
-for (Vuelos vuelo : vuelos) {
-    model.addRow(new Object[]{
-        vuelo.getOrigen(),
-        vuelo.getDestino(),
-        vuelo.getFechaIda(),
-        vuelo.getFechaVuelta(),
-        vuelo.getId()
-    });
+    // Método para guardar una reserva en la BD
+    private void reservarVuelo(Vuelo vuelo) {
+        EntityManager em = null;
+        try {
+            
+            Reserva nuevaReserva = new Reserva();
+            
+            nuevaReserva.setPasajero(this.pasajeroActual);
+            nuevaReserva.setVuelo(vuelo);
+            nuevaReserva.setOrigen(vuelo.getOrigen());
+            nuevaReserva.setDestino(vuelo.getDestino());
+            
+            nuevaReserva.setEstado(EstadoReserva.CONFIRMADA); // Asignar estado inicial
+           
+            
+          
+            
+      
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(
+                this,
+                " Error al reservar: " + ex.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            ex.printStackTrace();
+        }
 }
-    }
 
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(800, 510));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel1.setMinimumSize(new java.awt.Dimension(800, 510));
+        jPanel1.setPreferredSize(new java.awt.Dimension(800, 510));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Origen", "Destino", "Fecha Ida", "Fecha Vuelta", "ID"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reserva\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(102, 153, 255))); // NOI18N
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, 220));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 2, 14)); // NOI18N
-        jLabel1.setText("Desea comprar un vuelo ?");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 300, 210, -1));
-
-        jButton1.setText("Enter");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButton1.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
+        jButton1.setText("Reservar");
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 300, 70, 20));
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 400, 36));
 
-        jButton2.setText("Volver");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jLabel1.setText("-------------------------------------------------------------");
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 320, 40));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carga 100 x 100.gif"))); // NOI18N
+        jLabel2.setText("jLabel2");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, 80, 100));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 580, 130));
+
+        jLabel3.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("AeroNex");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 140, 50));
+
+        jLabel4.setFont(new java.awt.Font("Nirmala UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Reserva en tu Aereolinea de Confinaza");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 270, 30));
+
+        btnRegresar.setBackground(new java.awt.Color(102, 153, 255));
+        btnRegresar.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setText("Regresar");
+        btnRegresar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnRegresarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 30));
+        jPanel1.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 150, 60));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 510));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        VentanaTikect ventana = new VentanaTikect();
-        ventana.setVisible(true);
-        this.dispose();
+        VentanaTikect tikect = new VentanaTikect(nombreUsuario);
+       tikect.setVisible(true);
+       this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        ventanaAnterior.setVisible(true); // Mostrar la ventana anterior
-          this.dispose(); // Cerrar esta ventana
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        VentanaInicio inicio = new VentanaInicio(nombreUsuario);
+        inicio.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+        
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -164,21 +209,28 @@ for (Vuelos vuelo : vuelos) {
             java.util.logging.Logger.getLogger(VentanaVuelosDisponibles.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
+ // Simulación: Pasajero por defecto (debes reemplazarlo con tu sistema de login)
+        Pasajero pasajeroEjemplo = new Pasajero();
+      
+        pasajeroEjemplo.setNombre("Invitado");
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaVuelosDisponibles().setVisible(true);
+                new VentanaVuelosDisponibles(pasajeroEjemplo,"Invitado").setVisible(true);
             }
-        });
+        });  
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

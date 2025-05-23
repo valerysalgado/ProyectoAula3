@@ -14,6 +14,10 @@ public class Pasajero {
         this.contraseña = contraseña;
         this.email = email;
     }
+
+    public Pasajero() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     public String getEmail() {
         return email;
     }
