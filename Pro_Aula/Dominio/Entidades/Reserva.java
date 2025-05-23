@@ -14,23 +14,17 @@ public class Reserva implements Serializable {
     @Column(name = "id_reserva")
     private Integer idReserva;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario", nullable = false)
+   @ManyToOne(optional = false)  // Obligatorio
+    @JoinColumn(name = "id_pasajero")
     private Pasajero pasajero;
-
+   
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idAsiento", referencedColumnName = "idAsiento", nullable = false)
     private Asiento asiento;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idVuelo", referencedColumnName = "idVuelo", nullable = false)
+    @ManyToOne(optional = false)  // Obligatorio
+    @JoinColumn(name = "id_vuelo")
     private Vuelo vuelo;
-
-    @Column(length = 100, nullable = false)
-    private String origen;
-
-    @Column(length = 100, nullable = false)
-    private String destino;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = false)
@@ -39,9 +33,6 @@ public class Reserva implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
     private EstadoReserva estado;
-
-    @Column(name = "total_pagado", precision = 10, scale = 2, nullable = false)
-    private BigDecimal totalPagado;
 
     @Column(length = 20, unique = true)
     private String codigoReserva;
@@ -59,19 +50,17 @@ public class Reserva implements Serializable {
     public Reserva() {
         this.fechaReserva = new Date();
         this.estado = EstadoReserva.PENDIENTE;
-        this.totalPagado = BigDecimal.ZERO;
+
         this.codigoReserva = generarCodigoReserva();
     }
 
     public Reserva(Pasajero pasajero, Asiento asiento, Vuelo vuelo,
-            String origen, String destino, BigDecimal totalPagado) {
+            String origen, String destino, double totalPagado) {
         this();
         this.pasajero = pasajero;
         this.asiento = asiento;
         this.vuelo = vuelo;
-        this.origen = origen;
-        this.destino = destino;
-        this.totalPagado = totalPagado;
+
     }
 
     public void confirmar() {
@@ -112,24 +101,16 @@ public class Reserva implements Serializable {
         return vuelo;
     }
 
-    public String getOrigen() {
-        return origen;
-    }
-
-    public String getDestino() {
-        return destino;
-    }
-
     public Date getFechaReserva() {
         return fechaReserva;
     }
 
-    public EstadoReserva getEstado() {
-        return estado;
+    public void setFechaReserva(Date fechaReserva) {
+        this.fechaReserva = fechaReserva;
     }
 
-    public BigDecimal getTotalPagado() {
-        return totalPagado;
+    public EstadoReserva getEstado() {
+        return estado;
     }
 
     public String getCodigoReserva() {
@@ -144,32 +125,28 @@ public class Reserva implements Serializable {
         this.pasajero = pasajero;
     }
 
-    public void setAsiento(Asiento asiento) {
-        this.asiento = asiento;
-    }
-
     public void setVuelo(Vuelo vuelo) {
         this.vuelo = vuelo;
-    }
-
-    public void setOrigen(String origen) {
-        this.origen = origen;
-    }
-
-    public void setDestino(String destino) {
-        this.destino = destino;
     }
 
     public void setEstado(EstadoReserva estado) {
         this.estado = estado;
     }
 
-    public void setTotalPagado(BigDecimal totalPagado) {
-        this.totalPagado = totalPagado;
-    }
-
     public void setCodigoReserva(String codigoReserva) {
         this.codigoReserva = codigoReserva;
+    }
+
+    public void setIdReserva(Integer idReserva) {
+        this.idReserva = idReserva;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public void setAsiento(Asiento asiento) {
+        this.asiento = asiento;
     }
 
     @Override
@@ -179,12 +156,7 @@ public class Reserva implements Serializable {
                 + ", pasajero=" + (pasajero != null ? pasajero.getnombre() : "null")
                 + ", vuelo=" + (vuelo != null ? vuelo.getNumeroVuelo() : "null")
                 + ", asiento=" + (asiento != null ? asiento.getNumero() : "null")
-                + ", origen='" + origen + '\''
-                + ", destino='" + destino + '\''
                 + ", fechaReserva=" + fechaReserva
-                + ", estado=" + estado
-                + ", totalPagado=" + totalPagado
-                + ", codigoReserva='" + codigoReserva + '\''
-                + '}';
+                + ", estado=" + estado;
     }
 }

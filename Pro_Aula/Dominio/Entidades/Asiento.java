@@ -17,38 +17,55 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "asientos")
 public class Asiento implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idAsiento;
-    
+    private Long idAsiento;
+
     @Column(length = 10, nullable = false)
     private String numero;
-    
+
     @Column(length = 20, nullable = false)
     private String clase;
-    
+
     @Column(nullable = false)
     private boolean disponible;
+
+    @ManyToOne
+    @JoinColumn(name = "id_avion")
+    private Avion avion;
     
     @ManyToOne
-    @JoinColumn(name = "idVuelo")
-    private Vuelo vuelo;
+@JoinColumn(name = "id_vuelo")
+private Vuelo vuelo;
+
+    private boolean ocupado;
 
     public Asiento() {
     }
 
-    public Asiento(Vuelo vuelo1, String numero, String clase, boolean disponible) {
-        this.numero = numero;
-        this.clase = clase;
-        this.disponible = disponible;
+    public Asiento(Avion avion, String numero, String clase, boolean disponible) {
+    this.avion = avion;
+    this.numero = numero;
+    this.clase = clase;
+    this.disponible = disponible;
+}
+
+
+    public Vuelo getVuelo() {
+        return vuelo;
+    }
+
+    public void setVuelo(Vuelo vuelo) {
+        this.vuelo = vuelo;
     }
 
     // Getters y Setters
-    public int getIdAsiento() {
+    public Long getIdAsiento() {
         return idAsiento;
     }
 
-    public void setIdAsiento(int idAsiento) {
+    public void setIdAsiento(Long idAsiento) {
         this.idAsiento = idAsiento;
     }
 
@@ -76,22 +93,22 @@ public class Asiento implements Serializable {
         this.disponible = disponible;
     }
 
-    public Vuelo getVuelo() {
-        return vuelo;
+    public Avion getAvion() {
+        return avion;
     }
 
-    public void setVuelo(Vuelo vuelo) {
-        this.vuelo = vuelo;
+    public void setAvion(Avion avion) {
+        this.avion = avion;
     }
 
     @Override
-    public String toString() {
-        return "Asiento\n" + "-------------------------\n" + 
-            "ID: " + idAsiento + "\n" + 
-            "Número: " + numero + "\n" + 
-            "Clase: " + clase + "\n" + 
-            "Disponible: " + (disponible ? "Sí" : "No") + "\n" +
-            "Vuelo ID: " + (vuelo != null ? vuelo.getIdVuelo() : "N/A") + "\n";
+public String toString() {
+    return numero + " - " + clase; // O lo que quieras mostrar
+}
+
+
+    public boolean isOcupado() {
+        return ocupado;
     }
 
 }

@@ -10,7 +10,7 @@ public class Pasajero implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idUsuario;
+    private Long idUsuario;
     @Column(length = 150, nullable = false)
     private String nombre;
     @Column(length = 150, nullable = false)
@@ -38,7 +38,7 @@ public class Pasajero implements Serializable {
         this.rol = rol;
     }
     
-    public Pasajero(int idUsuario, String nombre, String apellido, String identificacion, String telefono, String correo, String rol) {
+    public Pasajero(Long idUsuario, String nombre, String apellido, String identificacion, String telefono, String correo, String rol) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -48,7 +48,7 @@ public class Pasajero implements Serializable {
         this.rol = rol;
     }
 
-    public int getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
@@ -77,7 +77,7 @@ public String getCorreo() {
     }
 
     // Setters
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
