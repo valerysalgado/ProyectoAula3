@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -47,8 +49,7 @@ public class AsientoDAO {
         em.merge(asiento);
     }
 
-    // Eliminar asiento
-   public void eliminar(int idAsiento) {
+public void eliminar(Long idAsiento) {
     Asiento asiento = em.find(Asiento.class, idAsiento);
     if (asiento != null) {
         em.getTransaction().begin();
@@ -59,7 +60,7 @@ public class AsientoDAO {
 
 
     // Buscar asiento por ID
-    public Asiento buscarPorId(int id) {
+    public Asiento buscarPorId(Long id) {
         return em.find(Asiento.class, id);
     }
 
@@ -77,11 +78,11 @@ public class AsientoDAO {
         return query.getSingleResult().intValue();
     }
 
-    public List<Asiento> buscarPorVuelo(int idVuelo) {
-        return em.createQuery("SELECT a FROM Asiento a WHERE a.vuelo.idVuelo = :idVuelo", Asiento.class)
-                .setParameter("idVuelo", idVuelo)
-                .getResultList();
-    }
+   public List<Asiento> buscarPorVuelo(Long idVuelo) {
+    return em.createQuery("SELECT a FROM Asiento a WHERE a.vuelo.idVuelo = :idVuelo", Asiento.class)
+            .setParameter("idVuelo", idVuelo)
+            .getResultList();
+}
 
     public List<Asiento> buscarPorClase(String clase) {
         return em.createQuery("SELECT a FROM Asiento a WHERE a.clase = :clase", Asiento.class)
@@ -123,13 +124,7 @@ public List<Asiento> obtenerPorAvion(Avion avion) {
 
 
 public List<Asiento> listarTodos() {
-    try {
-        return em.createQuery("SELECT a FROM Asiento a LEFT JOIN FETCH a.avion", Asiento.class)
-                .getResultList();
-    } catch (Exception e) {
-        e.printStackTrace();
-        return new ArrayList<>();
-    }
+    return em.createQuery("SELECT a FROM Asiento a", Asiento.class).getResultList();
 }
 
    // En tu clase AsientoDAO.java
@@ -153,14 +148,23 @@ public int contarAsientosPorAvion(int idAvion) {
 }
 
   // En AsientoDAO.java
-public Asiento buscarPorNumero(String numeroAsiento) {
+public Asiento buscarPorNumero(String numero) {
     try {
         return em.createQuery(
             "SELECT a FROM Asiento a WHERE a.numero = :numero", Asiento.class)
-            .setParameter("numero", numeroAsiento)
+            .setParameter("numero", numero)
+            .setMaxResults(1) // Limitar a 1 resultado
             .getSingleResult();
     } catch (NoResultException e) {
-        throw new RuntimeException("Asiento no encontrado: " + numeroAsiento);
+        return null;
+    } catch (NonUniqueResultException e) {
+        // Si hay duplicados, obtener el primero
+        List<Asiento> resultados = em.createQuery(
+            "SELECT a FROM Asiento a WHERE a.numero = :numero", Asiento.class)
+            .setParameter("numero", numero)
+            .setMaxResults(1)
+            .getResultList();
+        return resultados.isEmpty() ? null : resultados.get(0);
     }
 }
 
@@ -224,5 +228,56 @@ public Asiento obtenerUltimoAsientoPorAvionYClase(long idAvion, String clase) {
         }
     }
 
+   public Asiento buscarPorIdConBloqueo(Long id) {
+    try {
+        return em.createQuery(
+            "SELECT a FROM Asiento a WHERE a.idAsiento = :id", Asiento.class)
+            .setParameter("id", id)
+            .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+            .getSingleResult();
+    } catch (NonUniqueResultException e) {
+        // Manejar duplicados devolviendo el primero
+        return em.createQuery(
+            "SELECT a FROM Asiento a WHERE a.idAsiento = :id", Asiento.class)
+            .setParameter("id", id)
+            .setMaxResults(1)
+            .getResultList()
+            .get(0);
+    } catch (NoResultException e) {
+        return null;
+    }
+}
+
+    public List<Asiento> obtenerAsientosPorAvion(long idAvion) {
+    return em.createQuery(
+        "SELECT a FROM Asiento a WHERE a.avion.id = :idAvion ORDER BY a.numero", 
+        Asiento.class)
+        .setParameter("idAvion", idAvion)
+        .getResultList();
+}
+
+    public Asiento buscarPorNumeroYVuelo(String numero, int idVuelo) {
+    TypedQuery<Asiento> query = em.createQuery(
+        "SELECT a FROM Asiento a WHERE a.numero = :numero AND a.vuelo.idVuelo = :idVuelo", Asiento.class);
+    query.setParameter("numero", numero);
+    query.setParameter("idVuelo", idVuelo);
+
+    List<Asiento> resultados = query.getResultList();
+    return resultados.isEmpty() ? null : resultados.get(0);
+}
+
+    public List<Asiento> obtenerAsientosDisponibles() {
+    try {
+        // Consulta JPQL para obtener asientos disponibles (disponible = true)
+        String jpql = "SELECT a FROM Asiento a WHERE a.disponible = true";
+        TypedQuery<Asiento> query = em.createQuery(jpql, Asiento.class);
+        return query.getResultList();
+    } catch (Exception e) {
+        System.err.println("Error al obtener asientos disponibles: " + e.getMessage());
+        return new ArrayList<>(); // Retorna lista vacía en caso de error
+    }
+}
+
+  
 
 }

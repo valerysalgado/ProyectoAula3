@@ -81,22 +81,31 @@ public class AvionDAO {
     }
 
     // Método para eliminar
-    public void eliminar(long id) {
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
-            Avion avion = em.find(Avion.class, id);
-            if (avion != null) {
-                em.remove(avion);
-            }
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            throw new RuntimeException("Error al eliminar avión", e);
+   public void eliminar(Long id) {  // Cambiado a Long para consistencia
+    EntityTransaction tx = em.getTransaction();
+    try {
+        tx.begin();
+        
+        // 1. Verificar dependencias primero
+        if (tieneDependencias(id)) {
+            throw new IllegalStateException("No se puede eliminar: El avión tiene vuelos o asientos asignados");
         }
+        
+        // 2. Buscar y eliminar
+        Avion avion = em.find(Avion.class, id);
+        if (avion != null) {
+            em.remove(avion);
+        }
+        
+        tx.commit();
+    } catch (Exception e) {
+        if (tx != null && tx.isActive()) {
+            tx.rollback();
+        }
+        throw new RuntimeException("Error al eliminar avión: " + e.getMessage(), e);
     }
+}
+   
     public void cambiarEstado(int id, String nuevoEstado) {
         EntityTransaction tx = em.getTransaction();
         try {
@@ -141,7 +150,25 @@ public Avion buscarPorId(Long id) { // Cambiado a Long
         return null;
     }
 }
+public boolean tieneDependencias(Long idAvion) {
+    try {
+        // Verificar si tiene vuelos asociados
+        Long countVuelos = em.createQuery(
+            "SELECT COUNT(v) FROM Vuelo v WHERE v.avion.id = :idAvion", Long.class)
+            .setParameter("idAvion", idAvion)
+            .getSingleResult();
 
+        // Verificar si tiene asientos asociados
+        Long countAsientos = em.createQuery(
+            "SELECT COUNT(a) FROM Asiento a WHERE a.avion.id = :idAvion", Long.class)
+            .setParameter("idAvion", idAvion)
+            .getSingleResult();
+
+        return (countVuelos > 0 || countAsientos > 0);
+    } catch (Exception e) {
+        throw new PersistenceException("Error al verificar dependencias", e);
+    }
+}
 }
     
 

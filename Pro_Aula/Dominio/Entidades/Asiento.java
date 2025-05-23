@@ -20,7 +20,7 @@ public class Asiento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idAsiento;
+    private Long idAsiento;
 
     @Column(length = 10, nullable = false)
     private String numero;
@@ -34,19 +34,23 @@ public class Asiento implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_avion")
     private Avion avion;
+    
+    @ManyToOne
+@JoinColumn(name = "id_vuelo")
+private Vuelo vuelo;
 
     private boolean ocupado;
 
     public Asiento() {
     }
 
-    public Asiento(Vuelo vuelo1, String numero, String clase, boolean disponible) {
-        this.numero = numero;
-        this.clase = clase;
-        this.disponible = disponible;
-    }
-// En Asiento.java
-    private Vuelo vuelo;
+    public Asiento(Avion avion, String numero, String clase, boolean disponible) {
+    this.avion = avion;
+    this.numero = numero;
+    this.clase = clase;
+    this.disponible = disponible;
+}
+
 
     public Vuelo getVuelo() {
         return vuelo;
@@ -57,11 +61,11 @@ public class Asiento implements Serializable {
     }
 
     // Getters y Setters
-    public int getIdAsiento() {
+    public Long getIdAsiento() {
         return idAsiento;
     }
 
-    public void setIdAsiento(int idAsiento) {
+    public void setIdAsiento(Long idAsiento) {
         this.idAsiento = idAsiento;
     }
 
@@ -98,9 +102,10 @@ public class Asiento implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Asiento " + this.numero; // podés usar otra propiedad si querés
-    }
+public String toString() {
+    return numero + " - " + clase; // O lo que quieras mostrar
+}
+
 
     public boolean isOcupado() {
         return ocupado;

@@ -30,10 +30,6 @@ public void crear(Vuelo vuelo) {
     }
 }
 
-    public Vuelo buscarPorId(int id) {
-        return em.find(Vuelo.class, id);
-    }
-
     public List<Vuelo> listarTodos() {
         TypedQuery<Vuelo> query = em.createQuery("SELECT v FROM Vuelo v", Vuelo.class);
         return query.getResultList();
@@ -96,6 +92,13 @@ public void crear(Vuelo vuelo) {
         e.printStackTrace(); // o un logger
         return new ArrayList<>();
     }
+}
+
+    public Object listarVuelosActivos() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+public Vuelo buscarPorId(Integer id) {  // Asegúrate que use Integer
+    return em.find(Vuelo.class, id);
 }
 
 }

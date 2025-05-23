@@ -41,7 +41,7 @@ public class PasajeroDAO {
         }
     }
 
-    public Pasajero buscarPorId(int id) {
+    public Pasajero buscarPorId(Long id) {
         return em.find(Pasajero.class, id);
     }
 
@@ -93,6 +93,7 @@ public class PasajeroDAO {
                 .getResultList();
     
     }
-   
+
+
 }
 

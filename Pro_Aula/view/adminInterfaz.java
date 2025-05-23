@@ -22,9 +22,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -1417,49 +1419,111 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_botonguardarActionPerformed
 
     private void btnguardarreservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarreservasActionPerformed
-        // Validar que se haya seleccionado un asiento
-    Asiento asiento = obtenerAsientoSeleccionado();
-    if (asiento == null) {
-        JOptionPane.showMessageDialog(this, 
-            "Por favor seleccione un asiento", 
-            "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        try {
+            // Validar asiento
+            if (comboasiento.getSelectedIndex() <= 0 || comboasiento.getSelectedItem().toString().contains("No hay")) {
+                JOptionPane.showMessageDialog(this,
+                        "Por favor seleccione un asiento disponible del menú desplegable",
+                        "Selección requerida", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-    // Verificar disponibilidad del asiento
-    if (!asiento.isDisponible()) {
-        JOptionPane.showMessageDialog(this, 
-            "El asiento " + asiento.getNumero() + " ya está ocupado", 
-            "Asiento no disponible", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+            // Validar pasajero
+            if (combousuario.getSelectedIndex() <= 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Por favor seleccione un pasajero válido",
+                        "Selección requerida", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-    EntityTransaction tx = em.getTransaction();
-    try {
-        tx.begin();
+            // Validar vuelo
+            if (combovuelo.getSelectedIndex() <= 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Seleccione un vuelo válido",
+                        "Selección requerida", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-        // Actualizar estado del asiento
-        asiento.setDisponible(false);
-        new AsientoDAO(em).actualizar(asiento);
+            // Obtener asiento
+            String asientoStr = comboasiento.getSelectedItem().toString(); // Ej: "5 - A1"
+            Long idAsiento = Long.parseLong(asientoStr.split(" - ")[0].trim());
+            Asiento asiento = new AsientoDAO(em).buscarPorId(idAsiento);
 
-        tx.commit();
+            if (asiento == null || !asiento.isDisponible()) {
+                JOptionPane.showMessageDialog(this,
+                        "El asiento seleccionado no está disponible",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        JOptionPane.showMessageDialog(this,
-            "Asiento " + asiento.getNumero() + " reservado exitosamente",
-            "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            // Obtener pasajero
+            // Obtener pasajero - Versión corregida
+            String pasajeroSeleccionado = combousuario.getSelectedItem().toString();
+            if (!pasajeroSeleccionado.contains(" - ")) {
+                JOptionPane.showMessageDialog(this, "Formato de pasajero inválido", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-        // Actualizar la tabla de asientos
-        listarAsientos(); // Método que debes implementar para refrescar la tabla
+            Long idPasajero = Long.parseLong(pasajeroSeleccionado.split(" - ")[0].trim());
+            Pasajero pasajero = new PasajeroDAO(em).buscarPorId(idPasajero);
 
-    } catch (Exception e) {
-        if (tx != null && tx.isActive()) {
-            tx.rollback();
+            // Obtener vuelo
+            String vueloSeleccionado = combovuelo.getSelectedItem().toString();
+            Integer idVuelo = Integer.parseInt(vueloSeleccionado.split(" - ")[0].trim()); // Usa Integer.parseInt
+            Vuelo vuelo = new VueloDAO(em).buscarPorId(idVuelo);
+            if (vuelo == null) {
+                JOptionPane.showMessageDialog(this,
+                        "No se encontró el vuelo seleccionado",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Iniciar transacción
+            EntityTransaction tx = em.getTransaction();
+            tx.begin();
+
+            // Bloquear asiento para evitar concurrencia
+            Asiento asientoBloqueado = new AsientoDAO(em).buscarPorIdConBloqueo(idAsiento);
+            if (asientoBloqueado == null || !asientoBloqueado.isDisponible()) {
+                tx.rollback();
+                JOptionPane.showMessageDialog(this,
+                        "El asiento ya no está disponible",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Crear reserva
+            Reserva reserva = new Reserva();
+            reserva.setAsiento(asientoBloqueado);
+            reserva.setPasajero(pasajero);
+            reserva.setVuelo(vuelo);
+            reserva.setFechaReserva(new Date());
+
+            // Marcar asiento como no disponible
+            asientoBloqueado.setDisponible(false);
+            new AsientoDAO(em).actualizar(asientoBloqueado);
+
+            // Guardar reserva
+            new ReservaDAO(em).crear(reserva);
+
+            tx.commit();
+
+            JOptionPane.showMessageDialog(this,
+                    "✅ Reserva registrada exitosamente",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // Refrescar listas
+            listarReservas();
+            listarAsientos();
+            cargarAsientosEnCombo();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "❌ Error al registrar reserva: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
-        JOptionPane.showMessageDialog(this, 
-            "Error al reservar asiento: " + e.getMessage(),
-            "Error", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
+
     }//GEN-LAST:event_btnguardarreservasActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
@@ -1499,54 +1563,30 @@ public class adminInterfaz extends javax.swing.JFrame {
         int filaSeleccionada = tablaaviones.getSelectedRow();
         if (filaSeleccionada < 0) {
             JOptionPane.showMessageDialog(this,
-                    "Por favor seleccione un avión de la tabla",
-                    "Error",
-                    JOptionPane.WARNING_MESSAGE);
+                    "Seleccione un avión para eliminar",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
-        long idAvion = (long) modelo.getValueAt(filaSeleccionada, 0);
+        Long idAvion = (Long) tablaaviones.getValueAt(filaSeleccionada, 0);
 
-        int confirmacion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Está seguro que desea eliminar este avión?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION);
-
-        if (confirmacion != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
+            // Confirmación antes de eliminar
+            int confirmacion = JOptionPane.showConfirmDialog(this,
+                    "¿Está seguro de eliminar este avión?",
+                    "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
-            Avion avion = em.find(Avion.class, idAvion);
-            if (avion != null) {
-                em.remove(avion);
-                tx.commit();
-
-                cargarTodosAviones();
-                limpiarCamposAvion();
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                new AvionDAO(em).eliminar(idAvion);
                 JOptionPane.showMessageDialog(this,
-                        "Avión eliminado correctamente",
-                        "Éxito",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "El avión seleccionado no existe en la base de datos",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                        "Avión eliminado exitosamente",
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                actualizarTablaAviones(); // Refrescar la tabla
             }
         } catch (Exception e) {
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
-            }
             JOptionPane.showMessageDialog(this,
-                    "Error al eliminar avión: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+                    "Error al eliminar: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_botoneliminar2ActionPerformed
@@ -1795,7 +1835,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
         try {
             int id = Integer.parseInt(idStr);
-            Pasajero p = pasajeroDAO.buscarPorId(id);
+            Pasajero p = pasajeroDAO.buscarPorId((long) id);
             if (p != null) {
                 cargarPasajerosEnTabla(List.of(p));
             } else {
@@ -1865,7 +1905,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
 
         int id = (int) modeloTabla.getValueAt(fila, 0);
-        Pasajero actualizado = pasajeroDAO.buscarPorId(id);
+        Pasajero actualizado = pasajeroDAO.buscarPorId((long) id);
 
         actualizado.setNombre(txtnombre.getText());
         actualizado.setApellido(txtapellido.getText());
@@ -2376,7 +2416,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 reserva.setVuelo(obtenerVueloSeleccionado());
 
                 reserva.setFechaReserva(dateChooserSalida1.getDate());
-                reserva.setTotalPagado(calcularTotalReserva(reserva.getVuelo()));
 
                 reservaDAO.actualizar(reserva);
 
@@ -2401,125 +2440,104 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel18MouseClicked
 
     private void botonagregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregar3ActionPerformed
- try {
-        // Obtener valores del formulario
-        String clase = comboClase.getSelectedItem().toString();
-        String disponibilidad = comboDisponible.getSelectedItem().toString();
-        String avionSeleccionado = comboAvion.getSelectedItem().toString();
-        
-        // Validar selecciones
-        if (clase.equals("Seleccione clase") || disponibilidad.equals("Seleccione...") || 
-            avionSeleccionado.equals("Seleccione avión")) {
-            JOptionPane.showMessageDialog(this, 
-                "Por favor complete todos los campos", 
-                "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        // Convertir disponibilidad a booleano
-        boolean disponible = disponibilidad.equals("Sí");
-        
-        // Obtener el ID del avión desde el string seleccionado
-        String[] partesAvion = avionSeleccionado.split(" - ");
-        if (partesAvion.length < 2) {
-            JOptionPane.showMessageDialog(this, 
-                "Formato de avión inválido", 
-                "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        long idAvion;
+        initTablaAsientos();
         try {
-            idAvion = Long.parseLong(partesAvion[0].trim());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, 
-                "ID de avión inválido", 
-                "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        // Buscar el avión en la base de datos
-        Avion avion = new AvionDAO(em).buscarPorId(idAvion);
-        if (avion == null) {
-            JOptionPane.showMessageDialog(this, 
-                "Avión no encontrado", 
-                "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        // Generar número de asiento automático
-        String numeroAsiento = generarNumeroAsiento(avion.getIdAvion(), clase);
-        
-        // Crear y guardar el asiento
-        Asiento nuevoAsiento = new Asiento();
-        nuevoAsiento.setNumero(numeroAsiento);
-        nuevoAsiento.setClase(clase);
-        nuevoAsiento.setDisponible(disponible);
-        nuevoAsiento.setAvion(avion);
-        
-        EntityTransaction tx = em.getTransaction();
-        try {
-            tx.begin();
+
+            String clase = comboClase.getSelectedItem().toString();
+            String disponibilidad = comboDisponible.getSelectedItem().toString();
+            String avionSeleccionado = comboAviones.getSelectedItem().toString(); // Formato: "ID - Matrícula" (ej: "19 - AAA-003")
+
+            // 2. Validar solo que no sea el placeholder
+            if (clase.equals("Seleccione clase")
+                    || disponibilidad.equals("Seleccione...")
+                    || avionSeleccionado.equals("-- Seleccione avión --")) {
+                JOptionPane.showMessageDialog(this,
+                        "❌ Debe seleccionar un avión de la lista",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // 3. Extraer ID y Matrícula (SEGURO, porque TÚ controlas el formato en cargarAvionesEnComboAsientos())
+            String[] partes = avionSeleccionado.split(" - ");
+            long idAvion = Long.parseLong(partes[0]); // Ej: "19" → 19
+            String matricula = partes[1];             // Ej: "AAA-003"
+
+            // 4. Crear el asiento (sin buscar el avión en BD, ya existe)
+            Asiento nuevoAsiento = new Asiento();
+            nuevoAsiento.setNumero(generarNumeroAsiento(idAvion, clase));
+            nuevoAsiento.setClase(clase);
+            nuevoAsiento.setDisponible(disponibilidad.equals("Sí"));
+
+            // 5. Relacionar con el avión (solo necesitamos el ID)
+            Avion avion = new Avion();
+            avion.setIdAvion(idAvion);
+            nuevoAsiento.setAvion(avion);
+
+            // 6. Guardar en BD
             new AsientoDAO(em).crear(nuevoAsiento);
-            tx.commit();
-            
+            // 7. Mensaje de éxito
             JOptionPane.showMessageDialog(this,
-                "Asiento registrado exitosamente:\n" +
-                "Número: " + numeroAsiento + "\n" +
-                "Clase: " + clase + "\n" +
-                "Avión: " + avion.getIdAvion(),
-                "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                
+                    " Asiento registrado exitosamente\n"
+                    + "• Matrícula: " + matricula + "\n"
+                    + "• N° Asiento: " + nuevoAsiento.getNumero(),
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
             actualizarTablaAsientos();
             limpiarFormulario();
-            
-        } catch (Exception e) {
-            if (tx != null && tx.isActive()) {
-                tx.rollback();
-            }
-            throw e;
-        }
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, 
-            "Error al registrar asiento: " + e.getMessage(),
-            "Error", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
+            listarAsientos();
 
-    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "❌ Error inesperado: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_botonagregar3ActionPerformed
 
     private void botoneditar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditar3ActionPerformed
         int filaSeleccionada = tablaasientos.getSelectedRow();
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un asiento para editar",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        try {
-            int idAsiento = Integer.parseInt(tablaasientos.getValueAt(filaSeleccionada, 0).toString());
-            AsientoDAO asientoDAO = new AsientoDAO(em);
-            Asiento asiento = asientoDAO.buscarPorId(idAsiento);
+        if (filaSeleccionada >= 0) {
+            try {
+                Object valorId = tablaasientos.getValueAt(filaSeleccionada, 0);
+                if (valorId == null) {
+                    JOptionPane.showMessageDialog(this, "El asiento no tiene ID válido",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-            if (asiento != null) {
-                // Actualizar datos del asiento
-                String vueloStr = comboAviones.getSelectedItem().toString();
-                int idVuelo = Integer.parseInt(vueloStr.split(" - ")[0]);
-                VueloDAO vueloDAO = new VueloDAO(em);
-                Vuelo vueloSeleccionado = vueloDAO.buscarPorId(idVuelo);
-                asiento.setClase(comboClase.getSelectedItem().toString());
-                asiento.setDisponible(comboDisponible.getSelectedItem().toString().equals("Sí"));
-                asiento.setVuelo(vueloSeleccionado);
-                asientoDAO.actualizar(asiento);
+                Long idAsiento;
+                if (valorId instanceof Integer) {
+                    idAsiento = ((Integer) valorId).longValue();
+                } else if (valorId instanceof Long) {
+                    idAsiento = (Long) valorId;
+                } else {
+                    idAsiento = Long.parseLong(valorId.toString());
+                }
 
-                JOptionPane.showMessageDialog(this, "Asiento actualizado correctamente");
-                listarAsientos();
+                AsientoDAO asientoDAO = new AsientoDAO(em);
+                Asiento asiento = asientoDAO.buscarPorId(idAsiento);
+
+                if (asiento != null && asiento.getAvion() != null) {
+                    // Seleccionar vuelo en el combo
+                    for (int i = 0; i < comboAviones.getItemCount(); i++) {
+                        if (comboAviones.getItemAt(i).toString().contains(
+                                String.valueOf(asiento.getAvion().getIdAvion()))) {
+                            comboAviones.setSelectedIndex(i);
+                            break;
+                        }
+                    }
+                    comboClase.setSelectedItem(asiento.getClase());
+                    comboDisponible.setSelectedItem(asiento.isDisponible() ? "Sí" : "No");
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo cargar la información del asiento",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al cargar asiento: " + e.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al actualizar asiento: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }        // TODO add your handling code here:
+
+        }
     }//GEN-LAST:event_botoneditar3ActionPerformed
 
     private void comboClaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClaseActionPerformed
@@ -2531,7 +2549,6 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_comboDisponibleActionPerformed
 
     private void botoneliminar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar4ActionPerformed
-
         int filaSeleccionada = tablaasientos.getSelectedRow();
         if (filaSeleccionada < 0) {
             JOptionPane.showMessageDialog(this, "Seleccione un asiento para eliminar",
@@ -2545,7 +2562,33 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             try {
-                int idAsiento = Integer.parseInt(tablaasientos.getValueAt(filaSeleccionada, 0).toString());
+                // Obtener el valor de la celda de forma segura
+                Object valorCelda = tablaasientos.getValueAt(filaSeleccionada, 0);
+
+                if (valorCelda == null) {
+                    JOptionPane.showMessageDialog(this,
+                            "El asiento seleccionado no tiene ID válido",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Convertir a Long de forma segura
+                Long idAsiento;
+                if (valorCelda instanceof Integer) {
+                    idAsiento = ((Integer) valorCelda).longValue();
+                } else if (valorCelda instanceof Long) {
+                    idAsiento = (Long) valorCelda;
+                } else {
+                    try {
+                        idAsiento = Long.parseLong(valorCelda.toString());
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this,
+                                "Formato de ID inválido: " + valorCelda,
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
                 AsientoDAO asientoDAO = new AsientoDAO(em);
                 asientoDAO.eliminar(idAsiento);
 
@@ -2567,24 +2610,65 @@ public class adminInterfaz extends javax.swing.JFrame {
         int filaSeleccionada = tablaasientos.getSelectedRow();
         if (filaSeleccionada >= 0) {
             try {
-                int idAsiento = Integer.parseInt(tablaasientos.getValueAt(filaSeleccionada, 0).toString());
+                // Obtener el valor de la celda de forma segura
+                Object valorCelda = tablaasientos.getValueAt(filaSeleccionada, 0);
+
+                if (valorCelda == null) {
+                    JOptionPane.showMessageDialog(this,
+                            "El asiento seleccionado no tiene ID válido",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Convertir a Long de forma segura
+                Long idAsiento;
+                if (valorCelda instanceof Integer) {
+                    idAsiento = ((Integer) valorCelda).longValue();
+                } else if (valorCelda instanceof Long) {
+                    idAsiento = (Long) valorCelda;
+                } else {
+                    // Si es String u otro tipo
+                    try {
+                        idAsiento = Long.parseLong(valorCelda.toString());
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this,
+                                "Formato de ID inválido: " + valorCelda,
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
                 AsientoDAO asientoDAO = new AsientoDAO(em);
                 Asiento asiento = asientoDAO.buscarPorId(idAsiento);
 
                 if (asiento != null) {
-                    // Seleccionar vuelo en el combo
-                    for (int i = 0; i < comboAviones.getItemCount(); i++) {
-                        if (comboAviones.getItemAt(i).toString().contains(String.valueOf(asiento.getAvion().getIdAvion()))) {
-                            comboAviones.setSelectedIndex(i);
-                            break;
+                    // Validar que el avión no sea null
+                    if (asiento.getAvion() != null) {
+                        // Buscar en el combo
+                        for (int i = 0; i < comboAviones.getItemCount(); i++) {
+                            if (comboAviones.getItemAt(i).toString()
+                                    .contains(String.valueOf(asiento.getAvion().getIdAvion()))) {
+                                comboAviones.setSelectedIndex(i);
+                                break;
+                            }
                         }
+                        comboClase.setSelectedItem(asiento.getClase());
+                        comboDisponible.setSelectedItem(asiento.isDisponible() ? "Sí" : "No");
+                    } else {
+                        JOptionPane.showMessageDialog(this,
+                                "El asiento no tiene avión asignado",
+                                "Advertencia", JOptionPane.WARNING_MESSAGE);
                     }
-                    comboClase.setSelectedItem(asiento.getClase());
-                    comboDisponible.setSelectedItem(asiento.isDisponible() ? "Sí" : "No");
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                            "No se encontró el asiento seleccionado",
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al cargar asiento: " + e.getMessage(),
+                JOptionPane.showMessageDialog(this,
+                        "Error al cargar asiento: " + e.getMessage(),
                         "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
             }
         }
     }//GEN-LAST:event_tablaasientosMouseClicked
@@ -3271,32 +3355,31 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void listarReservas() {
         try {
-            DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
-            modelo.setRowCount(0);
-
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             ReservaDAO reservaDAO = new ReservaDAO(em);
-            List<Reserva> reservas = reservaDAO.listarTodos();
+            List<Reserva> reservas = reservaDAO.obtenerTodas();
+
+            DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
+            modelo.setRowCount(0); // Limpiar tabla
 
             for (Reserva r : reservas) {
-                Object[] fila = new Object[]{
+                modelo.addRow(new Object[]{
                     r.getIdReserva(),
                     r.getCodigoReserva(),
-                    r.getPasajero().getnombre(),
-                    r.getVuelo().getIdVuelo() + " - " + r.getVuelo().getOrigen() + " a " + r.getVuelo().getDestino(),
-                    r.getFechaReserva().toString(),
+                    r.getPasajero() != null ? r.getPasajero().getnombre() + " " + r.getPasajero().getApellido() : "N/A",
+                    r.getVuelo() != null ? r.getVuelo().getNumeroVuelo() : "N/A",
+                    sdf.format(r.getFechaReserva()),
                     r.getAsiento() != null ? r.getAsiento().getNumero() : "N/A",
                     r.getEstado()
-                };
-                modelo.addRow(fila);
-
+                });
             }
 
             ajustarAnchoColumnasReservas();
-
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al listar reservas: " + e.getMessage(),
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar reservas: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 
@@ -3334,29 +3417,17 @@ public class adminInterfaz extends javax.swing.JFrame {
         comboasiento.addItem("-- Seleccione asiento --");
 
         try {
-            List<Asiento> asientos = new AsientoDAO(em).obtenerTodos();
-            int contadorDisponibles = 0;
-
-            for (Asiento asiento : asientos) {
-                if (asiento.isDisponible()) {
-                    String textoAsiento = asiento.getIdAsiento() + " - " + asiento.getNumero()
-                            + " (" + asiento.getClase() + ")";
-                    comboasiento.addItem(textoAsiento);
-                    contadorDisponibles++;
-                }
+            List<Asiento> asientos = new AsientoDAO(em).obtenerAsientosDisponibles();
+            for (Asiento a : asientos) {
+                comboasiento.addItem(a.getIdAsiento() + " - " + a.getNumero() + " (" + a.getClase() + ")");
             }
 
-            if (contadorDisponibles == 0) {
+            if (comboasiento.getItemCount() == 1) {
                 comboasiento.removeAllItems();
                 comboasiento.addItem("No hay asientos disponibles");
             }
-
-            System.out.println("Asientos disponibles cargados: " + contadorDisponibles);
-
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar asientos: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+            comboasiento.addItem("Error al cargar asientos");
         }
     }
 
@@ -3365,26 +3436,61 @@ public class adminInterfaz extends javax.swing.JFrame {
     }
 
     private Asiento obtenerAsientoSeleccionado() {
+        if (tablaasientos == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Error: La tabla de asientos no está inicializada",
+                    "Error del sistema", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
+        int filaSeleccionada = tablaasientos.getSelectedRow();
+        if (filaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor seleccione un asiento de la tabla",
+                    "Selección requerida", JOptionPane.WARNING_MESSAGE);
+            return null;
+        }
+
         try {
-            String seleccion = (String) comboasiento.getSelectedItem();
-            System.out.println("DEBUG - Selección cruda: " + seleccion);
+            // Obtener el ID del asiento de la primera columna
+            Object valorId = tablaasientos.getValueAt(filaSeleccionada, 0);
 
-            seleccion = seleccion.replace(" - ", "_");
-
-            if (!seleccion.matches("^\\d+_[A-Z]\\d*\\s+\\(.+\\)$")) {
-                throw new IllegalArgumentException("Formato debe ser: 'Número_Letra (Clase)'");
+            if (valorId == null) {
+                JOptionPane.showMessageDialog(this,
+                        "El asiento seleccionado no tiene ID válido",
+                        "Error de datos", JOptionPane.ERROR_MESSAGE);
+                return null;
             }
 
-            String numeroAsiento = seleccion.split("_")[1].split(" ")[0];
-            Asiento asiento = new AsientoDAO(em).buscarPorNumero(numeroAsiento);
-
-            if (asiento == null) {
-                throw new Exception("Asiento no encontrado: " + numeroAsiento);
+            // Convertir el ID a Long
+            Long idAsiento;
+            if (valorId instanceof Long) {
+                idAsiento = (Long) valorId;
+            } else if (valorId instanceof Integer) {
+                idAsiento = ((Integer) valorId).longValue();
+            } else if (valorId instanceof String) {
+                // Si es String, extraer solo la parte numérica
+                String strVal = ((String) valorId).split(" - ")[0].trim();
+                idAsiento = Long.parseLong(strVal);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Formato de ID no reconocido",
+                        "Error de formato", JOptionPane.ERROR_MESSAGE);
+                return null;
             }
-            return asiento;
 
+            // Buscar el asiento en la base de datos
+            return new AsientoDAO(em).buscarPorId(idAsiento);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "El ID del asiento no es válido",
+                    "Error de formato", JOptionPane.ERROR_MESSAGE);
+            return null;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Error al obtener el asiento: " + e.getMessage(),
+                    "Error del sistema", JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }
@@ -3399,10 +3505,20 @@ public class adminInterfaz extends javax.swing.JFrame {
         return new VueloDAO(em).buscarPorId(idVuelo);
     }
 
-    private Pasajero obtenerPasajeroSeleccionado() throws Exception {
+    private Pasajero obtenerPasajeroSeleccionado() {
+        // Implementación depende de cómo tengas seleccionado el pasajero
+        // Ejemplo si usas un JComboBox:
         String seleccion = combousuario.getSelectedItem().toString();
-        int idPasajero = Integer.parseInt(seleccion.split(" - ")[0]);
-        return new PasajeroDAO(em).buscarPorId(idPasajero);
+        if (seleccion.startsWith("--")) {
+            return null;
+        }
+
+        try {
+            Long idPasajero = Long.parseLong(seleccion.split(" - ")[0]);
+            return new PasajeroDAO(em).buscarPorId(idPasajero);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     private String generarCodigoReserva() {
@@ -3425,6 +3541,14 @@ public class adminInterfaz extends javax.swing.JFrame {
         if (comboasiento.getSelectedIndex() <= 0 || comboasiento.getSelectedItem().toString().contains("No hay")) {
             JOptionPane.showMessageDialog(this, "Seleccione un asiento disponible",
                     "Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        // Validar que el asiento exista
+        Asiento asiento = obtenerAsientoDesdeCombo();
+        if (asiento == null || !asiento.isDisponible()) {
+            JOptionPane.showMessageDialog(this, "El asiento seleccionado no está disponible",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -3480,56 +3604,56 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
     }
 
-  private void actualizarTablaAsientos() {
-    DefaultTableModel modelo = (DefaultTableModel) tablaasientos.getModel();
-    modelo.setRowCount(0); // Limpiar tabla
-    
-    List<Asiento> asientos = new AsientoDAO(em).listarTodos();
-    
-    for (Asiento asiento : asientos) {
-        modelo.addRow(new Object[]{
-            asiento.getIdAsiento(),
-            asiento.getNumero(),
-            asiento.getClase(),
-            asiento.isDisponible() ? "Sí" : "No",
-            asiento.getAvion().getIdAvion()
-        });
-    }
-}
+    private void actualizarTablaAsientos() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaasientos.getModel();
+        modelo.setRowCount(0); // Limpiar tabla
 
-  private String generarNumeroAsiento(long idAvion, String clase) {
-    AsientoDAO asientoDAO = new AsientoDAO(em);
-    
-    // Cambiar el tipo de retorno del DAO a long o convertir explícitamente
-    long cantidad = asientoDAO.contarAsientosPorAvionYClase(idAvion, clase);
-    
-    char fila = 'A';
-    int numero = 1;
-    
-    if (cantidad > 0) {
-        // Obtener el último asiento registrado para este avión y clase
-        Asiento ultimo = asientoDAO.obtenerUltimoAsientoPorAvionYClase(idAvion, clase);
-        if (ultimo != null) {
-            String ultimoNumero = ultimo.getNumero();
-            fila = ultimoNumero.charAt(0);
-            numero = Integer.parseInt(ultimoNumero.substring(1)) + 1;
-            
-            // Si pasamos de 9, cambiamos de fila (A9 -> B1)
-            if (numero > 9) {
-                fila = (char)(fila + 1);
-                numero = 1;
-            }
+        List<Asiento> asientos = new AsientoDAO(em).listarTodos();
+
+        for (Asiento asiento : asientos) {
+            modelo.addRow(new Object[]{
+                asiento.getIdAsiento(),
+                asiento.getNumero(),
+                asiento.getClase(),
+                asiento.isDisponible() ? "Sí" : "No",
+                asiento.getAvion().getIdAvion()
+            });
         }
     }
-    
-    return fila + String.valueOf(numero);
-}
 
-   private void limpiarFormulario() {
-    comboClase.setSelectedIndex(0);
-    comboDisponible.setSelectedIndex(0);
-    comboAvion.setSelectedIndex(0);
-}
+    private String generarNumeroAsiento(long idAvion, String clase) {
+        AsientoDAO asientoDAO = new AsientoDAO(em);
+
+        // Obtener el último asiento para este avión y clase
+        Asiento ultimoAsiento = asientoDAO.obtenerUltimoAsientoPorAvionYClase(idAvion, clase);
+
+        // Generar prefijo basado en clase (primera letra)
+        String prefijo = clase.substring(0, 1).toUpperCase();
+
+        if (ultimoAsiento == null) {
+            return prefijo + "1"; // Primer asiento de esta clase
+        }
+
+        try {
+            // Extraer número del último asiento (ej: "A1" -> 1)
+            String ultimoNumeroStr = ultimoAsiento.getNumero().replaceAll("[^0-9]", "");
+            int ultimoNumero = Integer.parseInt(ultimoNumeroStr);
+            return prefijo + (ultimoNumero + 1);
+        } catch (NumberFormatException e) {
+            // Si falla el parseo, empezar secuencia nueva
+            return prefijo + "1";
+        }
+    }
+
+    private void limpiarFormulario() {
+        comboClase.setSelectedIndex(0);
+        comboDisponible.setSelectedIndex(0);
+        comboAvion.setSelectedIndex(0);
+    }
+
+    private void actualizarTablaAviones() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
     public class Validador {
 
@@ -3543,10 +3667,27 @@ public class adminInterfaz extends javax.swing.JFrame {
     }
 
     private void initTablaReservas() {
-        String[] columnas = {"ID de reserva", "Código de reserva", "Pasajero", "Vuelo", "Fecha Reserva", "Asiento", "Estado"};
-        DefaultTableModel modelo = new DefaultTableModel(null, columnas);
-        tablareservas.setModel(modelo);
-        ajustarAnchoColumnasReservas();
+        DefaultTableModel modelo = (DefaultTableModel) tablaasientos.getModel();
+        modelo.setRowCount(0); // Limpiar tabla
+
+        List<Asiento> asientos = new AsientoDAO(em).listarTodos();
+        System.out.println("Total de asientos encontrados: " + asientos.size()); // Debug
+
+        for (Asiento a : asientos) {
+            if (a.getIdAsiento() == null) {
+                System.err.println("Advertencia: Asiento con ID nulo - " + a.getNumero());
+                continue;
+            }
+
+            modelo.addRow(new Object[]{
+                a.getIdAsiento(), // Columna 0: ID (Long)
+                a.getNumero(), // Columna 1: Número
+                a.getClase(), // Columna 2: Clase
+                a.isDisponible() ? "Disponible" : "Ocupado" // Columna 3: Estado
+            });
+        }
+
+        System.out.println("Filas en tabla: " + modelo.getRowCount()); // Debug
     }
 
     private void ajustarAnchoColumnasReservas() {
@@ -3566,47 +3707,32 @@ public class adminInterfaz extends javax.swing.JFrame {
         listarAsientos();
     }
 
+    // Ejemplo de cómo cargar el combo box
     private void cargarPasajerosEnCombo() {
         combousuario.removeAllItems();
-        combousuario.addItem("-- Seleccione pasajero --");
-        try {
-            List<Pasajero> pasajeros = new PasajeroDAO(em).listarTodos();
-            for (Pasajero p : pasajeros) {
-                combousuario.addItem(p.getIdUsuario() + " - " + p.getnombre() + " " + p.getApellido());
-            }
+        combousuario.addItem("-- Seleccione --");
 
-            System.out.println("Pasajeros cargados: " + pasajeros.size());
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar pasajeros: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+        List<Pasajero> pasajeros = new PasajeroDAO(em).listarTodos();
+        for (Pasajero p : pasajeros) {
+            combousuario.addItem(p.getIdUsuario().toString() + " - " + p.getnombre() + " " + p.getApellido());
+            //                ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ Usa toString() para asegurar el formato
         }
     }
 
     private void listarAsientos() {
         DefaultTableModel modelo = (DefaultTableModel) tablaasientos.getModel();
-        modelo.setRowCount(0);
+        modelo.setRowCount(0); // Limpiar tabla
 
-        try {
-            AsientoDAO dao = new AsientoDAO(em);
-            List<Asiento> asientos = dao.listarTodos();
-
-            for (Asiento a : asientos) {
-                Object[] fila = {
-                    a.getIdAsiento(),
-                    a.getNumero(),
-                    a.getClase(),
-                    a.isDisponible() ? "Sí" : "No",
-                    a.getAvion() != null ? a.getAvion().getMatricula() : "Sin asignar"
-                };
-                modelo.addRow(fila);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Error al listar asientos: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+        List<Asiento> asientos = new AsientoDAO(em).listarTodos();
+        for (Asiento a : asientos) {
+            modelo.addRow(new Object[]{
+                a.getIdAsiento(),
+                a.getNumero(),
+                a.getClase(),
+                a.isDisponible() ? "Disponible" : "Ocupado",
+                a.getAvion() != null ? a.getAvion().getMatricula() : "Sin asignar"
+            // ↑ Muestra la matrícula del avión o "Sin asignar" si es null
+            });
         }
     }
 
@@ -3632,18 +3758,17 @@ public class adminInterfaz extends javax.swing.JFrame {
     }
 
     private void initTablaAsientos() {
-        DefaultTableModel modelo = new DefaultTableModel() {
+        String[] columnas = {"ID", "Número", "Clase", "Disponible", "Avión"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        modelo.addColumn("ID");
-        modelo.addColumn("Número");
-        modelo.addColumn("Clase");
-        modelo.addColumn("Disponible");
-        modelo.addColumn("Avión");
         tablaasientos.setModel(modelo);
+
+        // Ajustar anchos de columnas
+        tablaasientos.getColumnModel().getColumn(4).setPreferredWidth(150); // Columna Avión
     }
 
     private void cargarAvionesEnComboAsientos() {
@@ -3662,21 +3787,14 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
     }
 
-   private void configurarComboAsientos(Vuelo vuelo) {
-    comboasiento.removeAllItems();
-    
-    AsientoDAO asientoDAO = new AsientoDAO(em);
-    List<Asiento> asientosDisponibles = asientoDAO.obtenerAsientosDisponiblesPorVuelo(vuelo.getIdVuelo());
-    
-    if (asientosDisponibles.isEmpty()) {
-        JOptionPane.showMessageDialog(this, 
-            "No hay asientos disponibles para este vuelo",
-            "Vuelo completo", JOptionPane.INFORMATION_MESSAGE);
-    } else {
-        for (Asiento asiento : asientosDisponibles) {
-            comboasiento.addItem(asiento.getNumero());
+    private Asiento obtenerAsientoDesdeCombo() {
+        try {
+            String seleccion = comboasiento.getSelectedItem().toString();
+            Long idAsiento = Long.parseLong(seleccion.split(" - ")[0].trim());
+            return new AsientoDAO(em).buscarPorId(idAsiento);
+        } catch (Exception e) {
+            return null;
         }
     }
-}
-    
+
 }

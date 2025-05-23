@@ -26,7 +26,7 @@ public class Vuelo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idVuelo;
+    private Integer idVuelo;
 
     @Column(length = 50, nullable = false)
     private String numeroVuelo;
@@ -37,7 +37,7 @@ public class Vuelo implements Serializable {
     @Column(length = 100, nullable = false)
     private String destino;
 
-   @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     private Date fechaSalida;
 
     @Temporal(TemporalType.DATE)
@@ -51,6 +51,10 @@ public class Vuelo implements Serializable {
     private Avion avion;
 
     public Vuelo() {
+    }
+
+    public Vuelo(Integer idVuelo) {
+        this.idVuelo = idVuelo;
     }
 
     public Vuelo(String numeroVuelo, String origen, String destino, Date fechaSalida, Date fechaLlegada) {
@@ -105,20 +109,21 @@ public class Vuelo implements Serializable {
     public Date getFechaSalida() {
         return fechaSalida;
     }
-     public void setFechaSalida(Date fechaSalida) {
+
+    public void setFechaSalida(Date fechaSalida) {
         this.fechaSalida = fechaSalida;
     }
-    
-   
+
     public void setFechaLlegada(Date fechaLlegada) {
-    if (this.fechaSalida != null && fechaLlegada.before(this.fechaSalida)) {
-        throw new IllegalArgumentException("La fecha de llegada debe ser posterior a la de salida");
+        if (this.fechaSalida != null && fechaLlegada.before(this.fechaSalida)) {
+            throw new IllegalArgumentException("La fecha de llegada debe ser posterior a la de salida");
+        }
+        this.fechaLlegada = fechaLlegada;
     }
-    this.fechaLlegada = fechaLlegada;
-}
+
     public Date getFechaLlegada() {
-    return fechaLlegada;
-}
+        return fechaLlegada;
+    }
 
     public List<Asiento> getAsientos() {
         return asientos;
@@ -140,19 +145,18 @@ public class Vuelo implements Serializable {
     }
 
     public boolean estaDisponible() {
-    Date ahora = new Date();
-    return ahora.before(this.fechaSalida);
-}
+        Date ahora = new Date();
+        return ahora.before(this.fechaSalida);
+    }
 
-public boolean estaEnVuelo() {
-    Date ahora = new Date();
-    return ahora.after(this.fechaSalida) && ahora.before(this.fechaLlegada);
-}
-@Override
-public String toString() {
-    return idVuelo + " - " + origen + " a " + destino;
-}
+    public boolean estaEnVuelo() {
+        Date ahora = new Date();
+        return ahora.after(this.fechaSalida) && ahora.before(this.fechaLlegada);
+    }
 
+    @Override
+    public String toString() {
+        return idVuelo + " - " + origen + " a " + destino;
+    }
 
-  
 }
