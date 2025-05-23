@@ -17,7 +17,8 @@ import view.VentanaTikect;
 
 public class VentanaVuelosDisponibles extends javax.swing.JFrame {
     ControladorLogin con = new ControladorLogin();
-    Connection cn = con.conector(); 
+    Connection cn = con.conector();
+     private String nombreUsuario;
     
     
 // Variables para almacenar los vuelos mostrados
@@ -25,8 +26,9 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
    
     private Pasajero pasajeroActual; // Debes obtenerlo desde el login
 
-    public VentanaVuelosDisponibles(Pasajero pasajero) {
+    public VentanaVuelosDisponibles(Pasajero pasajero,String nombreUsuario) {
         this.pasajeroActual = pasajero;
+        this.nombreUsuario = nombreUsuario;
         initComponents();
         setLocationRelativeTo(this);
         
@@ -114,7 +116,7 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 510));
@@ -158,17 +160,17 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
         jLabel4.setText("Reserva en tu Aereolinea de Confinaza");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 270, 30));
 
-        jButton2.setBackground(new java.awt.Color(102, 153, 255));
-        jButton2.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Regresar");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnRegresar.setBackground(new java.awt.Color(102, 153, 255));
+        btnRegresar.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setText("Regresar");
+        btnRegresar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnRegresarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 150, 60));
+        jPanel1.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 150, 60));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 510));
 
@@ -176,16 +178,16 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        VentanaTikect tikect = new VentanaTikect();
+        VentanaTikect tikect = new VentanaTikect(nombreUsuario);
        tikect.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        VentanaInicio inicio = new VentanaInicio();
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        VentanaInicio inicio = new VentanaInicio(nombreUsuario);
         inicio.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
     public static void main(String args[]) {
         
@@ -213,11 +215,11 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
  // Simulación: Pasajero por defecto (debes reemplazarlo con tu sistema de login)
         Pasajero pasajeroEjemplo = new Pasajero();
         pasajeroEjemplo.setIdUsuario(1); 
-
+        pasajeroEjemplo.setNombre("Invitado");
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaVuelosDisponibles(pasajeroEjemplo).setVisible(true);
+                new VentanaVuelosDisponibles(pasajeroEjemplo,"Invitado").setVisible(true);
             }
         });  
     }
@@ -225,8 +227,8 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

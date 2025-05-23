@@ -7,11 +7,11 @@ public class VentanaInicio extends javax.swing.JFrame {
 
     private Pasajero persona;
     private Dominio.Entidades.Pasajero pasajero;
-   private String nombreUsuario; 
+   private String nombre; 
 
-    public VentanaInicio(String nombreUsuario) { 
-        
-        this.nombreUsuario = nombreUsuario;
+    public VentanaInicio(String nombre) { 
+        this.nombre = (nombre != null && !nombre.isEmpty()) ? nombre : "Invitado";
+      
         initComponents();
         setLocationRelativeTo(null);
        
@@ -22,7 +22,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         txtFecha.setText(fechaHoraActual);
         
          // Mostrar el nombre del usuario
-    lblUsuario.setText("!Bienvenido " +nombreUsuario + " a nuestra  agencia de vuelo ¡ " );
+    lblUsuario.setText("!Bienvenido " +this.nombre + " a nuestra  agencia de vuelo ¡ " );
     lblUsuario.setFont(new java.awt.Font("Nirmala UI", 1, 20));
         lblUsuario.setForeground(new java.awt.Color(255, 255, 255));
         
@@ -153,8 +153,9 @@ public class VentanaInicio extends javax.swing.JFrame {
         // Inicializa el pasajero (deberías obtenerlo de tu sistema de login)
         Pasajero pasajero = new Pasajero();
         pasajero.setIdUsuario(1); // Ejemplo: ID del pasajero
+        pasajero.setNombre(this.nombre); 
         
-        VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero);
+        VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero,this.nombre);
         disponible.setVisible(true);
         this.dispose();
     } else {

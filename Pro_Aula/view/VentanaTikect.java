@@ -9,8 +9,10 @@ import java.util.Date;
 
 public class VentanaTikect extends javax.swing.JFrame {
 
- 
-    public VentanaTikect() {
+ private String nombre;  // Agrega este campo
+
+    public VentanaTikect(String nombreUsuario) {
+        this.nombre = nombreUsuario;
         initComponents();
          setLocationRelativeTo(this);
     }
@@ -210,7 +212,7 @@ public class VentanaTikect extends javax.swing.JFrame {
 
     private void btnMidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMidActionPerformed
        generarFactura("Mid Class");
-       VentanaInicio inicio = new VentanaInicio();
+       VentanaInicio inicio = new VentanaInicio(nombre);
        inicio.setVisible(true);
        this.dispose();
        
@@ -219,7 +221,7 @@ public class VentanaTikect extends javax.swing.JFrame {
     private void btnNormalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNormalActionPerformed
         
         generarFactura("Normal Class");
-        VentanaInicio inicio = new VentanaInicio();
+        VentanaInicio inicio = new VentanaInicio(nombre);
        inicio.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_btnNormalActionPerformed
@@ -254,7 +256,7 @@ public class VentanaTikect extends javax.swing.JFrame {
        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaTikect().setVisible(true);
+                new VentanaTikect("").setVisible(true);
             }
         });
     }
