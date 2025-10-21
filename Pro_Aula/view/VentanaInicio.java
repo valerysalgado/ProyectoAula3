@@ -26,7 +26,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         txtFecha.setText(fechaHoraActual);
         
          // Mostrar el nombre del usuario
-    lblUsuario.setText("!Bienvenido " +this.nombre + " a nuestra  agencia de vuelo ¡ " );
+    lblUsuario.setText("¡Bienvenido " +this.nombre + " a nuestra  agencia de vuelos! " );
     lblUsuario.setFont(new java.awt.Font("Nirmala UI", 1, 20));
         lblUsuario.setForeground(new java.awt.Color(255, 255, 255));
         
