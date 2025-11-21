@@ -113,9 +113,7 @@ public class VentanaInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       ventanaLogin1 ventana = new ventanaLogin1();
-       ventana.setVisible(true);
-       this.dispose();
+       
        
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -1,11 +1,13 @@
 package view;
 
-import Model.Pasajero;
 import controller.ControladorLogin;
 import javax.swing.JOptionPane;
+import java.sql.*;
 
 public class ventanaLogin1 extends javax.swing.JFrame {
 
+    ControladorLogin con = new ControladorLogin();
+    Connection cn = con.conector();
     ControladorLogin controlador;
 
     public ventanaLogin1() {
@@ -14,10 +16,6 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         this.controlador = new ControladorLogin();
         getRootPane().setDefaultButton(jButton1);
 
-    }
-
-    public ControladorLogin getControlador() {
-        return controlador;
     }
 
     private void realizarLogin() {
@@ -34,31 +32,14 @@ public class ventanaLogin1 extends javax.swing.JFrame {
             return;
         }
 
-        Pasajero aux = controlador.buscarPersona(user);
-
-        if (aux != null) {
-            if (aux.getContraseña().equals(contra)) {
-                ventanaDatosRegistros ventana = new ventanaDatosRegistros(this, aux);
-                ventana.setVisible(true);
-                this.dispose();
-                txtUser.setText("");
-                txtPassword.setText("");
-            } else {
-                JOptionPane.showMessageDialog(this, "La contraseña es incorrecta.");
-                txtPassword.setText("");
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "La persona no se encuentra registrada. " + " \n !Crea una Cuenta!");
-            txtPassword.setText("");
-        }
     }
 
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jLabel29 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
@@ -66,40 +47,42 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         txtUser = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        ROL = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
+        jLabel16 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel1.setBackground(new java.awt.Color(102, 153, 255));
-        jPanel1.setPreferredSize(new java.awt.Dimension(600, 500));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 210, 100));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/LOGIN.png"))); // NOI18N
+        jPanel2.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 210, 100));
+
         jLabel2.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel2.setText("Password");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 60, -1));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 60, -1));
 
         jLabel1.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
         jLabel1.setText("User");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 40, -1));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 60, -1));
 
         txtPassword.setBorder(null);
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
@@ -107,7 +90,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
                 txtPasswordActionPerformed(evt);
             }
         });
-        jPanel2.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 220, 30));
+        jPanel2.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, 230, 40));
 
         jButton1.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         jButton1.setText("Enter");
@@ -117,7 +100,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 330, 220, 30));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 220, 40));
 
         jButton2.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         jButton2.setText("SingUp");
@@ -127,7 +110,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 390, 90, 30));
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 380, 90, 40));
 
         txtUser.setBorder(null);
         txtUser.addActionListener(new java.awt.event.ActionListener() {
@@ -135,75 +118,117 @@ public class ventanaLogin1 extends javax.swing.JFrame {
                 txtUserActionPerformed(evt);
             }
         });
-        jPanel2.add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 220, 30));
+        jPanel2.add(txtUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 230, 40));
 
         jLabel3.setText("Need an acoount?");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, -1, -1));
-
-        ROL.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        ROL.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Usuario", "Administrador" }));
-        jPanel2.add(ROL, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 280, 220, -1));
-
-        jLabel4.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
-        jLabel4.setText("Rol");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, 40, 20));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 390, 100, 20));
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 220, -1));
+        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 230, 20));
         jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 240, 220, 0));
 
         jSeparator3.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel2.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 240, 220, 10));
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, 50));
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 110, 110));
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 310, -1, 170));
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, -1, 60));
-        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, 40));
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 210, 100));
-        jPanel2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, -1, -1));
+        jPanel2.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 220, 20));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 30, 350, 430));
+        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/User_fill.png"))); // NOI18N
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 50, 40));
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Chield_alt_fill.png"))); // NOI18N
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 70, 70));
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/carga 100 x 100.gif"))); // NOI18N
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 90, 120));
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 310, 180, 170));
+
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Signal, Wifi, Battery.png"))); // NOI18N
+        jPanel2.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 80, 20));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 350, 430));
 
         jLabel5.setFont(new java.awt.Font("Nirmala UI", 1, 70)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("AeroNex");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 290, 120));
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, -1, 40));
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 550, 270));
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, -10, 280, 300));
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 0, -1, 160));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 290, 120));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 824, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, Short.MAX_VALUE)
-        );
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Group.png"))); // NOI18N
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 370, 270));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Groupf.png"))); // NOI18N
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 550, 270));
+
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Group2.png"))); // NOI18N
+        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 0, 160, 150));
+
+        jPanel1.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(600, 500));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 370, 270));
+
+        jLabel25.setFont(new java.awt.Font("Nirmala UI", 1, 70)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel25.setText("AeroNex");
+        jPanel1.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 290, 120));
+        jPanel1.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 550, 270));
+        jPanel1.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 0, 160, 150));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 810, 550));
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 40, 360, 430));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
+        txtPassword.requestFocus(); // TODO add your handling code here:
+    }//GEN-LAST:event_txtUserActionPerformed
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        VentanaRegistrarPersona ventana = new VentanaRegistrarPersona(this);
+
+      VentanaRegistrarPersona ventana = new VentanaRegistrarPersona(this);
         ventana.setVisible(true);
         this.dispose();
         txtUser.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        realizarLogin();
+          String user = txtUser.getText();
+        String con = txtPassword.getText();
+
+        if (!user.equals("") || !con.equals("")) {
+            try {
+                PreparedStatement ps = cn.prepareStatement("SELECT rol FROM login WHERE nombre = '" + user + "' AND contraseña = '" + con + "'");
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    String rol = rs.getString("rol");
+
+                    if (rol.equalsIgnoreCase("admin")) {
+
+                        adminInterfaz admin = new adminInterfaz();
+                        admin.setVisible(true);
+                        dispose();
+
+                    } else if (rol.equalsIgnoreCase("user")) {
+
+                            VentanaInicio inicio = new VentanaInicio(user);
+                        inicio.setVisible(true);
+
+                        txtUser.setText("");
+                        txtPassword.setText("");
+                        dispose();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "USUARIO O CONTRASEÑA INCORRECTOS .");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "ERROR AL INICIAR SESION ." + e);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "DEBE COMPLETAR LOS CAMPOS .");
+        }
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
-        txtPassword.requestFocus(); // TODO add your handling code here:
-    }//GEN-LAST:event_txtUserActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         realizarLogin();// TODO add your handling code here:
@@ -213,7 +238,30 @@ public class ventanaLogin1 extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(VentanaLogin1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(VentanaLogin1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(VentanaLogin1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(VentanaLogin1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ventanaLogin1().setVisible(true);
@@ -222,12 +270,10 @@ public class ventanaLogin1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> ROL;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -235,8 +281,12 @@ public class ventanaLogin1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
@@ -249,5 +299,4 @@ public class ventanaLogin1 extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
-
 }

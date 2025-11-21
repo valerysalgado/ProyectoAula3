@@ -4,7 +4,7 @@ package view;
 
 public class VentanaTikect extends javax.swing.JFrame {
 
-  ventanaDatosRegistros ventana ;
+  
     public VentanaTikect() {
         initComponents();
          setLocationRelativeTo(this);
@@ -132,11 +132,7 @@ public class VentanaTikect extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVolverActionPerformed
-        // TODO add your handling code here:
-    VentanaVuelosDisponibles Vuelos = new VentanaVuelosDisponibles();
-    Vuelos.setVisible(true);
-    this.dispose();
-       
+   
     }//GEN-LAST:event_jVolverActionPerformed
 
     /**
