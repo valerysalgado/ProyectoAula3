@@ -1,3 +1,4 @@
+
 package view;
 
 import Dominio.Entidades.Administrador;
@@ -41,6 +42,10 @@ public class adminInterfaz extends javax.swing.JFrame {
     private AdministradorDAO administradorDAO = new AdministradorDAO(em);
 
     public adminInterfaz() {
+          initComponents();
+        setLocationRelativeTo(null);
+        
+        
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
         this.em = emf.createEntityManager();
         pasajeroDAO = new PasajeroDAO(this.em);
@@ -48,13 +53,18 @@ public class adminInterfaz extends javax.swing.JFrame {
         vueloDAO = new VueloDAO(em);
         administradorDAO = new AdministradorDAO(em);
 
-        initComponents();
+ 
+        
         initTabla();
         inittablaaviones();
         ajustarColumnas();
-        inittablaaviones();      
+        inittablaaviones();
+        
         initjTableReservas();
+        
         initjTableVuelos();
+        
+        
         cargarTodosPasajeros();
         cargarTodosAviones();
         cargarReservasEnTabla();
@@ -1300,13 +1310,15 @@ public class adminInterfaz extends javax.swing.JFrame {
             if (vueloActualizado == null) {
                 throw new Exception("Vuelo no encontrado");
             }
-
+            
+            
             vueloActualizado.setNumeroVuelo(txtNumeroVuelo.getText().trim());
             vueloActualizado.setOrigen(comboorigen.getSelectedItem().toString());
             vueloActualizado.setDestino(comboDestino.getSelectedItem().toString());
             vueloActualizado.setFechaSalida(dateChooserSalida.getDate());
             vueloActualizado.setFechaLlegada(dateChooserLlegada.getDate());
 
+            
             if (comboAvion.getSelectedIndex() > 0) {
                 String avionSeleccionado = comboAvion.getSelectedItem().toString();
                 int idAvion = Integer.parseInt(avionSeleccionado.split(" - ")[0]);
@@ -1987,6 +1999,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tablapasajeroMouseClicked
 
+    
     private void comboAvionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboAvionMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_comboAvionMouseClicked
@@ -2677,6 +2690,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_comboAvionActionPerformed
    
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
@@ -3075,25 +3089,21 @@ public class adminInterfaz extends javax.swing.JFrame {
         tablapasajero.repaint();
     }
 
-  private void listarReservasAction(Object object) {
-        ReservaDAO reservaDAO = new ReservaDAO(null);
-        List<Reserva> reservas = reservaDAO.obtenerTodas();
-        cargarReservasEnTabla();
-    }
+ 
+    
     
     private void initjTableReservas() {
         String[] columnas = {"ID", "Pasajero", "Vuelo", "Fecha Reserva", "Asiento", "Estado"};      
+       
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
         tablareservas.setModel(modelo);
     }
 
-     private void listarReservasAction() {
-        ReservaDAO reservaDAO = new ReservaDAO(null);
-        List<Reserva> reservas = reservaDAO.obtenerTodas();
-        cargarReservasEnTabla();
-    }
+   
+    
     
     private void cargarReservasEnTabla() {
+        
         
         ReservaDAO reservaDAO = new ReservaDAO(null);
         List<Reserva> reservas = reservaDAO.obtenerTodas();
