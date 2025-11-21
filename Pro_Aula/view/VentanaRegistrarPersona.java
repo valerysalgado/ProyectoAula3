@@ -157,7 +157,6 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 510));
 
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(800, 510));

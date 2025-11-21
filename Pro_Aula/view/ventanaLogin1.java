@@ -63,7 +63,6 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 510));
 
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(600, 500));

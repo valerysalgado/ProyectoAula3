@@ -1,5 +1,5 @@
-package view;
 
+package view;
 import Dominio.Entidades.Pasajero;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,187 +12,127 @@ public class VentanaInicio extends javax.swing.JFrame {
     private Pasajero persona;
     private Dominio.Entidades.Pasajero pasajero;
    private String nombre; 
-
-    public VentanaInicio(String nombre) { 
-        this.nombre = (nombre != null && !nombre.isEmpty()) ? nombre : "Invitado";
-      
+   
+       public VentanaInicio(String nombre) {
+              this.nombre = (nombre != null && !nombre.isEmpty()) ? nombre : "Invitado";
         initComponents();
         setLocationRelativeTo(null);
-       
-
-        java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
-        java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern(" HH:mm dd-MM-yyyy ");
-        String fechaHoraActual = ahora.format(formato);
-        txtFecha.setText(fechaHoraActual);
-        
-         // Mostrar el nombre del usuario
+              // Mostrar el nombre del usuario
     lblUsuario.setText("¡Bienvenido " +this.nombre + " a nuestra  agencia de vuelos! " );
     lblUsuario.setFont(new java.awt.Font("Nirmala UI", 1, 20));
         lblUsuario.setForeground(new java.awt.Color(255, 255, 255));
         
 
+        
+        
+
+        
     }
-    public VentanaInicio() {
-        this(""); // Valor por defecto
-    }
+
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        GRUPO1 = new javax.swing.ButtonGroup();
+        jRadioButton1 = new javax.swing.JRadioButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        txtFecha = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
 
+        jRadioButton1.setText("jRadioButton1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setPreferredSize(new java.awt.Dimension(900, 650));
 
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.setMinimumSize(new java.awt.Dimension(600, 510));
+        jPanel1.setMinimumSize(new java.awt.Dimension(900, 647));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cartagena", "Medellin", "Bogota" }));
-        jComboBox1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        jComboBox1.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cartagena", "Medellin", "Bogota", " " }));
+        jComboBox1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 130, 60));
+
+        jComboBox2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Medellin", "Bogota", "Cartagena" }));
+        jComboBox2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 50, 140, 60));
+
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setText("BUSCAR");
+        jButton1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 153, 255)));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 160, 40));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 50, 150, 60));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cartagena", "Medellin", "Bogota" }));
-        jComboBox2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, 160, 40));
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Frame 2257.png"))); // NOI18N
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 370, 170));
 
-        jButton2.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
-        jButton2.setText("Buscar");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 60, 150, 70));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Frame 2257.png"))); // NOI18N
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, 350, 180));
 
-        jLabel2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jLabel2.setText("Origen");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 50, -1));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, 640, 170));
 
-        jLabel3.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jLabel3.setText("Destino");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, 50, -1));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Vector 1.png"))); // NOI18N
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, -10, 330, -1));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carga 100 x 100.gif"))); // NOI18N
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 110, 90));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Signal, Wifi, Battery.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 20, 90, 30));
 
-        txtFecha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        txtFecha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFechaActionPerformed(evt);
-            }
-        });
-        jPanel2.add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 170, 160, -1));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group.png"))); // NOI18N
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, -1, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 720, 200));
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Vector 1.png"))); // NOI18N
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, -10, 360, -1));
 
-        jLabel1.setFont(new java.awt.Font("Nirmala UI", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("INICIO");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, 70));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Groupf.png"))); // NOI18N
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 460, -1, -1));
 
-        jLabel5.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("AeroNex");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 60, 130, -1));
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Saly-13.png"))); // NOI18N
+        jLabel8.setText("jLabel8");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 300, 290));
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Signal, Wifi, Battery.png"))); // NOI18N
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 20, 90, 30));
+        lblUsuario.setText("---------------------------------------------------------");
+        jPanel1.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 300, 60));
 
-        lblUsuario.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
-        lblUsuario.setText("-------------------------");
-        jPanel1.add(lblUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, 500, 30));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 510));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 644, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        // Obtener las ciudades seleccionadas
-        String origen = (String) jComboBox1.getSelectedItem();
-        String destino = (String) jComboBox2.getSelectedItem();
-
-        // Verificar si es la ruta Cartagena-Medellín
-       
-    if ("Cartagena".equals(origen) && "Medellin".equals(destino)) {
-        try {
-            // Crear EntityManagerFactory una sola vez en la aplicación
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
-            EntityManager em = emf.createEntityManager();
-            
-            // Crear pasajero (deberías obtenerlo de tu sistema de login)
-            Pasajero pasajero = new Pasajero();
-            pasajero.setIdUsuario(1);
-            pasajero.setNombre(this.nombre);
-            
-            VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero, this.nombre);
-            disponible.setVisible(true);
-            this.dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "Error al abrir ventana de vuelos: " + e.getMessage(), 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    } else {
-        JOptionPane.showMessageDialog(
-            this,
-            "Solo disponemos de vuelos Cartagena → Medellín.",
-            "Ruta no disponible",
-            JOptionPane.WARNING_MESSAGE
-        );
-    }
-
-
-
-    }//GEN-LAST:event_jButton2ActionPerformed
-    private boolean verificarDisponibilidadVuelos(String origen, String destino) {
-
-        return true;
-    }
-    private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,28 +164,26 @@ public class VentanaInicio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaInicio().setVisible(true);
+               
             }
         });
-}
-
-
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup GRUPO1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JLabel lblUsuario;
-    private javax.swing.JTextField txtFecha;
     // End of variables declaration//GEN-END:variables
-
 }
