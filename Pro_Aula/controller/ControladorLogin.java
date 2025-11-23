@@ -14,7 +14,7 @@ public class ControladorLogin {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/proaula_vuelos_bd", "root", "");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/base_data", "root", "");
 
         } catch (Exception e) {
 

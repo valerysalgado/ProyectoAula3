@@ -147,29 +147,27 @@ public class VentanaInicio extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        // Obtener las ciudades seleccionadas
-        String origen = (String) jComboBox1.getSelectedItem();
-        String destino = (String) jComboBox2.getSelectedItem();
+                                              
+    String origen = (String) jComboBox1.getSelectedItem();
+    String destino = (String) jComboBox2.getSelectedItem();
 
-        // Verificar si es la ruta Cartagena-Medellín
-       
     if ("Cartagena".equals(origen) && "Medellin".equals(destino)) {
         try {
-            // Crear EntityManagerFactory una sola vez en la aplicación
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
-            EntityManager em = emf.createEntityManager();
+            // TEMPORAL: Saltar verificación de BD
+            System.out.println(" Abriendo ventana de vuelos...");
             
-            // Crear pasajero (deberías obtenerlo de tu sistema de login)
+            // Crear pasajero temporal
             Pasajero pasajero = new Pasajero();
-            
             pasajero.setNombre(this.nombre);
             
+            // Abrir ventana SIN Hibernate
             VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero, this.nombre);
             disponible.setVisible(true);
             this.dispose();
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, 
-                "Error al abrir ventana de vuelos: " + e.getMessage(), 
+                "Error al abrir ventana: " + e.getMessage(), 
                 "Error", 
                 JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
@@ -185,11 +183,9 @@ public class VentanaInicio extends javax.swing.JFrame {
 
 
 
-    }//GEN-LAST:event_jButton2ActionPerformed
-    private boolean verificarDisponibilidadVuelos(String origen, String destino) {
 
-        return true;
-    }
+    }//GEN-LAST:event_jButton2ActionPerformed
+    
     private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFechaActionPerformed
@@ -198,11 +194,7 @@ public class VentanaInicio extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+       
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

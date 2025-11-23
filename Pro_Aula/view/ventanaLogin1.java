@@ -200,8 +200,8 @@ public class ventanaLogin1 extends javax.swing.JFrame {
 
                     if (rol.equalsIgnoreCase("admin")) {
 
-                        adminInterfaz admin = new adminInterfaz();
-                        admin.setVisible(true);
+                         adminInterfaz adminI = new adminInterfaz();
+                        adminI.setVisible(true);
                         dispose();
 
                     } else if (rol.equalsIgnoreCase("user")) {

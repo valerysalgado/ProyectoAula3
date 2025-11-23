@@ -16,19 +16,18 @@ import view.VentanaTikect;
 
 
 public class VentanaVuelosDisponibles extends javax.swing.JFrame {
-    ControladorLogin con = new ControladorLogin();
-    Connection cn = con.conector();
-     private String nombreUsuario;
     
-    
-// Variables para almacenar los vuelos mostrados
+    private ControladorLogin con = new ControladorLogin();
+    private java.sql.Connection cn;
+    private String nombreUsuario;
     private Vuelo vueloMostrado;
-   
-    private Pasajero pasajeroActual; // Debes obtenerlo desde el login
-
+    private Pasajero pasajeroActual;
+    private boolean ventanaAbierta = false; // Control para evitar duplicados
+    
     public VentanaVuelosDisponibles(Pasajero pasajero,String nombreUsuario) {
         this.pasajeroActual = pasajero;
         this.nombreUsuario = nombreUsuario;
+        this.cn = con.conector();
         initComponents();
         setLocationRelativeTo(this);
         
