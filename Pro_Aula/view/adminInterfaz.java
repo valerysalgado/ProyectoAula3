@@ -27,6 +27,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
@@ -45,6 +46,13 @@ public class adminInterfaz extends javax.swing.JFrame {
           initComponents();
         setLocationRelativeTo(null);
         
+         TabPanelPrincipal.addChangeListener(new javax.swing.event.ChangeListener() {
+        @Override
+        public void stateChanged(javax.swing.event.ChangeEvent evt) {
+            cargarDatosAlCambiarPestana();
+        }
+    });
+        
         
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
         this.em = emf.createEntityManager();
@@ -59,12 +67,8 @@ public class adminInterfaz extends javax.swing.JFrame {
         inittablaaviones();
         ajustarColumnas();
         inittablaaviones();
-        
         initjTableReservas();
-        
         initjTableVuelos();
-        
-        
         cargarTodosPasajeros();
         cargarTodosAviones();
         cargarReservasEnTabla();
@@ -78,6 +82,8 @@ public class adminInterfaz extends javax.swing.JFrame {
         inicializarComboRolesAdministrador();
         ajustarColumnasAdmin();
         cargarCombosReservas();
+        cargarAvionesEnComboAsientos();
+        listarAsientos();
         initTablaAsientos();
         listarAsientos();
         cargarAsientosDisponibles();
@@ -87,7 +93,8 @@ public class adminInterfaz extends javax.swing.JFrame {
         cargarAsientosEnCombo();
         cargarVuelosEnCombo();
         ajustarAnchoColumnasasientos();
-        ajustarAnchoColumnasavion();
+        ajustarAnchoColumnasAvion();
+        
 
         comboClase.setModel(new DefaultComboBoxModel<>(new String[]{
             "-- Seleccione clase --",
@@ -1104,6 +1111,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tablaasientos.setMinimumSize(new java.awt.Dimension(70, 80));
         tablaasientos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaasientosMouseClicked(evt);
@@ -1593,7 +1601,6 @@ public class adminInterfaz extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this,
                         "Avión eliminado exitosamente",
                         "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                actualizarTablaAviones(); // Refrescar la tabla
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
@@ -1604,47 +1611,35 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_botoneliminar2ActionPerformed
 
     private void botonlistar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonlistar1ActionPerformed
+                                            
+    try {
+        List<Avion> aviones = avionDAO.listarTodos();
 
-        try {
+        DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+        modelo.setRowCount(0);
 
-            List<Avion> aviones = avionDAO.listarTodos();
-
-            DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
-            modelo.setRowCount(0);
-
-            for (Avion a : aviones) {
-                modelo.addRow(new Object[]{
-                    a.getIdAvion(),
-                    a.getMatricula(),
-                    a.getCapacidadPasajeros(),
-                    a.getEstado()
-                });
-            }
-
-            ajustarAnchoColumnasAviones();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Error al cargar aviones: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+        for (Avion a : aviones) {
+            modelo.addRow(new Object[]{
+                a.getIdAvion(),
+                a.getMatricula(),
+                a.getCapacidadPasajeros(),
+                a.getEstado()
+            });
         }
+
+        ajustarAnchoColumnasAvion();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+                "Error al cargar aviones: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
     }
-
-    private void ajustarAnchoColumnasAviones() {
-        tablaaviones.setAutoResizeMode(tablaaviones.AUTO_RESIZE_OFF);
-
-        tablaaviones.getColumnModel().getColumn(0).setPreferredWidth(50);
-        tablaaviones.getColumnModel().getColumn(1).setPreferredWidth(120);
-        tablaaviones.getColumnModel().getColumn(2).setPreferredWidth(80);
-        tablaaviones.getColumnModel().getColumn(3).setPreferredWidth(150);
-
     }//GEN-LAST:event_botonlistar1ActionPerformed
 
     private void botoneditar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditar1ActionPerformed
-
-        try {
+  try {
 
             if (tablaaviones.getSelectedRow() < 0) {
                 JOptionPane.showMessageDialog(this, "Seleccione un avión", "Error", JOptionPane.WARNING_MESSAGE);
@@ -1809,25 +1804,27 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaavionesMouseClicked
 
     private void botoneliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar1ActionPerformed
-        int fila = tablapasajero.getSelectedRow();
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un pasajero");
-            return;
-        }
+ int fila = tablapasajero.getSelectedRow();
+if (fila < 0) {
+    JOptionPane.showMessageDialog(this, "Seleccione un pasajero");
+    return;
+}
 
-        int confirmacion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Está seguro de eliminar este pasajero?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION);
+int confirmacion = JOptionPane.showConfirmDialog(
+        this,
+        "¿Está seguro de eliminar este pasajero?",
+        "Confirmar eliminación",
+        JOptionPane.YES_NO_OPTION);
 
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            int id = (int) modeloTabla.getValueAt(fila, 0);
-            pasajeroDAO.eliminar(id);
-            cargarTodosPasajeros();
-            limpiarCampos();
-            JOptionPane.showMessageDialog(this, "Pasajero eliminado");
-        }
+if (confirmacion == JOptionPane.YES_OPTION) {
+ 
+    Long id = (Long) modeloTabla.getValueAt(fila, 0);
+    
+    pasajeroDAO.eliminar(id);  
+    cargarTodosPasajeros();
+    limpiarCampos();
+    JOptionPane.showMessageDialog(this, "Pasajero eliminado");
+}
     }//GEN-LAST:event_botoneliminar1ActionPerformed
 
     private void txtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarActionPerformed
@@ -2454,6 +2451,7 @@ public class adminInterfaz extends javax.swing.JFrame {
 
     private void botonagregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonagregar3ActionPerformed
         initTablaAsientos();
+        
         try {
 
             String clase = comboClase.getSelectedItem().toString();
@@ -2465,7 +2463,7 @@ public class adminInterfaz extends javax.swing.JFrame {
                     || disponibilidad.equals("Seleccione...")
                     || avionSeleccionado.equals("-- Seleccione avión --")) {
                 JOptionPane.showMessageDialog(this,
-                        "❌ Debe seleccionar un avión de la lista",
+                        "Debe seleccionar un avión de la lista",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -2501,10 +2499,12 @@ public class adminInterfaz extends javax.swing.JFrame {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                    "❌ Error inesperado: " + e.getMessage(),
+                    "Error inesperado: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+         listarAsientos();
+        
     }//GEN-LAST:event_botonagregar3ActionPerformed
 
     private void botoneditar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneditar3ActionPerformed
@@ -3661,9 +3661,7 @@ public class adminInterfaz extends javax.swing.JFrame {
         comboAvion.setSelectedIndex(0);
     }
 
-    private void actualizarTablaAviones() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+   
 
     public class Validador {
 
@@ -3729,27 +3727,46 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
     }
 
-    private void listarAsientos() {
+   private void listarAsientos() {
+    try {
         DefaultTableModel modelo = (DefaultTableModel) tablaasientos.getModel();
         modelo.setRowCount(0); // Limpiar tabla
 
-        List<Asiento> asientos = new AsientoDAO(em).listarTodos();
-        for (Asiento a : asientos) {
+        AsientoDAO asientoDAO = new AsientoDAO(em);
+        List<Asiento> asientos = asientoDAO.listarTodos();
+
+        for (Asiento asiento : asientos) {
+            String disponible = asiento.isDisponible() ? "Disponible" : "Ocupado";
+            String avionInfo = asiento.getAvion() != null ? 
+                asiento.getAvion().getMatricula() : "Sin avión";
+
             modelo.addRow(new Object[]{
-                a.getIdAsiento(),
-                a.getNumero(),
-                a.getClase(),
-                a.isDisponible() ? "Disponible" : "Ocupado",
-                a.getAvion() != null ? a.getAvion().getMatricula() : "Sin asignar"
-            // ↑ Muestra la matrícula del avión o "Sin asignar" si es null
+                asiento.getIdAsiento(),
+                asiento.getNumero(),
+                asiento.getClase(),
+                disponible,
+                avionInfo
             });
-        }
+        ajustarAnchoColumnasasientos();
+                }
+        
+
+        
+        System.out.println("✅ Asientos cargados: " + asientos.size());
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "Error al cargar asientos: " + e.getMessage(),
+            "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
     }
+}
+
 
     private void ajustarAnchoColumnasasientos() {
         tablaasientos.setAutoResizeMode(tablaasientos.AUTO_RESIZE_OFF);
 
-        int[] anchos = {100, 150, 150, 150, 120, 80};
+        int[] anchos = {100, 150, 150, 150, 120, 100};
         for (int i = 0; i < anchos.length; i++) {
             if (i < tablaasientos.getColumnModel().getColumnCount()) {
                 tablaasientos.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
@@ -3757,15 +3774,26 @@ public class adminInterfaz extends javax.swing.JFrame {
         }
     }
 
-    private void ajustarAnchoColumnasavion() {
-        tablaaviones.setAutoResizeMode(tablaaviones.AUTO_RESIZE_OFF);
-        int[] anchos = {100, 150, 150, 180};
-        for (int i = 0; i < anchos.length; i++) {
-            if (i < tablaaviones.getColumnModel().getColumnCount()) {
-                tablaaviones.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
-            }
-        }
+  private void ajustarAnchoColumnasAvion() {
+    try {
+        tablaaviones.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tablaaviones.getColumnModel().getColumn(0).setPreferredWidth(60);   // ID
+        tablaaviones.getColumnModel().getColumn(1).setPreferredWidth(120);  // Matrícula
+        tablaaviones.getColumnModel().getColumn(2).setPreferredWidth(100);  // Capacidad
+        tablaaviones.getColumnModel().getColumn(3).setPreferredWidth(150);  // Estado
+        
+        // ✅ CALCULAR ANCHO TOTAL
+        int totalWidth = 60 + 120 + 100 + 150 + 20; // +20 para scrollbar
+        tablaaviones.setPreferredScrollableViewportSize(new java.awt.Dimension(totalWidth, 150));
+        tablaaviones.revalidate();
+        tablaaviones.repaint();
+        
+        System.out.println("Tamaño de tabla aviones ajustado");
+        
+    } catch (Exception e) {
+        System.err.println("Error ajustando tabla aviones: " + e.getMessage());
     }
+}
 
     private void initTablaAsientos() {
         String[] columnas = {"ID", "Número", "Clase", "Disponible", "Avión"};
@@ -3806,5 +3834,46 @@ public class adminInterfaz extends javax.swing.JFrame {
             return null;
         }
     }
-
+    
+private void cargarDatosAlCambiarPestana() {
+    int selectedIndex = TabPanelPrincipal.getSelectedIndex();
+    String tabTitle = TabPanelPrincipal.getTitleAt(selectedIndex);
+    
+    if (tabTitle != null) {
+        switch (tabTitle) {
+            case "ASIENTOS":
+                System.out.println("🔄 Cargando datos de Asientos...");
+                cargarAvionesEnComboAsientos();
+                listarAsientos();
+                break;
+                
+            case "RESERVAS":
+                System.out.println("🔄 Cargando datos de Reservas...");
+                cargarCombosReservas();
+                listarReservas();
+                break;
+                
+            case "VUELOS":
+                System.out.println("🔄 Cargando datos de Vuelos...");
+                cargarAvionesEnCombo(); // Para el combo de aviones en vuelos
+                listarVuelosAction();
+                break;
+                
+            case "AVIONES":
+                System.out.println("🔄 Cargando datos de Aviones...");
+                botonlistar1ActionPerformed(null); // Ejecutar listado
+                break;
+                
+            case "PASAJEROS":
+                System.out.println("🔄 Cargando datos de Pasajeros...");
+                cargarTodosPasajeros();
+                break;
+                
+            case "ADMINISTRADORES":
+                System.out.println("🔄 Cargando datos de Administradores...");
+                listarAdministradores();
+                break;
+        }
+    }
+}
 }
