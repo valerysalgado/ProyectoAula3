@@ -389,11 +389,11 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void txtapellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtapellidoActionPerformed
-    txtapellido.requestFocus();        // TODO add your handling code here:
+     txtapellido.requestFocus();        // TODO add your handling code here:
     }//GEN-LAST:event_txtapellidoActionPerformed
 
     private void RolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RolesActionPerformed
-        // TODO add your handling code here:
+     Roles.requestFocus();       // TODO add your handling code here:
     }//GEN-LAST:event_RolesActionPerformed
 
 

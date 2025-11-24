@@ -184,6 +184,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         ventana.setVisible(true);
         this.dispose();
         txtUser.setText("");
+        txtPassword.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -214,7 +215,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
                         dispose();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "USUARIO O CONTRASEÑA INCORRECTOS .");
+                    JOptionPane.showMessageDialog(null, "VERIFICA SI YA TE REGISTRASTES O VERIFICA TU USUARIO O CONTRAEÑA .");
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "ERROR AL INICIAR SESION ." + e);

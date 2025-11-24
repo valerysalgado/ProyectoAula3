@@ -88,13 +88,8 @@ private void reservarVuelo(Vuelo vuelo) {
             nombrePasajero
         );
         
-        // Mostrar mensaje
-        JOptionPane.showMessageDialog(
-            this, 
-            mensaje, 
-            "Reserva Confirmada", 
-            JOptionPane.INFORMATION_MESSAGE
-        );
+      
+       
         
         // Redirigir
         VentanaTikect tikect = new VentanaTikect(nombreUsuario);
@@ -103,7 +98,7 @@ private void reservarVuelo(Vuelo vuelo) {
         
     } catch (Exception ex) {
         // Solo para depuración
-        System.err.println("Error en reserva: " + ex.getMessage());
+        
     }
 }
     // Método para guardar una reserva en la BD
@@ -187,7 +182,9 @@ private void reservarVuelo(Vuelo vuelo) {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-       
+   VentanaInicio inicio = new VentanaInicio();
+   inicio.setVisible(true);
+   this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     public static void main(String args[]) {

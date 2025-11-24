@@ -18,7 +18,7 @@ public class VentanaTikect extends javax.swing.JFrame {
     }
 
   private void generarFactura(String tipoPlan) {
-      // Detalles específicos de cada plan
+    // Detalles específicos de cada plan
     String detallesPlan = "";
     if(tipoPlan.equals("Normal Class")) {
         detallesPlan = "<ul style='list-style-type: none; padding-left: 0;'>"
@@ -40,11 +40,16 @@ public class VentanaTikect extends javax.swing.JFrame {
                 + "</ul>";
     }
 
-    // Crear el contenido de la factura
-    String factura = "<html><body style='width: 300px; padding: 10px;'>"
-            + "<h2 style='text-align: center; color: #0066cc;'>AeroNex - Factura</h2>"
+    // Crear el contenido COMBINADO (factura + confirmación)
+    String mensajeCombinado = "<html><body style='width: 350px; padding: 10px;'>"
+            + "<h2 style='text-align: center; color: #0066cc;'>¡Reserva Exitosa!</h2>"
             + "<hr>"
-            + "<p><b>Tipo de plan:</b> " + tipoPlan + "</p>"
+            + "<h3>Detalles del Vuelo:</h3>"
+            + "<p><b>Vuelo:</b> AAA-001</p>"
+            + "<p><b>Ruta:</b> Cartagena → Medellín</p>"
+            + "<p><b>Pasajero:</b> " + (nombre != null ? nombre : "Invitado") + "</p>"
+            + "<hr>"
+            + "<h3>Factura - " + tipoPlan + "</h3>"
             + "<p><b>Fecha:</b> " + new SimpleDateFormat("dd/MM/yyyy").format(new Date()) + "</p>"
             + "<p><b>Número de factura:</b> " + (int)(Math.random() * 10000) + "</p>"
             + "<hr>"
@@ -56,8 +61,8 @@ public class VentanaTikect extends javax.swing.JFrame {
             + "<p style='text-align: center; font-style: italic;'>Gracias por su compra</p>"
             + "</body></html>";
 
-    // Mostrar la factura en un JOptionPane
-    JOptionPane.showMessageDialog(this, factura, "Factura Generada", 
+    // Mostrar UN SOLO mensaje combinado
+    JOptionPane.showMessageDialog(this, mensajeCombinado, "Reserva Confirmada", 
             JOptionPane.INFORMATION_MESSAGE);
 }
     @SuppressWarnings("unchecked")
