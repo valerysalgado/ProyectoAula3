@@ -64,6 +64,8 @@ public class VentanaTikect extends javax.swing.JFrame {
     // Mostrar UN SOLO mensaje combinado
     JOptionPane.showMessageDialog(this, mensajeCombinado, "Reserva Confirmada", 
             JOptionPane.INFORMATION_MESSAGE);
+    
+    
 }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -93,6 +95,7 @@ public class VentanaTikect extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMinimumSize(new java.awt.Dimension(800, 510));
 
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));

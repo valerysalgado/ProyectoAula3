@@ -11,8 +11,10 @@ import java.math.BigDecimal;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
+import java.util.Date;
 import javax.persistence.EntityManager;
 import view.VentanaTikect;
+import java.text.SimpleDateFormat;
 
 
 public class VentanaVuelosDisponibles extends javax.swing.JFrame {
@@ -23,10 +25,16 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
     private Vuelo vueloMostrado;
     private Pasajero pasajeroActual;
     private boolean ventanaAbierta = false; // Control para evitar duplicados
+
+    private java.util.Date fechaIda;
+    private java.util.Date fechaVuelta;
     
-    public VentanaVuelosDisponibles(Pasajero pasajero,String nombreUsuario) {
+    
+    public VentanaVuelosDisponibles(Pasajero pasajero, String nombreUsuario) {
         this.pasajeroActual = pasajero;
         this.nombreUsuario = nombreUsuario;
+        
+        
         this.cn = con.conector();
         initComponents();
         setLocationRelativeTo(this);
@@ -35,6 +43,23 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
        cargarVuelosEnPantalla(); // Método para mostrar vuelos en los JLabels
        configurarBotonesReserva(); // Asignar acciones a los botones
     }
+    
+    public VentanaVuelosDisponibles(Pasajero pasajero, String nombreUsuario, java.util.Date fechaIda, java.util.Date fechaVuelta) {
+    this.pasajeroActual = pasajero;
+    this.nombreUsuario = nombreUsuario;
+    this.fechaIda = fechaIda;
+    this.fechaVuelta = fechaVuelta;
+    this.cn = con.conector();
+    initComponents();
+    setLocationRelativeTo(this);
+   
+    
+    
+    
+    cargarVuelosEnPantalla(); // Método para mostrar vuelos en los JLabels
+    configurarBotonesReserva(); // Asignar acciones a los botones
+}
+
 
  
 
@@ -47,12 +72,33 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
         vueloMostrado.setOrigen("Cartagena");
         vueloMostrado.setDestino("Medellin");
         
+        
+            String fechaIdaFormateada = formatearFecha(fechaIda);
+            String fechaVueltaFormateada = formatearFecha(fechaVuelta);
+            
      
 
         // Mostrar datos en los JLabels
-        jLabel1.setText("Vuelo: " + vueloMostrado.getNumeroVuelo() + " | " + vueloMostrado.getOrigen() + " → " + vueloMostrado.getDestino());
+        FechaIDA.setText("Vuelo: " + vueloMostrado.getNumeroVuelo() + " | " + vueloMostrado.getOrigen() + " → " + vueloMostrado.getDestino());
+        IDA.setText("Fecha Ida: " + fechaIdaFormateada);
+        VUELTA.setText("Fecha Vuelta: " + fechaVueltaFormateada);
+        
         
     }
+    
+    // Método auxiliar para formatear fechas
+    private String formatearFecha(Date fecha) {
+    if (fecha == null) {
+        return "No seleccionada";
+    }
+    try {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fecha);
+    } catch (Exception e) {
+        return "Fecha inválida";
+    }
+}
+    
 
     private void configurarBotonesReserva() {
       
@@ -110,8 +156,10 @@ private void reservarVuelo(Vuelo vuelo) {
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        FechaIDA = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        VUELTA = new javax.swing.JLabel();
+        IDA = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
@@ -137,16 +185,23 @@ private void reservarVuelo(Vuelo vuelo) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 400, 36));
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 400, 36));
 
-        jLabel1.setText("-------------------------------------------------------------");
-        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 320, 40));
+        FechaIDA.setText("-------------------------------------------------------------");
+        FechaIDA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel3.add(FechaIDA, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 320, 40));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carga 100 x 100.gif"))); // NOI18N
         jLabel2.setText("jLabel2");
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, 80, 100));
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 50, 80, 100));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 580, 130));
+        VUELTA.setText("----------------------------");
+        jPanel3.add(VUELTA, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 60, 170, 30));
+
+        IDA.setText("---------------------------");
+        jPanel3.add(IDA, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 56, 150, 40));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 580, 150));
 
         jLabel3.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -175,17 +230,17 @@ private void reservarVuelo(Vuelo vuelo) {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    if (vueloMostrado != null) {
-        reservarVuelo(vueloMostrado);
-    }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-   VentanaInicio inicio = new VentanaInicio();
-   inicio.setVisible(true);
-   this.dispose();
+        VentanaInicio inicio = new VentanaInicio();
+        inicio.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (vueloMostrado != null) {
+            reservarVuelo(vueloMostrado);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         
@@ -224,9 +279,11 @@ pasajeroEjemplo.setId(1);
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel FechaIDA;
+    private javax.swing.JLabel IDA;
+    private javax.swing.JLabel VUELTA;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

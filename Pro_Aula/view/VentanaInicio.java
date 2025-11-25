@@ -18,6 +18,7 @@ public class VentanaInicio extends javax.swing.JFrame {
       
         initComponents();
         setLocationRelativeTo(null);
+        configurarDateChoosers();
        
 
         java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
@@ -32,9 +33,39 @@ public class VentanaInicio extends javax.swing.JFrame {
         
 
     }
+    
+    
     public VentanaInicio() {
         this(""); // Valor por defecto
     }
+private void configurarDateChoosers() {
+    try {
+        // Para jDateIDA
+        if (jDateIDA != null) {
+            // Método más seguro y compatible
+            java.awt.Component[] components = jDateIDA.getComponents();
+            for (java.awt.Component comp : components) {
+                if (comp instanceof javax.swing.JTextField) {
+                    ((javax.swing.JTextField) comp).setEditable(false);
+                    break;
+                }
+            }
+        }
+        
+        // Para jDateVUELTA
+        if (jDateVUELTA != null) {
+            java.awt.Component[] components = jDateVUELTA.getComponents();
+            for (java.awt.Component comp : components) {
+                if (comp instanceof javax.swing.JTextField) {
+                    ((javax.swing.JTextField) comp).setEditable(false);
+                    break;
+                }
+            }
+        }
+    } catch (Exception e) {
+        System.out.println("Error configurando DateChoosers: " + e.getMessage());
+    }
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -49,7 +80,15 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtFecha = new javax.swing.JTextField();
+        jDateIDA = new com.toedter.calendar.JDateChooser();
+        jDateVUELTA = new com.toedter.calendar.JDateChooser();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator4 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -57,6 +96,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -64,7 +104,8 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(102, 153, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel1.setMinimumSize(new java.awt.Dimension(600, 510));
+        jPanel1.setMinimumSize(new java.awt.Dimension(700, 610));
+        jPanel1.setPreferredSize(new java.awt.Dimension(840, 540));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -77,7 +118,7 @@ public class VentanaInicio extends javax.swing.JFrame {
                 jComboBox1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 160, 40));
+        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, 130, 40));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cartagena", "Medellin", "Bogota" }));
         jComboBox2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
@@ -86,7 +127,7 @@ public class VentanaInicio extends javax.swing.JFrame {
                 jComboBox2ActionPerformed(evt);
             }
         });
-        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, 160, 40));
+        jPanel2.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 30, 130, 40));
 
         jButton2.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
         jButton2.setText("Buscar");
@@ -98,13 +139,13 @@ public class VentanaInicio extends javax.swing.JFrame {
         });
         jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 60, 150, 70));
 
-        jLabel2.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Nirmala UI", 3, 12)); // NOI18N
         jLabel2.setText("Origen");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 50, -1));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 100, 50, -1));
 
-        jLabel3.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Nirmala UI", 3, 12)); // NOI18N
         jLabel3.setText("Destino");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, 50, -1));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 10, 50, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carga 100 x 100.gif"))); // NOI18N
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 110, 90));
@@ -115,10 +156,24 @@ public class VentanaInicio extends javax.swing.JFrame {
                 txtFechaActionPerformed(evt);
             }
         });
-        jPanel2.add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 170, 160, -1));
+        jPanel2.add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 170, 150, -1));
+        jPanel2.add(jDateIDA, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, 140, 40));
+        jPanel2.add(jDateVUELTA, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 120, 140, 40));
+
+        jLabel13.setFont(new java.awt.Font("Nirmala UI", 3, 12)); // NOI18N
+        jLabel13.setText("Fecha vuelta");
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 100, 80, -1));
+
+        jLabel11.setFont(new java.awt.Font("Nirmala UI", 3, 12)); // NOI18N
+        jLabel11.setText("Fecha Ida");
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 10, 60, -1));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Polygon 1.png"))); // NOI18N
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, -80, -1, -1));
+        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, 130, 10));
+        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, 130, -1));
+        jPanel2.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, 130, -1));
+        jPanel2.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 160, 140, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 720, 200));
 
@@ -147,9 +202,13 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, -1, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Polygon 1.png"))); // NOI18N
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 80, -1, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 70, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 510));
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Group.png"))); // NOI18N
+        jLabel10.setText("jLabel10");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 290, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 830, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -167,17 +226,68 @@ public class VentanaInicio extends javax.swing.JFrame {
                                               
     String origen = (String) jComboBox1.getSelectedItem();
     String destino = (String) jComboBox2.getSelectedItem();
+     java.util.Date fechaIda = jDateIDA.getDate();
+    java.util.Date fechaVuelta = jDateVUELTA.getDate();
+    
+    
+    
+    
+      // Validar que la fecha de vuelta no sea anterior a la fecha de ida
+    if (fechaVuelta.before(fechaIda)) {
+        JOptionPane.showMessageDialog(
+            this,
+            "La fecha de vuelta no puede ser anterior a la fecha de ida.",
+            "Fecha inválida",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+    
+    
+     // Validar que la fecha de ida no sea anterior a hoy
+    java.util.Date hoy = new java.util.Date();
+    if (fechaIda.before(hoy)) {
+        JOptionPane.showMessageDialog(
+            this,
+            "La fecha de ida no puede ser anterior al día de hoy.",
+            "Fecha inválida",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
 
+    
+     // Validar que se hayan seleccionado ambas fechas
+    if (fechaIda == null || fechaVuelta == null) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Por favor seleccione ambas fechas (ida y vuelta).",
+            "Fechas incompletas",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+
+    
+    // Validar la ruta (solo Cartagena → Medellín disponible)
     if ("Cartagena".equals(origen) && "Medellin".equals(destino)) {
         try {
-            // TEMPORAL: Saltar verificación de BD
-            System.out.println(" Abriendo ventana de vuelos...");
+            // Formatear las fechas para mostrar
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            String fechaIdaStr = sdf.format(fechaIda);
+            String fechaVueltaStr = sdf.format(fechaVuelta);
+            
+            System.out.println("Busqueda realizada:");
+            System.out.println("Origen: " + origen);
+            System.out.println("Destino: " + destino);
+            System.out.println("Fecha Ida: " + fechaIdaStr);
+            System.out.println("Fecha Vuelta: " + fechaVueltaStr);
             
             // Crear pasajero temporal
             Pasajero pasajero = new Pasajero();
             pasajero.setNombre(this.nombre);
             
-            // Abrir ventana SIN Hibernate
+            // Pasar las fechas a la siguiente ventana
             VentanaVuelosDisponibles disponible = new VentanaVuelosDisponibles(pasajero, this.nombre);
             disponible.setVisible(true);
             this.dispose();
@@ -197,8 +307,6 @@ public class VentanaInicio extends javax.swing.JFrame {
             JOptionPane.WARNING_MESSAGE
         );
     }
-
-
 
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -245,8 +353,13 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private com.toedter.calendar.JDateChooser jDateIDA;
+    private com.toedter.calendar.JDateChooser jDateVUELTA;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -257,6 +370,10 @@ public class VentanaInicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JTextField txtFecha;
     // End of variables declaration//GEN-END:variables
