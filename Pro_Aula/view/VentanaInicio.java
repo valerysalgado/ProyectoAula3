@@ -327,9 +327,10 @@ private void configurarDateChoosers() {
     }//GEN-LAST:event_txtFechaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-   ventanaLogin1 login = new ventanaLogin1();
+  
+    ventanaLogin1 login = new ventanaLogin1();
     login.setVisible(true);
-     this.dispose();// TODO add your handling code here:
+     dispose();// TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

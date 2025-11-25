@@ -147,9 +147,9 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         Roles = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         txtapellido = new javax.swing.JTextField();
         jSeparator5 = new javax.swing.JSeparator();
-        jLabel11 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -295,23 +295,20 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         jLabel12.setText("Apellido");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 100, -1));
 
+        jLabel11.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Rol");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 310, 70, -1));
+
         txtapellido.setBackground(new java.awt.Color(102, 153, 255));
-        txtapellido.setFont(new java.awt.Font("Nirmala UI", 0, 12)); // NOI18N
-        txtapellido.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
+        txtapellido.setBorder(null);
         txtapellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtapellidoActionPerformed(evt);
             }
         });
         jPanel1.add(txtapellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 180, 200, 20));
-
-        jSeparator5.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel1.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 200, 200, 20));
-
-        jLabel11.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Rol");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 310, 70, -1));
+        jPanel1.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 200, 200, 10));
 
         jLabel1.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -388,13 +385,13 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
         Check.requestFocus();// TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
-    private void txtapellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtapellidoActionPerformed
-     txtapellido.requestFocus();        // TODO add your handling code here:
-    }//GEN-LAST:event_txtapellidoActionPerformed
-
     private void RolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RolesActionPerformed
      Roles.requestFocus();       // TODO add your handling code here:
     }//GEN-LAST:event_RolesActionPerformed
+
+    private void txtapellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtapellidoActionPerformed
+       txtapellido.requestFocus(); // TODO add your handling code here:
+    }//GEN-LAST:event_txtapellidoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

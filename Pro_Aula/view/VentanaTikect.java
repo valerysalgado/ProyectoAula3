@@ -88,6 +88,7 @@ public class VentanaTikect extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         btnMid = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -97,6 +98,7 @@ public class VentanaTikect extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -115,9 +117,10 @@ public class VentanaTikect extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(140, 250));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnNormal.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        btnNormal.setBackground(new java.awt.Color(51, 204, 255));
+        btnNormal.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
         btnNormal.setText("get plan");
-        btnNormal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
+        btnNormal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 255)));
         btnNormal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNormalActionPerformed(evt);
@@ -126,6 +129,7 @@ public class VentanaTikect extends javax.swing.JFrame {
         jPanel2.add(btnNormal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 310, 80));
 
         jLabel1.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(102, 204, 255));
         jLabel1.setText("Normal Class");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 150, -1));
 
@@ -138,31 +142,41 @@ public class VentanaTikect extends javax.swing.JFrame {
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 220, -1));
 
         jLabel6.setFont(new java.awt.Font("Nirmala UI", 0, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(153, 0, 0));
         jLabel6.setText("X Equipaje de bodega");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 200, 30));
 
         jLabel7.setFont(new java.awt.Font("Nirmala UI", 0, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(153, 0, 0));
         jLabel7.setText("X Rembolso");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 120, 20));
 
         jLabel8.setFont(new java.awt.Font("Nirmala UI", 0, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(153, 0, 0));
         jLabel8.setText("X Seleccion de asiento");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 200, 30));
 
         jLabel9.setFont(new java.awt.Font("Nirmala UI", 0, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(153, 0, 0));
         jLabel9.setText("X Check-in en aeropuerto");
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 230, -1));
 
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Frame 2257.png"))); // NOI18N
+        jLabel15.setText("jLabel15");
+        jLabel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 255)));
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -4, 310, 410));
+
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 50, 310, 410));
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 204));
+        jPanel3.setBackground(new java.awt.Color(153, 204, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
         jPanel3.setPreferredSize(new java.awt.Dimension(140, 250));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnMid.setFont(new java.awt.Font("Nirmala UI", 1, 12)); // NOI18N
+        btnMid.setBackground(new java.awt.Color(51, 204, 255));
+        btnMid.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
         btnMid.setText("get plan");
-        btnMid.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
+        btnMid.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 255)));
         btnMid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMidActionPerformed(evt);
@@ -171,6 +185,7 @@ public class VentanaTikect extends javax.swing.JFrame {
         jPanel3.add(btnMid, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 280, 80));
 
         jLabel2.setFont(new java.awt.Font("Nirmala UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 153));
         jLabel2.setText("Mid Class");
         jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 110, -1));
 
@@ -187,6 +202,7 @@ public class VentanaTikect extends javax.swing.JFrame {
         jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 240, -1));
 
         jLabel16.setFont(new java.awt.Font("Nirmala UI", 0, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(153, 0, 0));
         jLabel16.setText("X Rembolso");
         jPanel3.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 110, -1));
 
@@ -197,6 +213,10 @@ public class VentanaTikect extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Nirmala UI", 0, 18)); // NOI18N
         jLabel19.setText("+ Asiento economico incluido");
         jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 240, -1));
+
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Frame 2257.png"))); // NOI18N
+        jLabel17.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 255)));
+        jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 330));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, 280, 410));
 
@@ -229,7 +249,7 @@ public class VentanaTikect extends javax.swing.JFrame {
        generarFactura("Mid Class");
        VentanaInicio inicio = new VentanaInicio(nombre);
        inicio.setVisible(true);
-       this.dispose();
+       dispose();
        
     }//GEN-LAST:event_btnMidActionPerformed
 
@@ -238,7 +258,7 @@ public class VentanaTikect extends javax.swing.JFrame {
         generarFactura("Normal Class");
         VentanaInicio inicio = new VentanaInicio(nombre);
        inicio.setVisible(true);
-       this.dispose();
+       dispose();
     }//GEN-LAST:event_btnNormalActionPerformed
 
     /**
@@ -285,7 +305,9 @@ public class VentanaTikect extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
