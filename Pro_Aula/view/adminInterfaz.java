@@ -1,6 +1,4 @@
-
 package view;
-
 import Dominio.Entidades.Administrador;
 import Dominio.Entidades.Asiento;
 import Dominio.Entidades.Avion;
@@ -52,16 +50,12 @@ public class adminInterfaz extends javax.swing.JFrame {
             cargarDatosAlCambiarPestana();
         }
     });
-        
-        
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConfigDB");
         this.em = emf.createEntityManager();
         pasajeroDAO = new PasajeroDAO(this.em);
         avionDAO = new AvionDAO(this.em);
         vueloDAO = new VueloDAO(em);
         administradorDAO = new AdministradorDAO(em);
-
- 
         
         initTabla();
         inittablaaviones();
@@ -1439,143 +1433,139 @@ public class adminInterfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_botonguardarActionPerformed
 
     private void btnguardarreservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarreservasActionPerformed
-        try {
-            // Validar asiento
-            if (comboasiento.getSelectedIndex() <= 0 || comboasiento.getSelectedItem().toString().contains("No hay")) {
-                JOptionPane.showMessageDialog(this,
-                        "Por favor seleccione un asiento disponible del menú desplegable",
-                        "Selección requerida", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Validar pasajero
-            if (combousuario.getSelectedIndex() <= 0) {
-                JOptionPane.showMessageDialog(this,
-                        "Por favor seleccione un pasajero válido",
-                        "Selección requerida", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Validar vuelo
-            if (combovuelo.getSelectedIndex() <= 0) {
-                JOptionPane.showMessageDialog(this,
-                        "Seleccione un vuelo válido",
-                        "Selección requerida", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Obtener asiento
-            String asientoStr = comboasiento.getSelectedItem().toString(); // Ej: "5 - A1"
-            Long idAsiento = Long.parseLong(asientoStr.split(" - ")[0].trim());
-            Asiento asiento = new AsientoDAO(em).buscarPorId(idAsiento);
-
-            if (asiento == null || !asiento.isDisponible()) {
-                JOptionPane.showMessageDialog(this,
-                        "El asiento seleccionado no está disponible",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Obtener pasajero
-            // Obtener pasajero - Versión corregida
-            String pasajeroSeleccionado = combousuario.getSelectedItem().toString();
-            if (!pasajeroSeleccionado.contains(" - ")) {
-                JOptionPane.showMessageDialog(this, "Formato de pasajero inválido", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            Long idPasajero = Long.parseLong(pasajeroSeleccionado.split(" - ")[0].trim());
-            Pasajero pasajero = new PasajeroDAO(em).buscarPorId(idPasajero);
-
-            // Obtener vuelo
-            String vueloSeleccionado = combovuelo.getSelectedItem().toString();
-            Integer idVuelo = Integer.parseInt(vueloSeleccionado.split(" - ")[0].trim()); // Usa Integer.parseInt
-            Vuelo vuelo = new VueloDAO(em).buscarPorId(idVuelo);
-            if (vuelo == null) {
-                JOptionPane.showMessageDialog(this,
-                        "No se encontró el vuelo seleccionado",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Iniciar transacción
-            EntityTransaction tx = em.getTransaction();
-            tx.begin();
-
-            // Bloquear asiento para evitar concurrencia
-            Asiento asientoBloqueado = new AsientoDAO(em).buscarPorIdConBloqueo(idAsiento);
-            if (asientoBloqueado == null || !asientoBloqueado.isDisponible()) {
-                tx.rollback();
-                JOptionPane.showMessageDialog(this,
-                        "El asiento ya no está disponible",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Crear reserva
-            Reserva reserva = new Reserva();
-            reserva.setAsiento(asientoBloqueado);
-            reserva.setPasajero(pasajero);
-            reserva.setVuelo(vuelo);
-            reserva.setFechaReserva(new Date());
-
-            // Marcar asiento como no disponible
-            asientoBloqueado.setDisponible(false);
-            new AsientoDAO(em).actualizar(asientoBloqueado);
-
-            // Guardar reserva
-            new ReservaDAO(em).crear(reserva);
-
-            tx.commit();
-
-            JOptionPane.showMessageDialog(this,
-                    "✅ Reserva registrada exitosamente",
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-            // Refrescar listas
-            listarReservas();
-            listarAsientos();
-            cargarAsientosEnCombo();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this,
-                    "❌ Error al registrar reserva: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+try {
+        // Obtener los valores seleccionados
+        String pasajeroSeleccionado = combousuario.getSelectedItem().toString();
+        String vueloSeleccionado = combovuelo.getSelectedItem().toString();
+        String asientoSeleccionado = comboasiento.getSelectedItem().toString();
+        
+        // Validar que se hayan seleccionado todos los campos
+        if (pasajeroSeleccionado.equals("Seleccione...") || 
+            pasajeroSeleccionado.equals("PASAJERO") ||
+            vueloSeleccionado.equals("Seleccione...") || 
+            vueloSeleccionado.equals("VUELO") ||
+            asientoSeleccionado.equals("Seleccione...") || 
+            asientoSeleccionado.equals("--Seleccione--")) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione todos los campos correctamente");
+            return;
         }
+        
+        // Validar formato antes de parsear
+        if (!pasajeroSeleccionado.contains(" - ") || 
+            !vueloSeleccionado.contains(" - ") || 
+            !asientoSeleccionado.contains(" - ")) {
+            JOptionPane.showMessageDialog(this, "Error: Formato de selección inválido");
+            return;
+        }
+        
+        // EXTRAER LOS IDs
+        String[] partesPasajero = pasajeroSeleccionado.split(" - ");
+        String[] partesVuelo = vueloSeleccionado.split(" - ");
+        String[] partesAsiento = asientoSeleccionado.split(" - ");
+        
+        // Verificar que tengan al menos 2 partes
+        if (partesPasajero.length < 2 || partesVuelo.length < 2 || partesAsiento.length < 2) {
+            JOptionPane.showMessageDialog(this, "Error: Formato de datos inválido");
+            return;
+        }
+        
+        try {
+            int idUsuario = Integer.parseInt(partesPasajero[0].trim());
+            int idVuelo = Integer.parseInt(partesVuelo[0].trim());
+            int idAsiento = Integer.parseInt(partesAsiento[0].trim());
+            
+            // ✅ USAR DAOs CON ENTITYMANAGER (como en el resto del código)
+            ReservaDAO reservaDAO = new ReservaDAO();
+            PasajeroDAO pasajeroDAO = new PasajeroDAO(em);
+            VueloDAO vueloDAO = new VueloDAO(em);
+            AsientoDAO asientoDAO = new AsientoDAO(em);
+            
+            // VERIFICAR QUE LOS OBJETOS EXISTEN
+            Pasajero pasajero = pasajeroDAO.buscarPorId((long) idUsuario);
+            if (pasajero == null) {
+                JOptionPane.showMessageDialog(this, "Error: El pasajero con ID " + idUsuario + " no existe en la base de datos");
+                return;
+            }
+            
+            Vuelo vuelo = vueloDAO.buscarPorId(idVuelo);
+            if (vuelo == null) {
+                JOptionPane.showMessageDialog(this, "Error: El vuelo con ID " + idVuelo + " no existe");
+                return;
+            }
+            
+            Asiento asiento = asientoDAO.buscarPorId((long) idAsiento);
+            if (asiento == null) {
+                JOptionPane.showMessageDialog(this, "Error: El asiento con ID " + idAsiento + " no existe");
+                return;
+            }
+            
+            // VERIFICAR SI EL ASIENTO YA ESTÁ OCUPADO EN ESTE VUELO
+            List<Reserva> reservasExistentes = reservaDAO.obtenerTodas();
+            for (Reserva reserva : reservasExistentes) {
+                if (reserva.getVuelo() != null && reserva.getVuelo().getIdVuelo() == idVuelo && 
+                    reserva.getAsiento() != null && reserva.getAsiento().getIdAsiento() == idAsiento) {
+                    JOptionPane.showMessageDialog(this, "Error: Este asiento ya está ocupado en el vuelo seleccionado");
+                    return;
+                }
+            }
+            
+            // CREAR LA NUEVA RESERVA
+            Reserva nuevaReserva = new Reserva();
+            nuevaReserva.setPasajero(pasajero);
+            nuevaReserva.setVuelo(vuelo);
+            nuevaReserva.setAsiento(asiento);
+            nuevaReserva.setFechaReserva(new Date());
+          
+            reservaDAO.crear(nuevaReserva);
+            
+            JOptionPane.showMessageDialog(this, "Reserva registrada exitosamente");
+            limpiarCamposReserva();
+            listarReservas(); // Actualizar la tabla
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error: ID inválido en la selección - " + e.getMessage());
+            return;
+        }
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al registrar reserva: " + e.getMessage());
+        e.printStackTrace();
+    }
 
     }//GEN-LAST:event_btnguardarreservasActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        int filaSeleccionada = tablareservas.getSelectedRow();
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione una reserva para Cancelar",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
+ int filaSeleccionada = tablareservas.getSelectedRow();
+    if (filaSeleccionada < 0) {
+        JOptionPane.showMessageDialog(this, "Seleccione una reserva para Cancelar",
+                "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    int confirmacion = JOptionPane.showConfirmDialog(this,
+            "¿Está seguro de Cancelar esta reserva?", "Confirmar",
+            JOptionPane.YES_NO_OPTION);
+
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        try {
+            int idReserva = Integer.parseInt(tablareservas.getValueAt(filaSeleccionada, 0).toString());
+            
+            // ✅ CORREGIDO: Sin parámetro EntityManager
+            ReservaDAO reservaDAO = new ReservaDAO();
+            reservaDAO.eliminar(idReserva);
+
+            JOptionPane.showMessageDialog(this, "Reserva Cancelada exitosamente",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            listarReservas();
+            limpiarCamposReserva();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al Cancelar reserva: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        int confirmacion = JOptionPane.showConfirmDialog(this,
-                "¿Está seguro de Cancelar esta reserva?", "Confirmar",
-                JOptionPane.YES_NO_OPTION);
-
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            try {
-                int idReserva = Integer.parseInt(tablareservas.getValueAt(filaSeleccionada, 0).toString());
-                ReservaDAO reservaDAO = new ReservaDAO(em);
-                reservaDAO.eliminar(idReserva);
-
-                JOptionPane.showMessageDialog(this, "Reserva Cancelada exitosamente",
-                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-                listarReservas();
-                limpiarCamposReserva();
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al Cancelar reserva: " + e.getMessage(),
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        // TODO add your handling code here:
+    }
+    
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void botoneliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botoneliminar2ActionPerformed
@@ -2333,33 +2323,30 @@ if (confirmacion == JOptionPane.YES_OPTION) {
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+ try {
+        List<Avion> aviones = avionDAO.listarTodos();
 
-        try {
-            DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
-            modelo.setRowCount(0);
+        DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+        modelo.setRowCount(0);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            ReservaDAO reservaDAO = new ReservaDAO(em);
-            List<Reserva> reservas = reservaDAO.listarTodos();
-
-            for (Reserva r : reservas) {
-                modelo.addRow(new Object[]{
-                    r.getIdReserva(),
-                    r.getCodigoReserva(),
-                    r.getPasajero() != null ? r.getPasajero().getnombre() + " " + r.getPasajero().getApellido() : "",
-                    r.getVuelo() != null ? r.getVuelo().getNumeroVuelo() : "",
-                    sdf.format(r.getFechaReserva()),
-                    r.getEstado()
-
-                });
-            }
-
-            ajustarAnchoColumnasReservas();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al listar reservas: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
+        for (Avion a : aviones) {
+            // ✅ CORREGIDO: Usar métodos que SÍ existen
+            modelo.addRow(new Object[]{
+                a.getIdAvion(),        // Este método SÍ existe
+                a.getMatricula(),      // Este método SÍ existe  
+                a.getCapacidadPasajeros(), // Este método SÍ existe
+                a.getEstado()          // Este método SÍ existe
+            });
         }
+        
+        ajustarAnchoColumnasAvion(); // Asegurar que se ajusten las columnas
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error al listar aviones: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -2368,77 +2355,80 @@ if (confirmacion == JOptionPane.YES_OPTION) {
     }//GEN-LAST:event_combovueloActionPerformed
 
     private void tablareservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablareservasMouseClicked
-
-        int filaSeleccionada = tablareservas.getSelectedRow();
-        if (filaSeleccionada >= 0) {
-            try {
-                int idReserva = Integer.parseInt(tablareservas.getValueAt(filaSeleccionada, 0).toString());
-                ReservaDAO reservaDAO = new ReservaDAO(em);
-                Reserva reserva = reservaDAO.buscarPorId(idReserva);
-
-                if (reserva != null) {
-                    // Cargar datos en los combos
-                    cargarCombosReservas();
-
-                    // Seleccionar pasajero
-                    for (int i = 0; i < combousuario.getItemCount(); i++) {
-                        if (combousuario.getItemAt(i).startsWith(reserva.getPasajero().getIdUsuario() + " - ")) {
-                            combousuario.setSelectedIndex(i);
-                            break;
-                        }
-                    }
-
-                    // Seleccionar vuelo
-                    for (int i = 0; i < combovuelo.getItemCount(); i++) {
-                        if (combovuelo.getItemAt(i).startsWith(reserva.getVuelo().getIdVuelo() + " - ")) {
-                            combovuelo.setSelectedIndex(i);
-                            break;
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al cargar reserva: " + e.getMessage(),
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }// TODO add your handling code here:
-    }//GEN-LAST:event_tablareservasMouseClicked
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int filaSeleccionada = tablareservas.getSelectedRow();
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione una reserva para editar",
-                    "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!validarCamposReserva()) {
-            return;
-        }
-
+int filaSeleccionada = tablareservas.getSelectedRow();
+    if (filaSeleccionada >= 0) {
         try {
             int idReserva = Integer.parseInt(tablareservas.getValueAt(filaSeleccionada, 0).toString());
-            ReservaDAO reservaDAO = new ReservaDAO(em);
+            
+            // ✅ CORREGIDO: Sin parámetro EntityManager
+            ReservaDAO reservaDAO = new ReservaDAO();
             Reserva reserva = reservaDAO.buscarPorId(idReserva);
 
             if (reserva != null) {
-                // Actualizar datos
-                reserva.setPasajero(obtenerPasajeroSeleccionado());
-                reserva.setVuelo(obtenerVueloSeleccionado());
+                // Cargar datos en los combos
+                cargarCombosReservas();
 
-                reserva.setFechaReserva(dateChooserSalida1.getDate());
+                // Seleccionar pasajero
+                for (int i = 0; i < combousuario.getItemCount(); i++) {
+                    if (combousuario.getItemAt(i).startsWith(reserva.getPasajero().getIdUsuario() + " - ")) {
+                        combousuario.setSelectedIndex(i);
+                        break;
+                    }
+                }
 
-                reservaDAO.actualizar(reserva);
-
-                JOptionPane.showMessageDialog(this, "Reserva actualizada exitosamente",
-                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-                listarReservas();
+                // Seleccionar vuelo
+                for (int i = 0; i < combovuelo.getItemCount(); i++) {
+                    if (combovuelo.getItemAt(i).startsWith(reserva.getVuelo().getIdVuelo() + " - ")) {
+                        combovuelo.setSelectedIndex(i);
+                        break;
+                    }
+                }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al actualizar reserva: " + e.getMessage(),
+            JOptionPane.showMessageDialog(this, "Error al cargar reserva: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
-        // TODO add your handling code here:
+    }
+
+    }//GEN-LAST:event_tablareservasMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    int filaSeleccionada = tablareservas.getSelectedRow();
+    if (filaSeleccionada < 0) {
+        JOptionPane.showMessageDialog(this, "Seleccione una reserva para editar",
+                "Advertencia", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    if (!validarCamposReserva()) {
+        return;
+    }
+
+    try {
+        int idReserva = Integer.parseInt(tablareservas.getValueAt(filaSeleccionada, 0).toString());
+        
+        // ✅ CORREGIDO: Sin parámetro EntityManager
+        ReservaDAO reservaDAO = new ReservaDAO();
+        Reserva reserva = reservaDAO.buscarPorId(idReserva);
+
+        if (reserva != null) {
+            // Actualizar datos
+            reserva.setPasajero(obtenerPasajeroSeleccionado());
+            reserva.setVuelo(obtenerVueloSeleccionado());
+            reserva.setFechaReserva(dateChooserSalida1.getDate());
+
+            reservaDAO.actualizar(reserva);
+
+            JOptionPane.showMessageDialog(this, "Reserva actualizada exitosamente",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            listarReservas();
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al actualizar reserva: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
@@ -2862,19 +2852,22 @@ if (confirmacion == JOptionPane.YES_OPTION) {
         }
     }
 
-    private void cargarAvionesEnTabla(List<Avion> aviones) {
-        DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
-        modelo.setRowCount(0);
+   private void cargarAvionesEnTabla(List<Avion> aviones) {
+    DefaultTableModel modelo = (DefaultTableModel) tablaaviones.getModel();
+    modelo.setRowCount(0);
 
-        for (Avion a : aviones) {
-            modelo.addRow(new Object[]{
-                a.getIdAvion(),
-                a.getMatricula(),
-                a.getCapacidadPasajeros(),
-                a.getEstado()
-            });
-        }
+    for (Avion a : aviones) {
+        modelo.addRow(new Object[]{
+            a.getIdAvion(),
+            a.getMatricula(),
+            a.getCapacidadPasajeros(),
+            a.getEstado()
+        });
     }
+    
+   
+    ajustarAnchoColumnasAvion();
+}
 
     private void limpiarCampos() {
         txtnombre.setText("");
@@ -3102,48 +3095,28 @@ if (confirmacion == JOptionPane.YES_OPTION) {
    
     
     
-    private void cargarReservasEnTabla() {
-        
-        
-        ReservaDAO reservaDAO = new ReservaDAO(null);
-        List<Reserva> reservas = reservaDAO.obtenerTodas();
+   private void cargarReservasEnTabla() {
+    // ✅ CORREGIDO: Sin parámetro EntityManager
+    ReservaDAO reservaDAO = new ReservaDAO();
+    List<Reserva> reservas = reservaDAO.obtenerTodas();
 
-        DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
-        modelo.setRowCount(0);
+    DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
+    modelo.setRowCount(0);
 
-        for (Reserva r : reservas) {
-            Object[] fila = {
-                r.getIdReserva(),
-                r.getPasajero() != null ? r.getPasajero().getnombre() : "Sin pasajero",
-                r.getVuelo() != null ? r.getVuelo().getNumeroVuelo() : "Sin vuelo",
-                r.getFechaReserva(),
-                r.getAsiento(),
-                r.getEstado()
-            };
-            modelo.addRow(fila);
-        }
-
-        ajustarAnchoColumnasReservas();
+    for (Reserva r : reservas) {
+        Object[] fila = {
+            r.getIdReserva(),
+            r.getPasajero() != null ? r.getPasajero().getnombre() : "Sin pasajero",
+            r.getVuelo() != null ? r.getVuelo().getNumeroVuelo() : "Sin vuelo",
+            r.getFechaReserva(),
+            r.getAsiento(),
+            r.getEstado()
+        };
+        modelo.addRow(fila);
     }
 
-    private void cargarVuelosEnTabla(List<Vuelo> vuelos) {
-        DefaultTableModel modelo = (DefaultTableModel) tablavuelos.getModel();
-        modelo.setRowCount(0);
-
-        for (Vuelo v : vuelos) {
-            Object[] fila = {
-                v.getIdVuelo(),
-                v.getNumeroVuelo(),
-                v.getOrigen(),
-                v.getDestino(),
-                v.getFechaSalida(),
-                v.getFechaLlegada()
-            };
-            modelo.addRow(fila);
-        }
-
-        ajustarAnchoColumnasVuelos();
-    }
+    ajustarAnchoColumnasReservas();
+}
 
     private void ajustarAnchoColumnasVuelos() {
         tablavuelos.setAutoResizeMode(tablavuelos.AUTO_RESIZE_OFF);
@@ -3356,42 +3329,59 @@ if (confirmacion == JOptionPane.YES_OPTION) {
         comborol2.addItem("ADMINISTRADOR 2");
     }
 
-    private void limpiarCamposReserva() {
-        combousuario.setSelectedIndex(0);
-        combovuelo.setSelectedIndex(0);
-        dateChooserSalida1.setDate(null);
-        tablareservas.clearSelection();
-    }
 
     private void listarReservas() {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            ReservaDAO reservaDAO = new ReservaDAO(em);
-            List<Reserva> reservas = reservaDAO.obtenerTodas();
+    try {
+        ReservaDAO reservaDAO = new ReservaDAO();
+        List<Reserva> reservas = reservaDAO.obtenerTodas();
 
-            DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
-            modelo.setRowCount(0); // Limpiar tabla
+        DefaultTableModel modelo = (DefaultTableModel) tablareservas.getModel();
+        modelo.setRowCount(0);
 
-            for (Reserva r : reservas) {
-                modelo.addRow(new Object[]{
-                    r.getIdReserva(),
-                    r.getCodigoReserva(),
-                    r.getPasajero() != null ? r.getPasajero().getnombre() + " " + r.getPasajero().getApellido() : "N/A",
-                    r.getVuelo() != null ? r.getVuelo().getNumeroVuelo() : "N/A",
-                    sdf.format(r.getFechaReserva()),
-                    r.getAsiento() != null ? r.getAsiento().getNumero() : "N/A",
-                    r.getEstado()
-                });
+        for (Reserva reserva : reservas) {
+            // Manejo seguro de posibles valores nulos
+            String nombrePasajero = "N/A";
+            String numeroVuelo = "N/A";
+            String numeroAsiento = "N/A";
+            String estado = "N/A";
+            
+            if (reserva.getPasajero() != null) {
+                nombrePasajero = reserva.getPasajero().getnombre() + " " + reserva.getPasajero().getApellido();
             }
-
-            ajustarAnchoColumnasReservas();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Error al cargar reservas: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+            
+            if (reserva.getVuelo() != null) {
+                numeroVuelo = reserva.getVuelo().getNumeroVuelo();
+            }
+            
+            if (reserva.getAsiento() != null) {
+                numeroAsiento = reserva.getAsiento().getNumero();
+            }
+            
+            if (reserva.getEstado() != null) {
+                estado = reserva.getEstado().toString();
+            }
+            
+            modelo.addRow(new Object[]{
+                reserva.getIdReserva(),
+                nombrePasajero,
+                numeroVuelo,
+                reserva.getFechaReserva(),
+                numeroAsiento,
+                estado
+            });
         }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar reservas: " + e.getMessage());
+        e.printStackTrace();
     }
+}
+
+private void limpiarCamposReserva() {
+    combousuario.setSelectedIndex(0);
+    combovuelo.setSelectedIndex(0);
+    comboasiento.setSelectedIndex(0);
+    dateChooserSalida1.setDate(null);
+}
 
     private void cargarVuelosEnCombo() {
         combovuelo.removeAllItems();
