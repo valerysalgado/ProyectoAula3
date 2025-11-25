@@ -258,7 +258,7 @@ private void configurarDateChoosers() {
 
     
      // Validar que se hayan seleccionado ambas fechas
-    if (fechaIda == null || fechaVuelta == null) {
+    if (jDateIDA == null ||jDateVUELTA  == null) {
         JOptionPane.showMessageDialog(
             this,
             "Por favor seleccione ambas fechas (ida y vuelta).",

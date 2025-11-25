@@ -10,11 +10,18 @@ import java.util.Date;
 public class VentanaTikect extends javax.swing.JFrame {
 
  private String nombre;  // Agrega este campo
+    
+    
+    
 
-    public VentanaTikect(String nombreUsuario) {
+    public VentanaTikect(String nombreUsuario ) {
         this.nombre = nombreUsuario;
+      
         initComponents();
-         setLocationRelativeTo(this);
+        setLocationRelativeTo(this);
+        
+        
+                
     }
 
   private void generarFactura(String tipoPlan) {

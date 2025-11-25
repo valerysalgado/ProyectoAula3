@@ -43,23 +43,7 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
        cargarVuelosEnPantalla(); // Método para mostrar vuelos en los JLabels
        configurarBotonesReserva(); // Asignar acciones a los botones
     }
-    
-    public VentanaVuelosDisponibles(Pasajero pasajero, String nombreUsuario, java.util.Date fechaIda, java.util.Date fechaVuelta) {
-    this.pasajeroActual = pasajero;
-    this.nombreUsuario = nombreUsuario;
-    this.fechaIda = fechaIda;
-    this.fechaVuelta = fechaVuelta;
-    this.cn = con.conector();
-    initComponents();
-    setLocationRelativeTo(this);
-   
-    
-    
-    
-    cargarVuelosEnPantalla(); // Método para mostrar vuelos en los JLabels
-    configurarBotonesReserva(); // Asignar acciones a los botones
-}
-
+  
 
  
 
@@ -73,31 +57,18 @@ public class VentanaVuelosDisponibles extends javax.swing.JFrame {
         vueloMostrado.setDestino("Medellin");
         
         
-            String fechaIdaFormateada = formatearFecha(fechaIda);
-            String fechaVueltaFormateada = formatearFecha(fechaVuelta);
             
      
 
         // Mostrar datos en los JLabels
         FechaIDA.setText("Vuelo: " + vueloMostrado.getNumeroVuelo() + " | " + vueloMostrado.getOrigen() + " → " + vueloMostrado.getDestino());
-        IDA.setText("Fecha Ida: " + fechaIdaFormateada);
-        VUELTA.setText("Fecha Vuelta: " + fechaVueltaFormateada);
+        
         
         
     }
     
     // Método auxiliar para formatear fechas
-    private String formatearFecha(Date fecha) {
-    if (fecha == null) {
-        return "No seleccionada";
-    }
-    try {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.format(fecha);
-    } catch (Exception e) {
-        return "Fecha inválida";
-    }
-}
+   
     
 
     private void configurarBotonesReserva() {
@@ -157,8 +128,6 @@ private void reservarVuelo(Vuelo vuelo) {
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         FechaIDA = new javax.swing.JLabel();
-        VUELTA = new javax.swing.JLabel();
-        IDA = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -168,7 +137,10 @@ private void reservarVuelo(Vuelo vuelo) {
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 510));
@@ -195,13 +167,7 @@ private void reservarVuelo(Vuelo vuelo) {
 
         FechaIDA.setText("-------------------------------------------------------------");
         FechaIDA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel3.add(FechaIDA, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 320, 40));
-
-        VUELTA.setText("----------------------------");
-        jPanel3.add(VUELTA, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 60, 170, 30));
-
-        IDA.setText("---------------------------");
-        jPanel3.add(IDA, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 56, 150, 40));
+        jPanel3.add(FechaIDA, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 320, 40));
 
         jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\User\\OneDrive\\Documents\\IMAGENES\\ICON\\avion1.png")); // NOI18N
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, -10, 250, 100));
@@ -215,24 +181,24 @@ private void reservarVuelo(Vuelo vuelo) {
         jLabel3.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("AeroNex");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 140, 50));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 140, 50));
 
         jLabel4.setFont(new java.awt.Font("Nirmala UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Reserva en tu Aereolinea de Confinaza");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, 270, 30));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 270, 30));
 
-        btnRegresar.setBackground(new java.awt.Color(102, 153, 255));
+        btnRegresar.setBackground(new java.awt.Color(0, 51, 102));
         btnRegresar.setFont(new java.awt.Font("Nirmala UI", 1, 24)); // NOI18N
         btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
-        btnRegresar.setText("Regresar");
-        btnRegresar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Chevron_Left_MD.png"))); // NOI18N
+        btnRegresar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(102, 153, 255), null, null));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 150, 60));
+        jPanel1.add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 130, 50));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reserva\n", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(102, 153, 255))); // NOI18N
@@ -248,18 +214,30 @@ private void reservarVuelo(Vuelo vuelo) {
         });
         jPanel4.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 410, 40));
 
-        jLabel1.setText("------------------------");
+        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel1.setText("FUERA DE SERVICIO");
         jPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 190, 30));
 
         jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\User\\OneDrive\\Documents\\IMAGENES\\ICON\\avion1.png")); // NOI18N
         jLabel2.setText("jLabel2");
         jPanel4.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 10, 260, 100));
 
+        jLabel8.setForeground(new java.awt.Color(204, 0, 0));
+        jLabel8.setText("EN MANTENIMIENTO");
+        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, -1, 20));
+
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Vector 12.png"))); // NOI18N
         jLabel7.setText("jLabel7");
-        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 330, 170));
+        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 330, 170));
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 580, 170));
+
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Signal, Wifi, Battery.png"))); // NOI18N
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 480, -1, 20));
+
+        jLabel14.setIcon(new javax.swing.ImageIcon("C:\\Users\\User\\Downloads\\Image.png")); // NOI18N
+        jLabel14.setText("jLabel14");
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, 1900, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 510));
 
@@ -279,7 +257,8 @@ private void reservarVuelo(Vuelo vuelo) {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+    JOptionPane.showMessageDialog(null, "FUERA DE SERVICIO . ELIJA OTRA OPCION DISPONIBLE  .");
+      
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
@@ -320,18 +299,19 @@ pasajeroEjemplo.setId(1);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel FechaIDA;
-    private javax.swing.JLabel IDA;
-    private javax.swing.JLabel VUELTA;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
