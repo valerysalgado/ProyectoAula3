@@ -370,7 +370,7 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtNombreUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreUserActionPerformed
-        txtContraseña.requestFocus(); // TODO add your handling code here:
+       txtapellido.requestFocus(); // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreUserActionPerformed
 
     private void txtDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDocumentoActionPerformed
@@ -378,19 +378,19 @@ public class VentanaRegistrarPersona extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDocumentoActionPerformed
 
     private void txtContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraseñaActionPerformed
-        txtEmail.requestFocus();       // TODO add your handling code here:
+        txtEmail.requestFocus();// TODO add your handling code here:
     }//GEN-LAST:event_txtContraseñaActionPerformed
 
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
-        Check.requestFocus();// TODO add your handling code here:
+        Roles.requestFocus();// TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void RolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RolesActionPerformed
-     Roles.requestFocus();       // TODO add your handling code here:
+     Check.requestFocus();       // TODO add your handling code here:
     }//GEN-LAST:event_RolesActionPerformed
 
     private void txtapellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtapellidoActionPerformed
-       txtapellido.requestFocus(); // TODO add your handling code here:
+       txtContraseña.requestFocus(); // TODO add your handling code here:
     }//GEN-LAST:event_txtapellidoActionPerformed
 
 

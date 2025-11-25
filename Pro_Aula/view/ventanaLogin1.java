@@ -14,7 +14,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(this);
         this.controlador = new ControladorLogin();
-        getRootPane().setDefaultButton(jButton1);
+        getRootPane().setDefaultButton(enter);
 
     }
 
@@ -43,7 +43,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
+        enter = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         txtUser = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -88,15 +88,15 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         });
         jPanel2.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, 230, 40));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
-        jButton1.setText("Enter");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        enter.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        enter.setText("Enter");
+        enter.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255)));
+        enter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                enterActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 220, 40));
+        jPanel2.add(enter, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 320, 220, 40));
 
         jButton2.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
         jButton2.setText("SingUp");
@@ -187,7 +187,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         txtPassword.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterActionPerformed
         String user = txtUser.getText();
         String con = txtPassword.getText();
 
@@ -226,14 +226,14 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         }
 
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_enterActionPerformed
 
     private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
         txtPassword.requestFocus(); // TODO add your handling code here:
     }//GEN-LAST:event_txtUserActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        realizarLogin();// TODO add your handling code here:
+        enter.requestFocus(); realizarLogin();// TODO add your handling code here:
     }//GEN-LAST:event_txtPasswordActionPerformed
 
     /**
@@ -249,7 +249,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton enter;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
