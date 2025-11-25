@@ -14,27 +14,27 @@ public class Reserva implements Serializable {
     @Column(name = "id_reserva")
     private Integer idReserva;
 
-   @ManyToOne(optional = false)  // Obligatorio
-    @JoinColumn(name = "id_pasajero")
+      @ManyToOne
+   @JoinColumn(name = "id_pasajero", referencedColumnName = "idUsuario")
     private Pasajero pasajero;
    
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idAsiento", referencedColumnName = "idAsiento", nullable = false)
+    @JoinColumn(name = "idAsiento") 
     private Asiento asiento;
 
-    @ManyToOne(optional = false)  // Obligatorio
-    @JoinColumn(name = "id_vuelo")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idVuelo") 
     private Vuelo vuelo;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, updatable = false)
+    @Column(name = "fechaReserva")
     private Date fechaReserva;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
+    @Column(name = "estado")
     private EstadoReserva estado;
 
-    @Column(length = 20, unique = true)
+    @Column(name = "codgoReserva", length = 20, unique = true) // ← "codgoReserva" (sin 'i')
     private String codigoReserva;
 
     @Version
@@ -50,17 +50,14 @@ public class Reserva implements Serializable {
     public Reserva() {
         this.fechaReserva = new Date();
         this.estado = EstadoReserva.PENDIENTE;
-
         this.codigoReserva = generarCodigoReserva();
     }
 
-    public Reserva(Pasajero pasajero, Asiento asiento, Vuelo vuelo,
-            String origen, String destino, double totalPagado) {
+    public Reserva(Pasajero pasajero, Asiento asiento, Vuelo vuelo) {
         this();
         this.pasajero = pasajero;
         this.asiento = asiento;
         this.vuelo = vuelo;
-
     }
 
     public void confirmar() {
@@ -85,6 +82,7 @@ public class Reserva implements Serializable {
         return "RES-" + System.currentTimeMillis() + "-" + (int) (Math.random() * 1000);
     }
 
+    // Getters y setters (se mantienen igual)...
     public Integer getIdReserva() {
         return idReserva;
     }
@@ -151,12 +149,13 @@ public class Reserva implements Serializable {
 
     @Override
     public String toString() {
-        return "Reserva{"
-                + "idReserva=" + idReserva
-                + ", pasajero=" + (pasajero != null ? pasajero.getnombre() : "null")
-                + ", vuelo=" + (vuelo != null ? vuelo.getNumeroVuelo() : "null")
-                + ", asiento=" + (asiento != null ? asiento.getNumero() : "null")
-                + ", fechaReserva=" + fechaReserva
-                + ", estado=" + estado;
+        return "Reserva{" +
+                "idReserva=" + idReserva +
+                ", pasajero=" + (pasajero != null ? pasajero.getnombre() : "null") +
+                ", vuelo=" + (vuelo != null ? vuelo.getNumeroVuelo() : "null") +
+                ", asiento=" + (asiento != null ? asiento.getNumero() : "null") +
+                ", fechaReserva=" + fechaReserva +
+                ", estado=" + estado +
+                '}';
     }
 }

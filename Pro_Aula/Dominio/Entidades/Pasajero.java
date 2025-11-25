@@ -38,15 +38,15 @@ public class Pasajero implements Serializable {
         this.rol = rol;
     }
     
-    public Pasajero(Long idUsuario, String nombre, String apellido, String identificacion, String telefono, String correo, String rol) {
-        this.idUsuario = idUsuario;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = identificacion;
-        this.telefono = telefono;
-        this.identificacion = correo;
-        this.rol = rol;
-    }
+  public Pasajero(Long idUsuario, String nombre, String apellido, String identificacion, String telefono, String correo, String rol) {
+    this.idUsuario = idUsuario;
+    this.nombre = nombre;
+    this.apellido = apellido;
+    this.identificacion = identificacion; 
+    this.telefono = telefono;
+    this.correo = correo;  
+    this.rol = rol;
+}
 
     public Long getIdUsuario() {
         return idUsuario;

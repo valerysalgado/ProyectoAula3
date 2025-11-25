@@ -183,8 +183,7 @@ public class ventanaLogin1 extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-      VentanaRegistrarPersona ventana = new VentanaRegistrarPersona(this);
-        ventana.setVisible(true);
+  
         this.dispose();
         txtUser.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -259,6 +258,9 @@ public class ventanaLogin1 extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(VentanaLogin1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

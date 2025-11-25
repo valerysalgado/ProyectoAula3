@@ -3,79 +3,74 @@ package Dominio.Entidades;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
-
-/**
- *
- * @author valer
- */
 @Entity
 @Table(name = "administrador")
-public class Administrador implements Serializable{
+public class Administrador implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     private int id;
+    private Integer id;
+    
     @Column(length = 150, nullable = false)
-     private String nombre;
+    private String nombre;
+    
     @Column(length = 15)
-     private String telefono;
-     private String rol;
-     //private List<usurio> usuarios;
+    private String telefono;
+    
+    private String rol;
 
     public Administrador() {
     }
      
-     
-   public Administrador(String nombre, String telefono, String rol) {
-    this.nombre = nombre;
-    this.telefono = telefono;
-    this.rol = rol;
-}
-
-
-    public void setIdAdministrador(int idAdministrador) {
-        this.id = idAdministrador;
-    }
-
-    public void setNombre(String nombre) {
+    public Administrador(String nombre, String telefono, String rol) {
         this.nombre = nombre;
-    }
-
-    public void setTelefono(String telefono) {
         this.telefono = telefono;
-    }
-
-    public void setRol(String rol) {
         this.rol = rol;
     }
 
-    public int getIdAdministrador() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombre() {
         return nombre;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public String getTelefono() {
         return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getRol() {
         return rol;
     }
-    public int getId() {
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    // Métodos de compatibilidad (opcionales)
+    public Integer getIdAdministrador() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdAdministrador(Integer idAdministrador) {
+        this.id = idAdministrador;
     }
 
     @Override 
@@ -86,8 +81,4 @@ public class Administrador implements Serializable{
             "Telefono: " + telefono + "\n" + 
             "Rol: " + rol + "\n";
     }
-
-    
 }
-
-               

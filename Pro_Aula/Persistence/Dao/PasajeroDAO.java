@@ -1,99 +1,140 @@
 package Persistence.Dao;
 
-/**
- *
- * @author Valery Salgado
- */
 import Dominio.Entidades.Pasajero;
-import javax.persistence.EntityTransaction;
-import javax.persistence.TypedQuery;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 public class PasajeroDAO {
 
     private EntityManager em;
+    private final EntityManagerFactory emf;
 
     public PasajeroDAO(EntityManager em) {
         this.em = em;
+        this.emf = null;
+    }
+
+    public PasajeroDAO() {
+        this.emf = Persistence.createEntityManagerFactory("ConfigDB");
+        this.em = null;
+    }
+
+    private EntityManager getEntityManager() {
+        if (em != null) {
+            return em;
+        } else {
+            return emf.createEntityManager();
+        }
     }
 
     public void crear(Pasajero pasajero) {
-        if (!em.getTransaction().isActive()){
-        EntityTransaction tx = em.getTransaction();
+        EntityManager entityManager = getEntityManager();
+        EntityTransaction tx = null;
+        boolean weCreatedManager = (em == null);
+        
         try {
-            if (tx.isActive()) {
-                tx.begin();
-                em.persist(pasajero);
-                tx.commit();
-            } else {
-
-                em.persist(pasajero);
-            }
-
+            tx = entityManager.getTransaction();
+            tx.begin();
+            entityManager.persist(pasajero);
+            tx.commit();
         } catch (Exception e) {
-            if (tx.isActive()&& !tx.getRollbackOnly()) {
+            if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
             throw new RuntimeException("Error al crear pasajero", e);
+        } finally {
+            if (weCreatedManager && entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
         }
+    }
+
+    public void actualizar(Pasajero pasajero) {
+        EntityManager entityManager = getEntityManager();
+        EntityTransaction tx = null;
+        boolean weCreatedManager = (em == null);
+        
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+            entityManager.merge(pasajero);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Error al actualizar pasajero", e);
+        } finally {
+            if (weCreatedManager && entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+    }
+
+    public void eliminar(Long idPasajero) {
+        EntityManager entityManager = getEntityManager();
+        EntityTransaction tx = null;
+        boolean weCreatedManager = (em == null);
+        
+        try {
+            tx = entityManager.getTransaction();
+            tx.begin();
+            Pasajero pasajero = entityManager.find(Pasajero.class, idPasajero);
+            if (pasajero != null) {
+                entityManager.remove(pasajero);
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Error al eliminar pasajero", e);
+        } finally {
+            if (weCreatedManager && entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
         }
     }
 
     public Pasajero buscarPorId(Long id) {
-        return em.find(Pasajero.class, id);
+        EntityManager entityManager = getEntityManager();
+        try {
+            return entityManager.find(Pasajero.class, id);
+        } finally {
+            if (em == null && entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
     }
 
     public List<Pasajero> listarTodos() {
-        TypedQuery<Pasajero> query = em.createQuery("SELECT a FROM Pasajero a", Pasajero.class);
-        return query.getResultList();
-    }
-
-    public void actualizar(Pasajero Pasajero) {
-        EntityTransaction tx = em.getTransaction();
+        EntityManager entityManager = getEntityManager();
         try {
-            tx.begin();
-            em.merge(Pasajero);
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
+            TypedQuery<Pasajero> query = entityManager.createQuery("SELECT p FROM Pasajero p", Pasajero.class);
+            return query.getResultList();
+        } finally {
+            if (em == null && entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
             }
-            throw e;
         }
     }
 
-    public void eliminar(int id) {
-        EntityTransaction tx = em.getTransaction();
+    public Pasajero buscarPorDocumento(String documento) {
+        EntityManager entityManager = getEntityManager();
         try {
-            tx.begin();
-            Pasajero Pasajero = em.find(Pasajero.class, id);
-            if (Pasajero != null) {
-                em.remove(Pasajero);
+            TypedQuery<Pasajero> query = entityManager.createQuery(
+                "SELECT p FROM Pasajero p WHERE p.documento = :documento", Pasajero.class);
+            query.setParameter("documento", documento);
+            List<Pasajero> resultados = query.getResultList();
+            return resultados.isEmpty() ? null : resultados.get(0);
+        } finally {
+            if (em == null && entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
             }
-            tx.commit();
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            throw e;
         }
     }
-    
-    public List<Pasajero> listarConFiltro(String filtro, int pagina, int registrosPorPagina) {
-        String jpql = "SELECT p FROM Pasajero p WHERE " +
-                     "(p.nombre LIKE :filtro OR p.apellido LIKE :filtro OR p.identificacion LIKE :filtro) " +
-                     "ORDER BY p.apellido, p.nombre";
-        
-        return em.createQuery(jpql, Pasajero.class)
-                .setParameter("filtro", "%" + filtro + "%")
-                .setFirstResult((pagina - 1) * registrosPorPagina)
-                .setMaxResults(registrosPorPagina)
-                .getResultList();
-    
-    }
-
-
 }
-
