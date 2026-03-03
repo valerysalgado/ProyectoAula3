@@ -28,6 +28,8 @@ public class Avion implements Serializable {
     private String estado;
     @OneToMany(mappedBy = "avion")
     private List<Vuelo> vuelos = new ArrayList<>();
+    @OneToMany(mappedBy = "avion", fetch = FetchType.LAZY) // ← Usa LAZY
+    private List<Asiento> asientos;
 
     public Avion() {
         this.disponible = true;
@@ -88,9 +90,10 @@ public class Avion implements Serializable {
     }
 
     public void agregarVuelo(Vuelo vuelo) {
-    vuelos.add(vuelo);
-    vuelo.setAvion(this);
-}
+        vuelos.add(vuelo);
+        vuelo.setAvion(this);
+    }
+
     public static String[] getOpcionesEstado() {
         return new String[]{"EN TIERRA", "EN VUELO", "EN MANTENIMIENTO", "RETRASADO"};
     }

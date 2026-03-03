@@ -1,9 +1,0 @@
-Vuelo1
-N°1
-ID: 1
-Origen: a
-Destino: b
-Fecha Ida: 2
-Fecha Vuelta: 1
-
-Hora: 3

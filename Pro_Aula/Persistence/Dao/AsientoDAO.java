@@ -1,5 +1,6 @@
 package Persistence.Dao;
 
+import Dominio.Entidades.Asiento;
 import Dominio.Entidades.Avion;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -8,17 +9,17 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-public class AvionDAO {
+public class AsientoDAO {
 
     private EntityManager em;
     private final EntityManagerFactory emf;
 
-    public AvionDAO(EntityManager em) {
+    public AsientoDAO(EntityManager em) {
         this.em = em;
         this.emf = null;
     }
 
-    public AvionDAO() {
+    public AsientoDAO() {
         this.emf = Persistence.createEntityManagerFactory("ConfigDB");
         this.em = null;
     }
@@ -31,7 +32,7 @@ public class AvionDAO {
         }
     }
 
-    public void crear(Avion avion) {
+    public void crear(Asiento asiento) {
         EntityManager entityManager = getEntityManager();
         EntityTransaction tx = null;
         boolean weCreatedManager = (em == null);
@@ -39,13 +40,13 @@ public class AvionDAO {
         try {
             tx = entityManager.getTransaction();
             tx.begin();
-            entityManager.persist(avion);
+            entityManager.persist(asiento);
             tx.commit();
         } catch (Exception e) {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            throw new RuntimeException("Error al crear avión", e);
+            throw new RuntimeException("Error al crear asiento", e);
         } finally {
             if (weCreatedManager && entityManager != null && entityManager.isOpen()) {
                 entityManager.close();
@@ -53,7 +54,7 @@ public class AvionDAO {
         }
     }
 
-    public void actualizar(Avion avion) {
+    public void actualizar(Asiento asiento) {
         EntityManager entityManager = getEntityManager();
         EntityTransaction tx = null;
         boolean weCreatedManager = (em == null);
@@ -61,13 +62,13 @@ public class AvionDAO {
         try {
             tx = entityManager.getTransaction();
             tx.begin();
-            entityManager.merge(avion);
+            entityManager.merge(asiento);
             tx.commit();
         } catch (Exception e) {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            throw new RuntimeException("Error al actualizar avión", e);
+            throw new RuntimeException("Error al actualizar asiento", e);
         } finally {
             if (weCreatedManager && entityManager != null && entityManager.isOpen()) {
                 entityManager.close();
@@ -75,7 +76,7 @@ public class AvionDAO {
         }
     }
 
-    public void eliminar(Long idAvion) {
+    public void eliminar(Long idAsiento) {
         EntityManager entityManager = getEntityManager();
         EntityTransaction tx = null;
         boolean weCreatedManager = (em == null);
@@ -83,16 +84,16 @@ public class AvionDAO {
         try {
             tx = entityManager.getTransaction();
             tx.begin();
-            Avion avion = entityManager.find(Avion.class, idAvion);
-            if (avion != null) {
-                entityManager.remove(avion);
+            Asiento asiento = entityManager.find(Asiento.class, idAsiento);
+            if (asiento != null) {
+                entityManager.remove(asiento);
             }
             tx.commit();
         } catch (Exception e) {
             if (tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            throw new RuntimeException("Error al eliminar avión", e);
+            throw new RuntimeException("Error al eliminar asiento", e);
         } finally {
             if (weCreatedManager && entityManager != null && entityManager.isOpen()) {
                 entityManager.close();
@@ -100,15 +101,10 @@ public class AvionDAO {
         }
     }
 
-    // ✅ CORREGIDO: Método para buscar por int (compatibilidad)
-    public Avion buscarPorId(int id) {
-        return buscarPorId((long) id);
-    }
-
-    public Avion buscarPorId(Long id) {
+    public Asiento buscarPorId(Long id) {
         EntityManager entityManager = getEntityManager();
         try {
-            return entityManager.find(Avion.class, id);
+            return entityManager.find(Asiento.class, id);
         } finally {
             if (em == null && entityManager != null && entityManager.isOpen()) {
                 entityManager.close();
@@ -116,40 +112,18 @@ public class AvionDAO {
         }
     }
 
-    public Avion buscarPorMatricula(String matricula) {
-        EntityManager entityManager = getEntityManager();
-        try {
-            TypedQuery<Avion> query = entityManager.createQuery(
-                "SELECT a FROM Avion a WHERE a.matricula = :matricula", Avion.class);
-            query.setParameter("matricula", matricula);
-            List<Avion> resultados = query.getResultList();
-            return resultados.isEmpty() ? null : resultados.get(0);
-        } finally {
-            if (em == null && entityManager != null && entityManager.isOpen()) {
-                entityManager.close();
-            }
-        }
+    // ✅ MÉTODO FALTANTE: obtenerAsientosDisponibles (para compatibilidad)
+    public List<Asiento> obtenerAsientosDisponibles() {
+        return buscarPorDisponibilidad(true);
     }
 
-    // ✅ MÉTODO FALTANTE: existeMatricula (para compatibilidad)
-    public boolean existeMatricula(String matricula) {
+    // ✅ MÉTODO FALTANTE: obtenerPorAvion (para compatibilidad)
+    public List<Asiento> obtenerPorAvion(Avion avion) {
         EntityManager entityManager = getEntityManager();
         try {
-            TypedQuery<Long> query = entityManager.createQuery(
-                "SELECT COUNT(a) FROM Avion a WHERE a.matricula = :matricula", Long.class);
-            query.setParameter("matricula", matricula);
-            return query.getSingleResult() > 0;
-        } finally {
-            if (em == null && entityManager != null && entityManager.isOpen()) {
-                entityManager.close();
-            }
-        }
-    }
-
-    public List<Avion> listarTodos() {
-        EntityManager entityManager = getEntityManager();
-        try {
-            TypedQuery<Avion> query = entityManager.createQuery("SELECT a FROM Avion a", Avion.class);
+            TypedQuery<Asiento> query = entityManager.createQuery(
+                "SELECT a FROM Asiento a WHERE a.avion = :avion", Asiento.class);
+            query.setParameter("avion", avion);
             return query.getResultList();
         } finally {
             if (em == null && entityManager != null && entityManager.isOpen()) {
@@ -158,12 +132,57 @@ public class AvionDAO {
         }
     }
 
-    public List<Avion> buscarPorEstado(boolean activo) {
+    // ✅ MÉTODO FALTANTE: obtenerUltimoAsientoPorAvionYClase (para compatibilidad)
+    public Asiento obtenerUltimoAsientoPorAvionYClase(long idAvion, String clase) {
         EntityManager entityManager = getEntityManager();
         try {
-            TypedQuery<Avion> query = entityManager.createQuery(
-                "SELECT a FROM Avion a WHERE a.activo = :activo", Avion.class);
-            query.setParameter("activo", activo);
+            TypedQuery<Asiento> query = entityManager.createQuery(
+                "SELECT a FROM Asiento a WHERE a.avion.id = :idAvion AND a.clase = :clase ORDER BY a.numeroAsiento DESC",
+                Asiento.class);
+            query.setParameter("idAvion", idAvion);
+            query.setParameter("clase", clase);
+            query.setMaxResults(1);
+            List<Asiento> resultados = query.getResultList();
+            return resultados.isEmpty() ? null : resultados.get(0);
+        } finally {
+            if (em == null && entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+    }
+
+    public List<Asiento> listarTodos() {
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Asiento> query = entityManager.createQuery("SELECT a FROM Asiento a", Asiento.class);
+            return query.getResultList();
+        } finally {
+            if (em == null && entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+    }
+
+    public List<Asiento> buscarPorDisponibilidad(boolean disponible) {
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Asiento> query = entityManager.createQuery(
+                "SELECT a FROM Asiento a WHERE a.disponible = :disponible", Asiento.class);
+            query.setParameter("disponible", disponible);
+            return query.getResultList();
+        } finally {
+            if (em == null && entityManager != null && entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+    }
+
+    public List<Asiento> buscarPorVuelo(Long idVuelo) {
+        EntityManager entityManager = getEntityManager();
+        try {
+            TypedQuery<Asiento> query = entityManager.createQuery(
+                "SELECT a FROM Asiento a WHERE a.vuelo.id = :idVuelo", Asiento.class);
+            query.setParameter("idVuelo", idVuelo);
             return query.getResultList();
         } finally {
             if (em == null && entityManager != null && entityManager.isOpen()) {
